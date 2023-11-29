@@ -11,6 +11,7 @@ import {
   createBrowserRouter,
   RouterProvider
 } from 'react-router-dom'
+import Login from './routes/login/Login.tsx'
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "/users",
         element: <User/>
+      },
+      {
+        path: "/login",
+        element: <Login/>
       }
     ]
   }

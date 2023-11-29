@@ -16,12 +16,7 @@ class AuthController {
     }
 
     static async getProfile(req: Request, res: Response) {
-        try {
-            return res.status(200).json(req.user)
-        } catch (error: any) {
-            console.log('error.message:::', error.message)
-            return res.status(500).json({ message: error.message })
-        }
+        return res.status(200).json(req.user)
     }
 }
 
