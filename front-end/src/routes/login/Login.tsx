@@ -1,9 +1,12 @@
 import { Form, Button, Schema, Container, Input, InputGroup } from "rsuite";
 import { toast } from "react-toastify";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import EyeIcon from "@rsuite/icons/legacy/Eye";
 import EyeSlashIcon from "@rsuite/icons/legacy/EyeSlash";
 import axios, { AxiosResponse } from "axios";
+import { AuthContext } from "../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 // const loginRule = Schema.Types.StringType().isRequired(
 //   "Informe o login."
 // );
@@ -39,10 +42,12 @@ const Login = () => {
     email: "",
     password: "",
   });
-
   const [loading, setLoading] = useState(false);
-
   const [visible, setVisible] = useState<boolean>(true);
+  const { setAuth, auth } = useContext(AuthContext);
+  
+  console.log('auth login', auth)
+  const navigate = useNavigate();
 
   const handleVisible = () => {
     setVisible(!visible);
@@ -58,15 +63,19 @@ const Login = () => {
   const handleSubmit = async () => {
     setLoading(true);
 
-    console.log('credentials', credentials)
     await axios
       .post(`${import.meta.env.VITE_BASE_URL}/login`, credentials)
       .then((res: AxiosResponse) => {
-        console.log("res:::", res);
-        toast.success(`Usuário logado com sucesso!`);
+        toast.success(`${res.data.message}`, {
+          autoClose: 2000
+        });
+
+        setTimeout(() => {
+          setAuth(true);
+          navigate('/dashboard');
+        }, 2000); 
       })
       .catch((error: Error) => {
-        console.log(error)
         toast.error(`${error.response.data.message}`);
       })
       .finally(() => setLoading(false));
