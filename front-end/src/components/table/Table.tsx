@@ -49,7 +49,6 @@ const Table = ({ data }: Props) => {
   };
 
   const handleChangeLimit = (dataKey: number) => {
-    console.log('datakey', dataKey)
     setPage(1);
     setLimit(dataKey);
   };

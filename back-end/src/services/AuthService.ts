@@ -17,6 +17,13 @@ class AuthService {
     const user = await prismaClient.user.findFirst({
       where: {
         email
+      },
+      include: {
+        role: {
+          select: {
+            name: true
+          }
+        }
       }
     });
 
@@ -34,7 +41,7 @@ class AuthService {
       expiresIn: "1d",
     });
 
-    const { password: _, created_at, updated_at, cpf, telephone, ...userLogin} = user
+    const { password: _, created_at, updated_at, cpf, telephone, role_id, ...userLogin} = user
 
     return {
       user: userLogin,

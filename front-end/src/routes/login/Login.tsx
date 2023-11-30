@@ -7,33 +7,8 @@ import axios, { AxiosResponse } from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-// const loginRule = Schema.Types.StringType().isRequired(
-//   "Informe o login."
-// );
-// const passwordRule = Schema.Types.StringType().isEmail(
-//   "Informe a senha."
-// );
-
-// function UsernameField() {
-//   return (
-//     <Form.Group controlId="login">
-//       <Form.ControlLabel>Login</Form.ControlLabel>
-//       <Form.Control name="login" rule={loginRule} />
-//     </Form.Group>
-//   );
-// }
-
-// function EmailField() {
-//   return (
-//     <Form.Group controlId="password">
-//       <Form.ControlLabel>Senha</Form.ControlLabel>
-//       <Form.Control type="password" name="password" rule={passwordRule} />
-//     </Form.Group>
-//   );
-// }
-
 interface Auth {
-  login: string;
+  email: string;
   password: string;
 }
 
@@ -43,10 +18,8 @@ const Login = () => {
     password: "",
   });
   const [loading, setLoading] = useState(false);
-  const [visible, setVisible] = useState<boolean>(true);
-  const { setAuth, auth } = useContext(AuthContext);
-  
-  console.log('auth login', auth)
+  const [visible, setVisible] = useState<boolean>(false);
+  const { setAuth, auth, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleVisible = () => {
@@ -71,8 +44,11 @@ const Login = () => {
         });
 
         setTimeout(() => {
-          setAuth(true);
           navigate('/dashboard');
+          setAuth(true);
+          setUser({ ...res.data.user, token: res.data.token });
+          localStorage.setItem('ACCESS_TOKEN', res.data.token)
+          localStorage.setItem('USER', JSON.stringify(res.data.user))
         }, 2000); 
       })
       .catch((error: Error) => {
@@ -108,7 +84,7 @@ const Login = () => {
           <Input
             type="text"
             name="email"
-            value={credentials.login}
+            value={credentials.email}
             placeholder="Email"
             onChange={(value: string) => handleChange("email", value)}
           />

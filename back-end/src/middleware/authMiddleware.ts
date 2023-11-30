@@ -27,12 +27,12 @@ export const authMiddleware = async (
     where: {
       id,
     }
-  });
+  })
 
   if(!user) {
     throw new Error("Não autorizado");
   }
-
+  
   req.user = user
 
   next();
