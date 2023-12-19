@@ -1,0 +1,12 @@
+.content {
+    padding: 18px;
+    font-size: 16px;
+    height: 56;
+    background-color: #34c3ff;
+    color: #FFF;
+    white-space: 'nowrap';
+    overflow: 'hidden';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

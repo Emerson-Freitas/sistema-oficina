@@ -10,7 +10,7 @@ const router = Router();
 router.post("/users", UserController.createUser)
 router.get("/users", UserController.findUsers)
 router.put("/users/:id", UserController.editUser)
-router.delete("/:table/:id", GenericController.genericDelete)
+router.delete("/:table/:id", authMiddleware, GenericController.genericDelete)
 router.get('/roles', RoleController.findRoles)
 router.post('/login', AuthController.login)
 router.get("/profile", authMiddleware, AuthController.getProfile)

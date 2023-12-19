@@ -1,6 +1,8 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import prismaClient from "../prisma";
+import dotenv from 'dotenv'
+dotenv.config()
 
 interface AuthRequest {
   email: string;

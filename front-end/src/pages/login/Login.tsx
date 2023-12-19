@@ -19,7 +19,8 @@ const Login = () => {
   });
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState<boolean>(false);
-  const { setAuth, auth, setUser } = useContext(AuthContext);
+  const { setAuthenticated } = useContext(AuthContext);
+
   const navigate = useNavigate();
 
   const handleVisible = () => {
@@ -40,16 +41,13 @@ const Login = () => {
       .post(`${import.meta.env.VITE_BASE_URL}/login`, credentials)
       .then((res: AxiosResponse) => {
         toast.success(`${res.data.message}`, {
-          autoClose: 2000
+          autoClose: 1000
         });
 
-        setTimeout(() => {
-          navigate('/dashboard');
-          setAuth(true);
-          setUser({ ...res.data.user, token: res.data.token });
-          localStorage.setItem('ACCESS_TOKEN', res.data.token)
-          localStorage.setItem('USER', JSON.stringify(res.data.user))
-        }, 2000); 
+        setAuthenticated(true);
+        localStorage.setItem('ACCESS_TOKEN', res.data.token)
+        localStorage.setItem('USER', JSON.stringify(res.data.user))
+        navigate('/dashboard');
       })
       .catch((error: Error) => {
         toast.error(`${error.response.data.message}`);

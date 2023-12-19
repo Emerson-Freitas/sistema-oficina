@@ -1,27 +1,52 @@
-import React, { createContext, useEffect, useState } from 'react'
-import { ReactNode } from 'react';
+import { useEffect } from 'react'
+import { createContext, ReactNode, useState } from 'react'
 
-export const AuthContext = createContext({});
+type Props = {
+    children?: ReactNode;
+}
 
-const AuthProvider = ({children}:{ children: ReactNode }) => {
-    const [auth, setAuth] = useState(false)
-    const [user, setUser] = useState({})
-    
+interface IUser {
+    id: string
+    email: string
+    name: string
+    role: {
+        name: string
+    }
+}
+
+type IAuthContext = {
+    authenticated: boolean;
+    setAuthenticated: (newState: boolean) => void
+    user: IUser | null
+}
+
+const initialValue = {
+    authenticated: false,
+    setAuthenticated: () => {},
+    user: null
+}
+
+const AuthContext = createContext<IAuthContext>(initialValue)
+
+const AuthProvider = ({ children }: Props) => {
+    const [authenticated, setAuthenticated] = useState(initialValue.authenticated)
+    const [user, setUser] = useState<IUser | null>(null)
+
     useEffect(() => {
-        const localUser = localStorage.getItem('USER');
-        const localToken = localStorage.getItem('ACCESS_TOKEN');
-
-        if(localUser && localToken) {
-            console.log(JSON.parse(localUser))
-            setUser(JSON.parse(localUser))
+        const user = localStorage.getItem('USER')
+        const token = localStorage.getItem('ACCESS_TOKEN')
+        if (user && token) {
+            const loggedUser = JSON.parse(user)
+            setUser(loggedUser)
+            setAuthenticated(true)
         }
     }, [])
 
     return (
-        <AuthContext.Provider value={{auth, setAuth, user, setUser}}>
-            {children}
+        <AuthContext.Provider value={{ authenticated, setAuthenticated, user }}>
+            { children }
         </AuthContext.Provider>
     )
 }
 
-export default AuthProvider
+export { AuthContext, AuthProvider }

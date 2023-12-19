@@ -2,6 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import AuthService from "../services/AuthService";
 import prismaClient from "../prisma";
 import jwt from "jsonwebtoken";
+import dotenv from 'dotenv'
+dotenv.config();
 
 type Token = {
   id: string;
