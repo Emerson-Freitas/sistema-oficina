@@ -8,6 +8,10 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const { user } = useContext(AuthContext);
 
+  useEffect(() => {
+    
+  }, [user])
+
   const userName = (userName: string) => {
     return userName.split(' ')[0]
   }

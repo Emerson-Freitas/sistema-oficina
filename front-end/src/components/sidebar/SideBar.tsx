@@ -56,14 +56,6 @@ const SideBar = () => {
           {
             label: 'Relatórios',
             value: 'reports'
-          },
-          {
-            label: 'Orçamentos',
-            value: 'budgets'
-          },
-          {
-            label: 'Veículos',
-            value: 'vehicles'
           }
         ]
         setNavigates(navigates)
@@ -94,7 +86,7 @@ const SideBar = () => {
 
 
     useEffect(() => {
-      console.log('navigates::::', navigates)
+      
     }, [navigates])
 
     return (

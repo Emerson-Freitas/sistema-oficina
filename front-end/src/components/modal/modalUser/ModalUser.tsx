@@ -111,6 +111,7 @@ const ModalUser = ({ handleOpen, handleClose, open }: Props) => {
         email: "",
         telephone: "",
         role_id: "",
+        password: ""
       });
     }
   }, [open]);

@@ -21,7 +21,6 @@ const UpdateModal = ({ data, table, handleClose, open, children }: Props) => {
 
     for(const key in data) {
       const value: any = data[key];
-      console.log('data:::', value)
       if(!value) {
         toast.warning(`Por favor, preencha o campo ${key}`)
       }
@@ -33,7 +32,6 @@ const UpdateModal = ({ data, table, handleClose, open, children }: Props) => {
         handleClose()
       })
       .catch((error: Error) => {
-        console.log('error::::', error)
         toast.error(`${error.response.data.message}`)
       })
       .finally(() => setLoading(false))

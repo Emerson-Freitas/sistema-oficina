@@ -14,7 +14,30 @@ const Routes = () => {
   return (
     <Router>
         <Route path='/login' element={<Login/>}/>
-        <Route element={<PrivateRoutes roles={[ROLE.ADMIN, ROLE.CLIENTE, ROLE.FUNCIONARIO]}/>}>
+        <Route element={<PrivateRoutes roles={[ROLE.CLIENTE]}/>}>
+          <Route path='/' 
+              element={
+                <Layout>
+                  <Dashboard/>
+                </Layout>
+              }
+            />
+            <Route path='/dashboard'
+              element={
+                <Layout>
+                  <Dashboard/>
+                </Layout>
+              }
+            />
+            <Route path='/reports'
+              element={
+                <Layout>
+                  <Report/>
+                </Layout>
+              }
+            />
+        </Route>
+        <Route element={<PrivateRoutes roles={[ROLE.ADMIN, ROLE.FUNCIONARIO]}/>}>
             <Route path='/' 
               element={
                 <Layout>

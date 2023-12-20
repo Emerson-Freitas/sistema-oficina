@@ -9,12 +9,7 @@ interface Props {
 
 const PrivateRoutes = ({ roles }: Props) => {
     const { authenticated, user } = useContext(AuthContext)
-
-    console.log({
-        user: user,
-        authenticated: authenticated
-    })
-
+    
     const userHasRequiredRole = user && roles.includes(user.role.name) ? true : false
 
     if(authenticated && !userHasRequiredRole) {

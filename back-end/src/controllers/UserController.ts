@@ -41,6 +41,17 @@ class UserController {
         }
         
     }
+
+    static async findClients(req: Request, res: Response) {
+        try {
+            const userService = new UserService();
+            const users = await userService.findClients();
+            return res.status(200).json(users);
+        } catch (error: any) {
+            return res.send(400).json({ message: error.message})
+        }
+        
+    }
 }
 
 export default UserController

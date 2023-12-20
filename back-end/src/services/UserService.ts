@@ -98,6 +98,32 @@ class UserService {
         return results
     }
 
+    async findClients() {
+        const data = await prismaClient.user.findMany({
+            select: {
+                id: true,
+                name: true,
+            },
+            where: {
+                role_id: {
+                    equals: "36a664f4-3f50-4575-b96b-c4f74b91f5ce"
+                }
+            },
+            orderBy: {
+                id: "asc"
+            }
+        })
+
+        const results: any[] = []
+        data.forEach((value: any) => {
+            results.push({
+                value: value.id,
+                label: value.name
+            })
+        })
+        return results
+    }
+
     async editUser({ id, cpf, email, telephone, name }: EditUserRequest) {
 
         if(!id) {
