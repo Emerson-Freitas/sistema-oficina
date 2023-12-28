@@ -1,7 +1,6 @@
 import { useContext } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
-import { Navigate, Outlet } from 'react-router-dom'
-import AccessDenied from '../pages/errors/AccessDenied'
+import { Outlet, useNavigate } from 'react-router-dom'
 
 interface Props {
     roles: string[]
@@ -9,16 +8,19 @@ interface Props {
 
 const PrivateRoutes = ({ roles }: Props) => {
     const { authenticated, user } = useContext(AuthContext)
-    
+    const navigate = useNavigate();
+
+    if (!user) {
+        navigate("/login")
+    }
+
     const userHasRequiredRole = user && roles.includes(user.role.name) ? true : false
 
     if(authenticated && !userHasRequiredRole) {
-        return <AccessDenied/>
+        navigate("/access-denied")
     }
 
-    return (
-        <Outlet/>
-    )
+    return <Outlet/>
 }
 
 export default PrivateRoutes

@@ -55,7 +55,7 @@ class UserService {
         }
 
         if(!role_id) {
-            role_id = "36a664f4-3f50-4575-b96b-c4f74b91f5ce";
+            throw new Error("A função do usuário é obrigatória!")
         }
 
         const hashPassword = await bcrypt.hash(password, 8)

@@ -41,8 +41,12 @@ model Budget {
   id String @id @default(uuid())
   description String 
   value Decimal
+  vehicle Vehicle @relation(fields: [vehicle_id], references: [id])
+  vehicle_id String
   user User @relation(fields: [user_id], references: [id])
   user_id String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   @@map("budgets")
 }
@@ -52,9 +56,12 @@ model Vehicle {
   name String
   plate String
   color String
+  budgets Budget[]
   user User @relation(fields: [user_id], references: [id])
   user_id String
-
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  
   @@map("vehicles")
 }
 

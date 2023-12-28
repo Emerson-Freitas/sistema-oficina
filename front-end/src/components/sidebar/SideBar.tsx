@@ -8,108 +8,106 @@ import styles from './SideBar.module.css';
 import { Link } from 'react-router-dom'
 import NavToggle from './NavToggle';
 import { AuthContext } from '../../contexts/AuthContext';
-import { string } from 'prop-types';
 
-interface Navigate {
-  label: string
-  value: string
+const textStyles = {
+  textDecoration: "none"
 }
-
 const SideBar = () => {
     const [expand, setExpand] = useState(true);
     const { user } = useContext(AuthContext)
-    const [navigates, setNavigates] = useState<Navigate[]>([])
-
-    useEffect(() => {
-      if (user?.role.name === 'ADMIN') {
-        const navigates = [
-          {
-            label: 'Dashboard',
-            value: 'dashboard'
-          },
-          {
-            label: 'Usuários',
-            value: 'users'
-          },
-          {
-            label: 'Relatórios',
-            value: 'reports'
-          },
-          {
-            label: 'Orçamentos',
-            value: 'budgets'
-          },
-          {
-            label: 'Veículos',
-            value: 'vehicles'
-          }
-        ]
-        setNavigates(navigates)
-      }
-
-      if (user?.role.name === 'CLIENTE') {
-        const navigates = [
-          {
-            label: 'Dashboard',
-            value: 'dashboard'
-          },
-          {
-            label: 'Relatórios',
-            value: 'reports'
-          }
-        ]
-        setNavigates(navigates)
-      }
-
-      if (user?.role.name === 'FUNCIONARIO') {
-        const navigates = [
-          {
-            label: 'Dashboard',
-            value: 'dashboard'
-          },
-          {
-            label: 'Relatórios',
-            value: 'reports'
-          },
-          {
-            label: 'Orçamentos',
-            value: 'budgets'
-          },
-          {
-            label: 'Veículos',
-            value: 'vehicles'
-          }
-        ]
-        setNavigates(navigates)
-      }
-    }, [user])
-
-
-    useEffect(() => {
-      
-    }, [navigates])
 
     return (
       <RSuiteSideBar
-        style={{ display: 'flex', flexDirection: 'column' }}
+        style={{ display: "flex", flexDirection: "column"}}
         width={expand ? 260 : 56}
         collapsible
       >
-        <Sidenav>
+        <Sidenav style={{ height: '92vh'}}>
           <Sidenav.Header>
             <div className={styles.content}>
               <span>Brand</span>
             </div>
           </Sidenav.Header>
-          <Sidenav expanded={expand} defaultOpenKeys={['5']} appearance="subtle" >
-            <Sidenav.Body>
-              <Nav activeKey="1">
-                {navigates.map((navigate: Navigate, index: any) => (
-                 <Nav.Item eventKey={index} icon={<DashboardIcon />}>
-                  <Link to={`/${navigate.value}`}>{navigate.label}</Link>
-                </Nav.Item>         
-                ))}
-              </Nav>
+          <Sidenav
+            expanded={expand}
+            defaultOpenKeys={["5"]}
+            appearance="subtle"
+          >
+            <Sidenav.Body >
+              {user?.role.name === "ADMIN" && (
+                <Nav activeKey="1">
+                  <Nav.Item icon={<DashboardIcon />}>
+                    <Link to={"/dashboard"} style={textStyles}>
+                      <div>Dashboard</div>
+                    </Link>
+                  </Nav.Item>
+                  <Nav.Item icon={<DashboardIcon />}>
+                    <Link to={"/users"} style={textStyles}>
+                      <div>Usuários</div>
+                    </Link>
+                  </Nav.Item>
+                  <Nav.Item icon={<DashboardIcon />}>
+                    <Link to={"/budgets"} style={textStyles}>
+                      <div>Orçamentos</div>
+                    </Link>
+                  </Nav.Item>
+                  <Nav.Item icon={<DashboardIcon />}>
+                    <Link to={"/vehicles"} style={textStyles}>
+                      <div>Veículos</div>
+                    </Link>
+                  </Nav.Item>
+                  <Nav.Item icon={<DashboardIcon />}>
+                    <Link to={"/reports"} style={textStyles}>
+                      <div>Relatórios</div>
+                    </Link>
+                  </Nav.Item>
+                </Nav>
+              )}
+
+              {user?.role.name === "CLIENTE" && (
+                <Nav activeKey="1">
+                  <Nav.Item icon={<DashboardIcon />}>
+                    <Link to={"/dashboard"} style={textStyles}>
+                      <div>Dashboard</div>
+                    </Link>
+                  </Nav.Item>
+                  <Nav.Item icon={<DashboardIcon />}>
+                    <Link to={"/budgets"} style={textStyles}>
+                      <div>Orçamentos</div>
+                    </Link>
+                  </Nav.Item>
+                  <Nav.Item icon={<DashboardIcon />}>
+                    <Link to={"/vehicles"} style={textStyles}>
+                      <div>Veículos</div>
+                    </Link>
+                  </Nav.Item>
+                </Nav>
+              )}
+
+              {user?.role.name === "FUNCIONARIO" && (
+                <Nav activeKey="1">
+                  <Nav.Item icon={<DashboardIcon />}>
+                    <Link to={"/dashboard"} style={textStyles}>
+                      <div>Dashboard</div>
+                    </Link>
+                  </Nav.Item>
+                  <Nav.Item icon={<DashboardIcon />}>
+                    <Link to={"/budgets"} style={textStyles}>
+                      <div>Orçamentos</div>
+                    </Link>
+                  </Nav.Item>
+                  <Nav.Item icon={<DashboardIcon />}>
+                    <Link to={"/vehicles"} style={textStyles}>
+                      <div>Veículos</div>
+                    </Link>
+                  </Nav.Item>
+                  <Nav.Item icon={<DashboardIcon />}>
+                    <Link to={"/reports"} style={textStyles}>
+                      <div>Relatórios</div>
+                    </Link>
+                  </Nav.Item>
+                </Nav>
+              )}
             </Sidenav.Body>
           </Sidenav>
         </Sidenav>

@@ -1,23 +1,24 @@
-import { useState } from "react";
-import { Container, Sidebar } from "rsuite";
-import SideBar from "../../components/sidebar/SideBar";
-import Header from "../../components/header/Header";
-import CustomContent from "../../components/content/CustomContent";
-import ModalService from "../../components/modal/modalService/ModalService";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
+import AdminDashboard from "./AdminDashboard";
 
 const Dashboard = () => {
-  const [open, setOpen] = useState(false);
-  const handleClose = () => setOpen(false);
-  const handleOpen = () => setOpen(true);
+  const { user } = useContext(AuthContext);
+  const [role, setRole] = useState<string>("")
 
+  useEffect(() => {
+    if(user) {
+      setRole(user.role.name)
+    }
+  }, [user])
+
+  console.log('user::::', user?.role.name)
   return (
-    <CustomContent title={"Dashboard"}>
-      <ModalService
-        open={open}
-        handleClose={handleClose}
-        handleOpen={handleOpen}
-      />
-    </CustomContent>
+    // <AdminDashboard/>
+    <div>
+      {/* {user?.role.name === 'CLIENTE' && <ClientDashboard/>} */}
+      {role === 'ADMIN' && <AdminDashboard/>}
+    </div>
   );
 };
 

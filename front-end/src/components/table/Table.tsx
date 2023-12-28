@@ -79,11 +79,6 @@ const Table = ({ data }: Props) => {
     handleOpenUpdate()
   }
 
-  const customLocale = {
-    // total: 'Total de Linhas',
-    // rowsPerPage: 'Linhas por página',
-  };
-
   return (
     <div>
       <TableRSuite height={420} data={dataFilter}>

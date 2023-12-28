@@ -19,9 +19,7 @@ const Login = () => {
   });
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState<boolean>(false);
-  const { setAuthenticated } = useContext(AuthContext);
-
-  const navigate = useNavigate();
+  const { signIn } = useContext(AuthContext);
 
   const handleVisible = () => {
     setVisible(!visible);
@@ -36,23 +34,8 @@ const Login = () => {
 
   const handleSubmit = async () => {
     setLoading(true);
-
-    await axios
-      .post(`${import.meta.env.VITE_BASE_URL}/login`, credentials)
-      .then((res: AxiosResponse) => {
-        toast.success(`${res.data.message}`, {
-          autoClose: 1000
-        });
-
-        setAuthenticated(true);
-        localStorage.setItem('ACCESS_TOKEN', res.data.token)
-        localStorage.setItem('USER', JSON.stringify(res.data.user))
-        navigate('/dashboard');
-      })
-      .catch((error: Error) => {
-        toast.error(`${error.response.data.message}`);
-      })
-      .finally(() => setLoading(false));
+    signIn(credentials)
+    setLoading(false)
   };
 
   return (

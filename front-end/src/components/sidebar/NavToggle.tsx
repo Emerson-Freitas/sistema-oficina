@@ -10,7 +10,7 @@ interface Props {
 const NavToggle = ({ expand, onChange }: Props) => {
   return (
     <Nav pullRight>
-      <Nav.Item onClick={onChange} style={{ width: "100%", textAlign: "center", height: 32 }}>
+      <Nav.Item onClick={onChange} style={{ width: "100%", textAlign: "center", height: "8vh" }}>
         {expand ? <AngleLeftIcon /> : <AngleRightIcon />}
       </Nav.Item>
     </Nav>

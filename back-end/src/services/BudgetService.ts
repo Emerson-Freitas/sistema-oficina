@@ -17,6 +17,27 @@ class BudgetService {
         })
         return budget 
     }
+
+    async findBudgets() {
+        const budgets = await prismaClient.budget.findMany({
+            select: {
+                id: true,
+                description: true,
+                value: true,
+                user_id: true,
+                vehicle: {
+                    select: {
+                        name: true
+                    }
+                },
+                created_at: true
+            },
+            orderBy: {
+                created_at: "asc"
+            }
+        })
+        return budgets
+    }
 }
 
 export default BudgetService

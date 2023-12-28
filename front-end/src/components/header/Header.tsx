@@ -18,7 +18,7 @@ const Header = () => {
   
   return (
     <div>
-      <Navbar style={{ height: 59, backgroundColor: "#282F66", width: "100%" }}>
+      <Navbar style={{ height: "8vh", backgroundColor: "#282F66", width: "100%" }}>
         <Nav
           pullRight
           style={{ display: "flex", alignItems: "center", color: "white" }}

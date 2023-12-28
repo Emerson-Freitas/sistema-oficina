@@ -2,7 +2,7 @@ import Header from "../../components/header/Header";
 import { Button, Container } from "rsuite";
 import { useNavigate } from "react-router-dom";
 
-const AccessDenied = () => {
+const NotFound = () => {
 
   const navigate = useNavigate()
 
@@ -33,7 +33,7 @@ const AccessDenied = () => {
           }}
         >
           <h1 style={{ fontSize: 120, fontWeight: "bold", marginBottom: 20 }}>
-            403
+            404
           </h1>
           <p
             style={{
@@ -44,7 +44,7 @@ const AccessDenied = () => {
               marginBottom: 10
             }}
           >
-            Acesso negado!
+            Página não encontrada!
           </p>
           <Button 
             appearance="primary"
@@ -60,4 +60,4 @@ const AccessDenied = () => {
   );
 };
 
-export default AccessDenied;
+export default NotFound;

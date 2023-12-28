@@ -31,6 +31,8 @@ const ModalBudget = ({ handleOpen, handleClose, open }: Props) => {
     if (value && description && selectedClient) {
       await axios.post(`${import.meta.env.VITE_BASE_URL}/budgets`, { value, description, selectedClient })
         .then((res: AxiosResponse) => {
+          setValue(0)
+          setDescription("")
           toast.success(`${res.data.message}`)
         })
         .catch((error: Error) => {

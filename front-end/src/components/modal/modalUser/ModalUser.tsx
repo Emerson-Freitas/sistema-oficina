@@ -95,7 +95,6 @@ const ModalUser = ({ handleOpen, handleClose, open }: Props) => {
         toast.success(`${res.data.message}`);
         handleClose()
         setLoading(false)
-
       })
       .catch((error: Error) => {
         toast.error(`${error.response.data.message}`);
