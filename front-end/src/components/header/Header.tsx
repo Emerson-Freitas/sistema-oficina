@@ -8,10 +8,6 @@ const Header = () => {
   const [open, setOpen] = useState(false);
   const { user } = useContext(AuthContext);
 
-  useEffect(() => {
-    
-  }, [user])
-
   const userName = (userName: string) => {
     return userName.split(' ')[0]
   }
@@ -27,7 +23,7 @@ const Header = () => {
             <p>Bem vindo: <span style={{ fontWeight: "bold"}}>{userName(`${user?.name}`)}</span></p>
           </div>
           <div onClick={() => setOpen(true)}>
-            <Nav.Item icon={<CogIcon onClick={() => setOpen(true)} />}>
+            <Nav.Item  icon={<CogIcon onClick={() => setOpen(true)} />}>
               Settings
             </Nav.Item>
           </div>
@@ -37,9 +33,10 @@ const Header = () => {
       <Drawer size={"xs"} open={open} onClose={() => setOpen(false)}>
         <Drawer.Body style={{ overflowX: "hidden", overflowY: "hidden"}}>
             <CardUser
-              name={user?.name ?? ''}
-              email={user?.email ?? ''}
-              role={user?.role?.name ?? ''}
+              name={user?.name ?? ""}
+              email={user?.email ?? ""}
+              role={user?.role?.name ?? ""}
+              url_image={"837c3402800cefa0d19a4347e895cc4d-foto-minha.jpg"}
             />
         </Drawer.Body>
       </Drawer>

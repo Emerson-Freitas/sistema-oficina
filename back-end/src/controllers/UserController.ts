@@ -37,7 +37,7 @@ class UserController {
             const users = await userService.findUsers();
             return res.status(200).json(users);
         } catch (error: any) {
-            return res.send(400).json({ message: error.message})
+            return res.status(400).json({ message: error.message})
         }
         
     }
@@ -51,6 +51,20 @@ class UserController {
             return res.send(400).json({ message: error.message})
         }
         
+    }
+
+    static async uploadPicture(req: Request, res: Response) {
+        try {
+            const { id } = req.user
+            const { filename: picture } = req.file as any
+
+            const userService = new UserService()
+            const data = await userService.uploadPicture({ picture, id })
+
+            return res.status(200).json(data)
+        } catch (error: any) {
+            return res.status(400).json({ message: error.message })
+        }
     }
 }
 

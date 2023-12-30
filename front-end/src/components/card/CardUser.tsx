@@ -1,7 +1,8 @@
-import React, { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Button } from "rsuite";
 import { AuthContext } from "../../contexts/AuthContext";
-import { toast } from "react-toastify";
+import { Uploader, Message, Loader, useToaster } from 'rsuite';
+import AvatarIcon from '@rsuite/icons/legacy/Avatar';
 
 interface Props {
   url_image?: string;
@@ -11,14 +12,24 @@ interface Props {
 }
 
 const CardUser = ({ url_image, name, email, role }: Props) => {
-
   const [loading, setLoading] = useState(false)
-  const { signOut } = useContext(AuthContext)
+  const { signOut, token } = useContext(AuthContext)
+  const toaster = useToaster();
+  const [uploading, setUploading] = useState(false);
+  const [fileInfo, setFileInfo] = useState(null);
 
   const handleClick = () => {
     setLoading(true)
     signOut()
     setLoading(false)
+  }
+
+  const previewFile = (file: any, callback: any) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      callback(reader.result);
+    };
+    reader.readAsDataURL(file);
   }
 
   return (
@@ -36,20 +47,53 @@ const CardUser = ({ url_image, name, email, role }: Props) => {
         marginTop: "12%",
       }}
     >
-      <img
-        src={
-          url_image ?? "https://avatars.githubusercontent.com/u/108194763?v=4"
-        }
-        alt={`Usuário: ${name}`}
-        width="150"
-        height="150"
-        style={{
-          borderRadius: "50%",
-          marginBottom: 20,
-          border: "4px solid #fff",
-          boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-        }}
-      />
+      {url_image ? (
+        <img
+          src={url_image}
+          alt={`Foto do Usuário: ${name}`}
+          width="150"
+          height="150"
+          style={{
+            borderRadius: "50%",
+            marginBottom: 20,
+            border: "4px solid #fff",
+            boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
+          }}
+        />
+      ) : (
+          <Uploader
+            fileListVisible={false}
+            listType="picture"
+            action={`${import.meta.env.VITE_BASE_URL}/users/picture`}
+            headers={{ Authorization: token }}
+            method={"POST"}
+            name="file"
+            onUpload={file => {
+              setUploading(true)
+              previewFile(file.blobFile, (value: any) => {
+                setFileInfo(value);
+              });
+            }}
+            onSuccess={(response, file: any) => {
+              setUploading(false);
+              toaster.push(<Message type="success" color="green">{response.message}</Message>);
+            }}
+            onError={(error: any) => {
+              setFileInfo(null);
+              setUploading(false);
+              toaster.push(<Message type="error" color="red">{error.message}</Message>);
+            }}
+            >
+            <button style={{ width: 150, height: 150 }}>
+              {uploading && <Loader backdrop center />}
+              {fileInfo ? (
+                <img src={fileInfo} width="100%" height="100%" />
+              ) : (
+                <AvatarIcon style={{ fontSize: 80 }} />
+              )}
+            </button>
+          </Uploader>
+      )}
       <div style={{ textAlign: "left" }}>
         <h6 style={{ margin: 0, marginBottom: 5, marginTop: 10 }}>Nome: {name}</h6>
         <h6 style={{ margin: 0, marginBottom: 5 }}>E-mail: {email}</h6>

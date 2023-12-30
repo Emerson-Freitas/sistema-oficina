@@ -19,6 +19,11 @@ interface EditUserRequest {
     name: string
 }
 
+interface Upload {
+    picture: string | undefined
+    id: string | undefined
+}
+
 class UserService {
     async createUser({name, cpf, telephone, email, password, role_id} : UserRequest) {
         if(!name) {
@@ -175,6 +180,34 @@ class UserService {
         })
 
         return user
+    }
+
+    async uploadPicture({ picture, id }: Upload) {
+        if (!picture) {
+            throw new Error("Foto não encontrada")
+        }
+
+        if (!id) {
+            throw new Error("Usuário não encontrado")
+        }
+
+        const user = await prismaClient.user.update({
+            data: {
+                picture
+            },
+            where: {
+                id,
+            },
+            select: {
+                picture: true,
+                name: true
+            }
+        })
+
+        return {
+            picture: user.picture,
+            message: `Parabéns ${user.name}, sua foto foi atualizada com sucesso!`
+        }
     }
 }
 

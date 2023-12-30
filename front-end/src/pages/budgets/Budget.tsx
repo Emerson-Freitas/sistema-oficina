@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { Container, Loader, Sidebar } from "rsuite";
-import Header from "../../components/header/Header";
 import CustomContent from "../../components/content/CustomContent";
 import ModalBudget from "../../components/modal/modalBudget/ModalBudget";
 import axios, { AxiosResponse } from "axios";
 import CardBudget from "../../components/card/budgets/CardBudget";
+import { Loader } from "rsuite";
 
 interface IVehicle {
   name: string

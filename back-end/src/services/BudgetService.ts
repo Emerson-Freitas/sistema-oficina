@@ -12,7 +12,8 @@ class BudgetService {
             data: {
                 value: value,
                 description: description,
-                user_id: selectedClient
+                user_id: selectedClient,
+                vehicle_id: '134c056c-1997-4e45-85fe-6299ed29d1f6'
             }
         })
         return budget 

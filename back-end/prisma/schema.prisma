@@ -21,6 +21,7 @@ model User {
   vehicles Vehicle[]
   role Role @relation(fields: [role_id], references: [id])
   role_id String
+  picture String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 

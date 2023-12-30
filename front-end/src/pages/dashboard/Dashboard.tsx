@@ -12,7 +12,6 @@ const Dashboard = () => {
     }
   }, [user])
 
-  console.log('user::::', user?.role.name)
   return (
     // <AdminDashboard/>
     <div>

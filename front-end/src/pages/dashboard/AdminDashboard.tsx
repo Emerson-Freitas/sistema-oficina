@@ -11,7 +11,6 @@ const AdminDashboard = () => {
     await axios
       .get(`${import.meta.env.VITE_BASE_URL}/admin/dashboard`)
       .then((res: AxiosResponse) => {
-        console.log("res.data", res.data)
         setData(res.data.budgets);
       })
       .catch((error: Error) => {
@@ -22,10 +21,6 @@ const AdminDashboard = () => {
   useEffect(() => {
     findBudgets()
   }, [])
-
-  useEffect(() => {
-    console.log("data::::", data)
-  }, [data])
 
   return (
     <Row style={{ width: "100%", display: 'flex', justifyContent:"center", gap: "1.2%", marginTop: "1%"}}>

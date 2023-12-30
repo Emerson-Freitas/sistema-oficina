@@ -54,7 +54,6 @@ const ModalService = ({ handleOpen, handleClose, open }: Props) => {
     const findClients = async () => {
       await axios.get(`${import.meta.env.VITE_BASE_URL}/clients`)
         .then((res: AxiosResponse) => {
-          console.log('res.data:::', res.data)
           setClients(res.data)
         })
         .catch((error: Error) => {
