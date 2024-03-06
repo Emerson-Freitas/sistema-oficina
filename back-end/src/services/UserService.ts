@@ -1,6 +1,7 @@
 import { Request, Response } from "express"
 import prismaClient from "../prisma"
 import bcrypt from 'bcrypt'
+import { pagination } from "../utils/Pagination"
 
 interface UserRequest {
     name: string
@@ -83,7 +84,7 @@ class UserService {
         return user
     }
 
-    async findUsers() {
+    async findUsers({skip, take}: any) {
         const results = await prismaClient.user.findMany({
             select: {
                 id: true,
@@ -98,9 +99,18 @@ class UserService {
                     }
                 }
             },
+            skip: Number(skip),
+            take: Number(take)
         })
 
-        return results
+        const totalCount = await prismaClient.user.count();
+        const totalPages = Math.ceil(totalCount / take);
+
+        return {
+            results,
+            count: totalCount,
+            totalPages: totalPages
+        }
     }
 
     async findClients() {

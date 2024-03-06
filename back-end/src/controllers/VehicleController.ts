@@ -5,7 +5,7 @@ import VehicleService from "../services/VehicleService";
 class VehicleController {
     static async createVehicle(req: Request, res: Response) {
         try {
-            const { name, plate, color, userId } = req.body
+            const { name, plate, color, userId, vehicleType } = req.body
             const vehicleService = new VehicleService();
             const data = await vehicleService.createVehicle({ name, plate, color, userId })
 

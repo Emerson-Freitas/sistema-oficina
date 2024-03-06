@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { Button } from "rsuite";
+import { Button, Tooltip, Whisper } from "rsuite";
 import { AuthContext } from "../../contexts/AuthContext";
 import { Uploader, Message, Loader, useToaster } from 'rsuite';
 import AvatarIcon from '@rsuite/icons/legacy/Avatar';
 
 interface Props {
-  url_image?: string;
+  url_image?: string | undefined;
   name: string;
   email: string;
   role?: string;
@@ -50,7 +50,6 @@ const CardUser = ({ url_image, name, email, role }: Props) => {
       {url_image ? (
         <img
           src={url_image}
-          alt={`Foto do Usuário: ${name}`}
           width="150"
           height="150"
           style={{
@@ -74,22 +73,24 @@ const CardUser = ({ url_image, name, email, role }: Props) => {
                 setFileInfo(value);
               });
             }}
-            onSuccess={(response, file: any) => {
+            onSuccess={(response) => {
               setUploading(false);
               toaster.push(<Message type="success" color="green">{response.message}</Message>);
             }}
-            onError={(error: any) => {
+            onError={() => {
               setFileInfo(null);
               setUploading(false);
-              toaster.push(<Message type="error" color="red">{error.message}</Message>);
+              toaster.push(<Message type="error" color="red">Erro ao realizar o upload da foto!</Message>);
             }}
             >
-            <button style={{ width: 150, height: 150 }}>
+            <button style={{ width: 150, height: 150, borderRadius: 75 }}>
               {uploading && <Loader backdrop center />}
               {fileInfo ? (
                 <img src={fileInfo} width="100%" height="100%" />
               ) : (
-                <AvatarIcon style={{ fontSize: 80 }} />
+                <Whisper followCursor speaker={<Tooltip>Clique para adicionar uma foto</Tooltip>}>
+                  <AvatarIcon style={{ fontSize: 80 }} />
+                </Whisper>
               )}
             </button>
           </Uploader>

@@ -1,9 +1,6 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Sidebar as RSuiteSideBar, Sidenav, Nav } from 'rsuite';
 import DashboardIcon from '@rsuite/icons/Dashboard';
-import GroupIcon from '@rsuite/icons/legacy/Group';
-import AngleLeftIcon from "@rsuite/icons/legacy/AngleLeft";
-import AngleRightIcon from "@rsuite/icons/legacy/AngleRight";
 import styles from './SideBar.module.css';
 import { Link } from 'react-router-dom'
 import NavToggle from './NavToggle';
@@ -19,7 +16,7 @@ const SideBar = () => {
     return (
       <RSuiteSideBar
         style={{ display: "flex", flexDirection: "column"}}
-        width={expand ? 260 : 56}
+        width={expand ? 220 : 56}
         collapsible
       >
         <Sidenav style={{ height: '92vh'}}>
@@ -37,9 +34,7 @@ const SideBar = () => {
               {user?.role.name === "ADMIN" && (
                 <Nav activeKey="1">
                   <Nav.Item icon={<DashboardIcon />}>
-                    <Link to={"/dashboard"} style={textStyles}>
-                      <div>Dashboard</div>
-                    </Link>
+                    <Link to={"/dashboard"} style={textStyles}>Dashboard</Link>
                   </Nav.Item>
                   <Nav.Item icon={<DashboardIcon />}>
                     <Link to={"/users"} style={textStyles}>

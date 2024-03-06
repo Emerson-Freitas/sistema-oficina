@@ -79,7 +79,7 @@ const ModalUser = ({ handleOpen, handleClose, open }: Props) => {
   const handleSubmit = async () => {
     setLoading(true)
 
-    if (!data.name || !data.cpf || !data.telephone || !data.telephone || !data.role_id) {
+    if (!data.name || !data.cpf || !data.telephone || !data.role_id) {
       toast.warning("Por favor, preencha todos os campos", {
         pauseOnFocusLoss: true,
         autoClose: 2500

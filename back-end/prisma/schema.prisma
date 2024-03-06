@@ -21,7 +21,7 @@ model User {
   vehicles Vehicle[]
   role Role @relation(fields: [role_id], references: [id])
   role_id String
-  picture String
+  picture String? 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -43,9 +43,10 @@ model Budget {
   description String 
   value Decimal
   vehicle Vehicle @relation(fields: [vehicle_id], references: [id])
-  vehicle_id String
+  vehicle_id String @default("134c056c-1997-4e45-85fe-6299ed29d1f6")
   user User @relation(fields: [user_id], references: [id])
   user_id String
+  status String @default("EM ANÁLISE")
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -60,6 +61,7 @@ model Vehicle {
   budgets Budget[]
   user User @relation(fields: [user_id], references: [id])
   user_id String
+  type String @default("Carro")
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   

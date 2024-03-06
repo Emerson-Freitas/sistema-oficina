@@ -1,7 +1,7 @@
 import { Navbar, Nav, Drawer, Button, Placeholder } from "rsuite";
 import CogIcon from "@rsuite/icons/legacy/Cog";
 import { AuthContext } from "../../contexts/AuthContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import CardUser from "../card/CardUser";
 
 const Header = () => {
@@ -11,7 +11,7 @@ const Header = () => {
   const userName = (userName: string) => {
     return userName.split(' ')[0]
   }
-  
+ 
   return (
     <div>
       <Navbar style={{ height: "8vh", backgroundColor: "#282F66", width: "100%" }}>
@@ -36,7 +36,7 @@ const Header = () => {
               name={user?.name ?? ""}
               email={user?.email ?? ""}
               role={user?.role?.name ?? ""}
-              url_image={"837c3402800cefa0d19a4347e895cc4d-foto-minha.jpg"}
+              url_image={`${import.meta.env.VITE_STATIC_BASE_URL}/${user?.picture}`}
             />
         </Drawer.Body>
       </Drawer>

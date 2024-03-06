@@ -24,6 +24,21 @@ class BudgetController {
             return res.status(400).json({ message: `Erro ao consultar orçamentos` })
         }
     }
+
+    static async findBudgetsByUser(req: Request, res: Response) {
+        try {
+            const { id } = req.params as any
+            const { take, skip } = req.query
+            const budgetService = new BudgetService();
+            const data = await budgetService.findBudgetsByUser({ id, take, skip })
+
+            console.log('data>>>', data)
+
+            return res.status(200).json(data)
+        } catch (error) {
+            return res.status(400).json({ message: "Erro ao consultar os orçamentos do usuário"})
+        }
+    }
 }
 
 export default BudgetController

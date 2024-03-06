@@ -2,10 +2,10 @@ import { Button, ButtonToolbar, Input, InputNumber, SelectPicker } from 'rsuite'
 import { Modal as ModalRSuite } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import styles from '../Modal.module.css'
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
-import { eventNames } from 'process';
 import { toast } from 'react-toastify';
+import { AuthContext } from '../../../contexts/AuthContext';
 
 interface Props {
     handleClose: () => void
@@ -21,14 +21,15 @@ interface RSuiteComponent {
 const ModalBudget = ({ handleOpen, handleClose, open }: Props) => {
 
   const [clients, setClients] = useState<RSuiteComponent[]>([])
-  const [selectedClient, setSelectedClient] = useState<unknown>()
+  const [selectedClient, setSelectedClient] = useState<unknown | string>()
   const [value, setValue] = useState<number>(0)
   const [description, setDescription] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
+  const { user } = useContext(AuthContext)
 
   const handleSubmit = async () => {
     setLoading(true)
-    if (value && description && selectedClient) {
+    if (description && selectedClient) {
       await axios.post(`${import.meta.env.VITE_BASE_URL}/budgets`, { value, description, selectedClient })
         .then((res: AxiosResponse) => {
           setValue(0)
@@ -49,17 +50,23 @@ const ModalBudget = ({ handleOpen, handleClose, open }: Props) => {
   }
 
   useEffect(() => {
-    const findClients = async () => {
-      await axios.get(`${import.meta.env.VITE_BASE_URL}/clients`)
-        .then((res: AxiosResponse) => {
-          setClients(res.data)
-        })
-        .catch((error: Error) => {
-          console.log(`${error.response.data.message}`);
-        })
+    if (user?.role.name === 'ADMIN') {
+      const findClients = async () => {
+        await axios.get(`${import.meta.env.VITE_BASE_URL}/clients`)
+          .then((res: AxiosResponse) => {
+            setClients(res.data)
+          })
+          .catch((error: Error) => {
+            console.log(`${error.response.data.message}`);
+          })
+      }
+      findClients()
+    } else {
+      if (user?.role.name === 'CLIENTE') {
+        setSelectedClient(user.id)
+      }
     }
-    findClients()
-  }, [])
+  }, [user])
 
   return (
     <div>
@@ -78,32 +85,37 @@ const ModalBudget = ({ handleOpen, handleClose, open }: Props) => {
             placeholder="Descrição" 
             className={styles.input}
           />
-          <InputNumber
-            type='number'
-            prefix='R$'
-            placeholder="Valor"
-            min={0}
-            onChange={(value) => setValue(Number(value))}
-            value={value}
-            style={{
-              height: 42,
-              marginBottom: 10
-            }}
-          />
-          <SelectPicker
-            label={"Usuário"}
-            data={clients}
-            style={{ width: "100%"}}
-            onChange={(event) => {setSelectedClient(event)}}
-            value={selectedClient}
-          />
+          {user?.role.name === 'ADMIN' && (
+            <>
+              <InputNumber
+                type='number'
+                prefix='R$'
+                placeholder="Valor"
+                min={0}
+                onChange={(value) => setValue(Number(value))}
+                value={value}
+                style={{
+                  height: 42,
+                  marginBottom: 10
+                }}
+              />
+            
+              <SelectPicker
+                label={"Usuário"}
+                data={clients}
+                style={{ width: "100%"}}
+                onChange={(event) => {setSelectedClient(event)}}
+                value={selectedClient}
+              />
+            </>
+          )}
         </ModalRSuite.Body>
         <ModalRSuite.Footer>
-          <Button onClick={handleSubmit} loading={loading} appearance="primary">
-            Salvar
+          <Button onClick={handleSubmit} appearance="primary" loading={loading} color="green">
+            SALVAR
           </Button>
-          <Button onClick={handleClose} appearance="subtle">
-            Cancelar
+          <Button onClick={handleClose} appearance="primary" color="red">
+            CANCELAR
           </Button>
         </ModalRSuite.Footer>
       </ModalRSuite>

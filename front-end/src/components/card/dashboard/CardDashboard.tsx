@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import EyeIcon from '@rsuite/icons/legacy/Eye';
 import EyeSlashIcon from '@rsuite/icons/legacy/EyeSlash';
 import { Panel, Placeholder } from 'rsuite';
+import axios, { AxiosResponse } from 'axios';
 
 interface Props {
     title: string
@@ -15,6 +16,18 @@ const CardDashboard = ({ title, color }: Props) => {
   const handleVisible = () => {
     setVisible(!visible)
   }
+
+  const findDashboardData = async () => {
+    await axios.get(`${import.meta.env.VITE_BASE_URL}/dashboard`)
+      .then((res: AxiosResponse) => {
+      })
+      .catch((error: Error) => {
+      })
+  }
+
+  useEffect(() => {
+    findDashboardData();
+  }, [])
 
   return (
     <Panel bordered style={{

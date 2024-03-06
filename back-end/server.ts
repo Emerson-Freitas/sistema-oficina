@@ -11,9 +11,10 @@ app.use(cors())
 app.use(express.json())
 app.use(router)
 
+
 app.use(
     '/files',
-    express.static(path.resolve(__dirname, '..', 'tmp'))
+    express.static(path.resolve(__dirname, 'tmp'))
 )
 
 const PORT = process.env.PORT || 3000;

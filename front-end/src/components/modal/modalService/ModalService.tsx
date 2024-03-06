@@ -2,9 +2,10 @@ import { Button, ButtonToolbar, Input, SelectPicker } from 'rsuite';
 import { Modal as ModalRSuite } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import styles from '../Modal.module.css'
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
+import { AuthContext } from '../../../contexts/AuthContext';
 
 interface Props {
     handleClose: () => void
@@ -17,6 +18,10 @@ interface RSuiteComponent {
   label: string
 }
 
+const vehicleTypes = ['Carro', 'Moto', 'Caminhão'].map(
+  item => ({ label: item, value: item })
+);
+
 const ModalService = ({ handleOpen, handleClose, open }: Props) => {
 
   const [loading, setLoading] = useState<boolean>(false)
@@ -25,6 +30,14 @@ const ModalService = ({ handleOpen, handleClose, open }: Props) => {
   const [plate, setPlate] = useState<string>("")
   const [color, setColor] = useState<string>("")
   const [userId, setUserId] = useState<string | null>(null)
+  const [vehicleType, setVehicleType] = useState<string>('')
+  const { user } = useContext(AuthContext)
+
+  useEffect(() => {
+    if (user?.role.name === 'CLIENTE') {
+      setUserId(user.id)
+    }
+  }, [user])
 
   const handleSubmit = async () => {
     setLoading(true)
@@ -76,13 +89,22 @@ const ModalService = ({ handleOpen, handleClose, open }: Props) => {
           <Input type='text' placeholder="Nome do Veículo" className={styles.input} value={name} onChange={(event) => setName(event)}/>
           <Input type='text' placeholder="Placa" className={styles.input} value={plate} onChange={(event) => setPlate(event)}/>
           <Input type='text' placeholder="Cor" className={styles.input} value={color} onChange={(event) => setColor(event)}/>
+          {user?.role.name === 'ADMIN' && (
+            <SelectPicker
+              label={"Usuário"}
+              data={clients}
+              style={{ width: "100%" }}
+              onChange={(event) => setUserId(event)}
+              value={userId}
+            />
+          )}
           <SelectPicker
-            label={"Usuário"}
-            data={clients}
-            style={{ width: "100%"}}
-            onChange={(event) => setUserId(event)}
-            value={userId}
-          />
+              label={"Tipo"}
+              data={vehicleTypes}
+              style={{ width: "100%", marginTop: 10 }}
+              onChange={(event) => setVehicleType(event)}
+              value={vehicleType}
+            />
         </ModalRSuite.Body>
         <ModalRSuite.Footer>
         <Button onClick={handleSubmit} appearance="primary" loading={loading} color="green">

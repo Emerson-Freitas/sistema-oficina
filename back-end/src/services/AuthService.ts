@@ -40,7 +40,7 @@ class AuthService {
     }
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_PASS ?? "", {
-      expiresIn: "1d",
+      expiresIn: "30d",
     });
 
     const { password: _, created_at, updated_at, cpf, telephone, role_id, ...userLogin} = user

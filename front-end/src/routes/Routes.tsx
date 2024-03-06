@@ -36,6 +36,22 @@ const Routes = () => {
             </Layout>
           }
         />
+        <Route
+          path="/budgets"
+          element={
+            <Layout>
+              <Budget />
+            </Layout>
+          }
+        />
+        <Route
+          path="/vehicles"
+          element={
+            <Layout>
+              <Service />
+            </Layout>
+          }
+        />
       </Route>
       <Route element={<PrivateRoutes roles={[ROLE.ADMIN, ROLE.FUNCIONARIO]} />}>
         <Route

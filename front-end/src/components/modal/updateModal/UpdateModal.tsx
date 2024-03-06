@@ -1,4 +1,4 @@
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState } from "react";
 import { Button, Modal } from "rsuite";
 import IUser from "../../../interfaces/IUser";
 import { toast } from "react-toastify";

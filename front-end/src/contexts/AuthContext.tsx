@@ -20,6 +20,7 @@ interface IUser {
   role: {
     name: string;
   };
+  picture: string;
 }
 
 type IAuthContext = {
@@ -46,7 +47,6 @@ const AuthProvider = ({ children }: Props) => {
   const [authenticated, setAuthenticated] = useState<boolean>(false)
   const [user, setUser] = useState<IUser | null>(null);
   const [token, setToken] = useState<string>("")
-
   const navigate = useNavigate();
 
   const signOut = () => {
@@ -63,9 +63,10 @@ const AuthProvider = ({ children }: Props) => {
         toast.success(`${res.data.message}`, {
           autoClose: 1000,
         });
-        setAuthenticated(true);
         localStorage.setItem('ACCESS_TOKEN', res.data.token)
         localStorage.setItem('USER', JSON.stringify(res.data.user))
+        setAuthenticated(true)
+        setUser(res.data.user)
         navigate('/dashboard');
       })
       .catch((error: Error) => {

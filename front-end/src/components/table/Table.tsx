@@ -9,17 +9,22 @@ import { MaskCPF } from "../../utils/MaskCPF";
 import { MaskTelephone } from "../../utils/MaskTelephone";
 import UpdateModal from "../modal/updateModal/UpdateModal";
 import styles from "../modal/Modal.module.css";
+import CustomPagination from "../pagination/CustomPagination";
 
 const { Column, HeaderCell, Cell } = TableRSuite;
 
 interface Props {
   data: IUser[];
+  find: (page:number, take: number) => void;
+  countLimit: number;
+  handleChangePage: (page: number) => void;
+  total: number;
 }
 
-const Table = ({ data }: Props) => {
-  const [limit, setLimit] = useState<number>(8);
+const Table = ({ data, countLimit, find, total }: Props) => {
+  const [limit, setLimit] = useState<number>(6);
   const [page, setPage] = useState<number>(1);
-
+  const [activePage, setActivePage] = useState(1);
   const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
   const handleClose = () => setOpenDeleteModal(false);
   const handleOpen = () => setOpenDeleteModal(true);
@@ -27,6 +32,12 @@ const Table = ({ data }: Props) => {
   const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false)
   const handleCloseUpdate = () => setOpenUpdateModal(false);
   const handleOpenUpdate = () => setOpenUpdateModal(true);
+
+
+  const handlePageChange = (page: number) => {
+    setActivePage(page);
+    find(page, limit)
+  };
 
   const [updateUser, setUpdateUser] = useState({
     id: "",
@@ -46,11 +57,6 @@ const Table = ({ data }: Props) => {
       ...updateUser,
       [name]: value,
     });
-  };
-
-  const handleChangeLimit = (dataKey: number) => {
-    setPage(1);
-    setLimit(dataKey);
   };
 
   const dataFilter = data.filter((v, i) => {
@@ -75,7 +81,6 @@ const Table = ({ data }: Props) => {
       telephone: rowData.telephone,
       email: rowData.email
     })
-
     handleOpenUpdate()
   }
 
@@ -86,14 +91,12 @@ const Table = ({ data }: Props) => {
           <HeaderCell>Nome</HeaderCell>
           <Cell dataKey="name" />
         </Column>
-
         <Column width={150}>
           <HeaderCell>CPF</HeaderCell>
           <Cell>
             {(rowData: IUser | any) => <span>{MaskCPF(rowData.cpf)}</span>}
           </Cell>
         </Column>
-
         <Column width={100} flexGrow={1}>
           <HeaderCell>Telefone</HeaderCell>
           <Cell>
@@ -102,7 +105,6 @@ const Table = ({ data }: Props) => {
             )}
           </Cell>
         </Column>
-
         <Column width={100} flexGrow={1}>
           <HeaderCell>Email</HeaderCell>
           <Cell dataKey="email" />
@@ -139,26 +141,14 @@ const Table = ({ data }: Props) => {
           </Cell>
         </Column>
       </TableRSuite>
-      <div style={{ padding: 20 }}>
-        <Pagination
-          prev
-          next
-          first
-          last
-          ellipsis
-          boundaryLinks
-          maxButtons={5}
-          size="xs"
-          layout={["total", "-", "limit", "|", "pager", "skip"]}
-          total={data.length}
-          limitOptions={[10, 30, 50]}
-          limit={limit}
-          activePage={page}
-          onChangePage={setPage}
-          onChangeLimit={handleChangeLimit}
+      <div>
+        <CustomPagination
+          totalPages={total}
+          activePage={activePage}
+          onSelectPage={handlePageChange}
+          totalCount={countLimit}
         />
       </div>
-
       {openDeleteModal && (
         <DeleteModal
           id={user.id}

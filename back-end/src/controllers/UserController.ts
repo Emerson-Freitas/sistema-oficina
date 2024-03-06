@@ -33,8 +33,9 @@ class UserController {
 
     static async findUsers(req: Request, res: Response) {
         try {
+            const { skip, take } = req.query
             const userService = new UserService();
-            const users = await userService.findUsers();
+            const users = await userService.findUsers({skip, take});
             return res.status(200).json(users);
         } catch (error: any) {
             return res.status(400).json({ message: error.message})

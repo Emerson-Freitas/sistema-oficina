@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../contexts/AuthContext'
 import { Outlet, useNavigate } from 'react-router-dom'
 
@@ -7,20 +7,26 @@ interface Props {
 }
 
 const PrivateRoutes = ({ roles }: Props) => {
-    const { authenticated, user } = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
+    const [userHasRequiredRole, setUserHasRequiredRole] = useState<boolean>(false)
+
     const navigate = useNavigate();
 
-    if (!user) {
-        navigate("/login")
-    }
+    useEffect(() => {
+        if (!user?.role.name) {
+            navigate("/login")
+        }
+        if (user && roles.includes(user.role.name)) {
+            setUserHasRequiredRole(true)
+        }
+    }, [user])
 
-    const userHasRequiredRole = user && roles.includes(user.role.name) ? true : false
-
-    if(authenticated && !userHasRequiredRole) {
+    if(user && !userHasRequiredRole) {
         navigate("/access-denied")
+    } else {
+        return <Outlet/>
     }
-
-    return <Outlet/>
+    
 }
 
 export default PrivateRoutes
