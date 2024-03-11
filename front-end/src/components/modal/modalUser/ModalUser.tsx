@@ -4,13 +4,14 @@ import { SelectPicker } from 'rsuite';
 import SpinnerIcon from '@rsuite/icons/legacy/Spinner';
 import "rsuite/dist/rsuite.min.css";
 import styles from "../Modal.module.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { MaskCPF } from "../../../utils/MaskCPF";
 import { MaskTelephone } from "../../../utils/MaskTelephone";
 import EyeIcon from '@rsuite/icons/legacy/Eye';
 import EyeSlashIcon from '@rsuite/icons/legacy/EyeSlash';
+import { AuthContext } from "../../../contexts/AuthContext";
 
 interface Props {
   handleClose: () => void;
@@ -41,12 +42,11 @@ const ModalUser = ({ handleOpen, handleClose, open }: Props) => {
     telephone: "",
     role_id: ""
   });
-
   const [loading, setLoading] = useState<boolean>(false)
   const [items, setItems] = useState<Role[]>([])
   const [roles, setRoles] = useState<Role[]>([])
-
   const [visible, setVisible] = useState(false)
+  const { token } = useContext(AuthContext)
 
   const handleVisible = () => {
     setVisible(!visible)
@@ -90,7 +90,14 @@ const ModalUser = ({ handleOpen, handleClose, open }: Props) => {
     }
 
     await axios
-      .post(`${import.meta.env.VITE_BASE_URL}/users`, data)
+      .post(`${import.meta.env.VITE_BASE_URL}/users`, 
+      data,
+      { 
+        headers: {
+          'Authorization': token 
+        }
+      }
+      )
       .then((res: AxiosResponse) => {
         toast.success(`${res.data.message}`);
         handleClose()

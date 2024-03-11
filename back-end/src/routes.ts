@@ -15,7 +15,7 @@ import DashboardController from "./controllers/DashboardController";
 const router = Router();
 const upload = multer(uploadConfig.upload("./tmp"))
 
-router.post("/users", UserController.createUser)
+router.post("/users", isAdminMiddleware, UserController.createUser)
 router.get("/users", UserController.findUsers)
 router.post('/budgets', BudgetController.createBudget)
 router.get('/budgets', BudgetController.findBudgets)
@@ -28,7 +28,7 @@ router.delete("/:table/:id", authMiddleware, GenericController.genericDelete)
 router.get('/roles', RoleController.findRoles)
 router.post('/login', AuthController.login)
 router.get("/profile", authMiddleware, AuthController.getProfile)
-router.get("/admin/dashboard", isAdminMiddleware, BudgetController.findBudgets)
+router.get("/admin/dashboard", BudgetController.findBudgets)
 router.post("/users/picture", authMiddleware, upload.single('file'), UserController.uploadPicture)
 router.post("/report/excel", ReportController.reportExcel)
 router.get("/dashboard", DashboardController.budgetsStatus)

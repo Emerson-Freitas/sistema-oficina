@@ -4,7 +4,6 @@ import UserService from "../services/UserService"
 class UserController {
     
     static async createUser(req: Request, res: Response) {
-
         try {
             const { name, cpf, telephone, email, password, role_id } = req.body
             const userService = new UserService();

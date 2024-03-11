@@ -38,7 +38,7 @@ export const authMiddleware = async (
     req.user = user;
 
     next();
-  } catch (error) {
-    console.log("middleware error", error);
+  } catch (error: any) {
+    return res.status(403).json({ message: error.message }); 
   }
 };
