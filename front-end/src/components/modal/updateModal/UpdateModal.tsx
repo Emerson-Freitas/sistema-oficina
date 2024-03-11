@@ -3,17 +3,18 @@ import { Button, Modal } from "rsuite";
 import IUser from "../../../interfaces/IUser";
 import { toast } from "react-toastify";
 import axios, { AxiosResponse } from "axios";
+import IUpdateBudget from "../../../interfaces/IUpdateBudget";
 
 interface Props {
-  data: IUser;
+  data: IUser | IUpdateBudget;
   table: string;
   open: boolean;
   handleClose: () => void;
   children: ReactNode;
+  title: string
 }
 
-const UpdateModal = ({ data, table, handleClose, open, children }: Props) => {
-  const [userName] = useState<string>(data.name);
+const UpdateModal = ({ data, table, handleClose, open, children, title}: Props) => {
   const [loading, setLoading] = useState<boolean>(false)
 
   const handleSubmit = async () => {
@@ -45,8 +46,7 @@ const UpdateModal = ({ data, table, handleClose, open, children }: Props) => {
     >
       <Modal.Header>
         <Modal.Title style={{ marginLeft: "1%", marginTop: "2%" }}>
-          Editando o Usuário: 
-          <span style={{ fontWeight: "bold" }}> {userName}</span>
+          <span style={{ fontWeight: "bold" }}>{title}</span>
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>{children}</Modal.Body>

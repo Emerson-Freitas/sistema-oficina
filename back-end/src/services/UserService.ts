@@ -1,7 +1,6 @@
 import { Request, Response } from "express"
 import prismaClient from "../prisma"
 import bcrypt from 'bcrypt'
-import { pagination } from "../utils/Pagination"
 
 interface UserRequest {
     name: string

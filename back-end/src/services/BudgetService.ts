@@ -18,7 +18,7 @@ class BudgetService {
         return budget 
     }
 
-    async findBudgets() {
+    async findBudgets({skip, take}: any) {
         const budgets = await prismaClient.budget.findMany({
             select: {
                 id: true,
@@ -34,9 +34,19 @@ class BudgetService {
             },
             orderBy: {
                 created_at: "asc"
-            }
+            },
+            skip: Number(skip),
+            take: Number(take)
         })
-        return budgets
+
+        const totalCount = await prismaClient.budget.count();
+        const totalPages = Math.ceil(totalCount / take)
+
+        return {
+            budgets,
+            count: totalCount,
+            totalPages
+        }
     }
 
     async findBudgetsByUser({ id, take = 5, skip = 0 }: any) {

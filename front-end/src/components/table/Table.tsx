@@ -33,7 +33,6 @@ const Table = ({ data, countLimit, find, total }: Props) => {
   const handleCloseUpdate = () => setOpenUpdateModal(false);
   const handleOpenUpdate = () => setOpenUpdateModal(true);
 
-
   const handlePageChange = (page: number) => {
     setActivePage(page);
     find(page, limit)
@@ -166,6 +165,7 @@ const Table = ({ data, countLimit, find, total }: Props) => {
           table="users"
           handleClose={handleCloseUpdate}
           open={openUpdateModal}
+          title={`Editando o Usuário: ${updateUser.name}`}
         >
           <div>
             <Input

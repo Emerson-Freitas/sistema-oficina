@@ -1,0 +1,15 @@
+.section {
+  display: "flex";
+  flex-direction: "row";
+  flex-wrap: "wrap";
+  height: 56vh;
+  margin-top: 2.5%;
+  gap: 2.5%;
+}
+
+.loader {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -10,6 +10,11 @@
     justify-content: center;
 }
 
+.text {
+    text-decoration: none;
+    color: #02028d;
+}
+
 .container {
     display: flex;
     flex-direction: column;

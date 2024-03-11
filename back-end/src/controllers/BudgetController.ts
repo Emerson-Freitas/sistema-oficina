@@ -16,8 +16,9 @@ class BudgetController {
 
     static async findBudgets(req: Request, res: Response) {
         try {
+            const { skip, take } = req.query
             const budgetService = new BudgetService();
-            const data = await budgetService.findBudgets()
+            const data = await budgetService.findBudgets({skip, take})
 
             return res.status(200).json(data)
         } catch (error: any) {
@@ -32,12 +33,16 @@ class BudgetController {
             const budgetService = new BudgetService();
             const data = await budgetService.findBudgetsByUser({ id, take, skip })
 
-            console.log('data>>>', data)
-
             return res.status(200).json(data)
         } catch (error) {
             return res.status(400).json({ message: "Erro ao consultar os orçamentos do usuário"})
         }
+    }
+
+    static async editBudget(req: Request, res: Response) {
+        const { id, value, description, vehicle } = req.body
+        // console.log("data>>>>", req.body)
+        return true
     }
 }
 

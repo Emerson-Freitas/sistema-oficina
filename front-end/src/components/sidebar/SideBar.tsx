@@ -1,14 +1,15 @@
 import { useContext, useState } from 'react';
 import { Sidebar as RSuiteSideBar, Sidenav, Nav } from 'rsuite';
 import DashboardIcon from '@rsuite/icons/Dashboard';
+import PeoplesIcon from '@rsuite/icons/Peoples';
+import CreditCardPlusIcon from '@rsuite/icons/CreditCardPlus';
+import ToolsIcon from '@rsuite/icons/Tools';
+import DocPassIcon from '@rsuite/icons/DocPass';
 import styles from './SideBar.module.css';
 import { Link } from 'react-router-dom'
 import NavToggle from './NavToggle';
 import { AuthContext } from '../../contexts/AuthContext';
 
-const textStyles = {
-  textDecoration: "none"
-}
 const SideBar = () => {
     const [expand, setExpand] = useState(true);
     const { user } = useContext(AuthContext)
@@ -33,74 +34,26 @@ const SideBar = () => {
             <Sidenav.Body >
               {user?.role.name === "ADMIN" && (
                 <Nav activeKey="1">
-                  <Nav.Item icon={<DashboardIcon />}>
-                    <Link to={"/dashboard"} style={textStyles}>Dashboard</Link>
-                  </Nav.Item>
-                  <Nav.Item icon={<DashboardIcon />}>
-                    <Link to={"/users"} style={textStyles}>
-                      <div>Usuários</div>
-                    </Link>
-                  </Nav.Item>
-                  <Nav.Item icon={<DashboardIcon />}>
-                    <Link to={"/budgets"} style={textStyles}>
-                      <div>Orçamentos</div>
-                    </Link>
-                  </Nav.Item>
-                  <Nav.Item icon={<DashboardIcon />}>
-                    <Link to={"/vehicles"} style={textStyles}>
-                      <div>Veículos</div>
-                    </Link>
-                  </Nav.Item>
-                  <Nav.Item icon={<DashboardIcon />}>
-                    <Link to={"/reports"} style={textStyles}>
-                      <div>Relatórios</div>
-                    </Link>
-                  </Nav.Item>
+                  <Nav.Item  icon={<DashboardIcon/>} as={Link} to="/dashboard"><p className={styles.text}>Dashboard</p></Nav.Item>
+                  <Nav.Item icon={<PeoplesIcon />} as={Link} to="/users"><p className={styles.text}>Usuários</p></Nav.Item>
+                  <Nav.Item icon={<CreditCardPlusIcon />} as={Link} to="/budgets"><p className={styles.text}>Orçamentos</p></Nav.Item>
+                  <Nav.Item icon={<ToolsIcon />} as={Link} to="/vehicles"><p className={styles.text}>Veículos</p></Nav.Item>
+                  <Nav.Item icon={<DocPassIcon />} as={Link} to="/reports"><p className={styles.text}>Relatórios</p></Nav.Item>
                 </Nav>
               )}
-
               {user?.role.name === "CLIENTE" && (
                 <Nav activeKey="1">
-                  <Nav.Item icon={<DashboardIcon />}>
-                    <Link to={"/dashboard"} style={textStyles}>
-                      <div>Dashboard</div>
-                    </Link>
-                  </Nav.Item>
-                  <Nav.Item icon={<DashboardIcon />}>
-                    <Link to={"/budgets"} style={textStyles}>
-                      <div>Orçamentos</div>
-                    </Link>
-                  </Nav.Item>
-                  <Nav.Item icon={<DashboardIcon />}>
-                    <Link to={"/vehicles"} style={textStyles}>
-                      <div>Veículos</div>
-                    </Link>
-                  </Nav.Item>
+                  <Nav.Item  icon={<DashboardIcon/>} as={Link} to="/dashboard"><p className={styles.text}>Dashboard</p></Nav.Item>
+                  <Nav.Item icon={<CreditCardPlusIcon />} as={Link} to="/budgets"><p className={styles.text}>Orçamentos</p></Nav.Item>
+                  <Nav.Item icon={<ToolsIcon />} as={Link} to="/vehicles"><p className={styles.text}>Veículos</p></Nav.Item>
                 </Nav>
               )}
-
               {user?.role.name === "FUNCIONARIO" && (
                 <Nav activeKey="1">
-                  <Nav.Item icon={<DashboardIcon />}>
-                    <Link to={"/dashboard"} style={textStyles}>
-                      <div>Dashboard</div>
-                    </Link>
-                  </Nav.Item>
-                  <Nav.Item icon={<DashboardIcon />}>
-                    <Link to={"/budgets"} style={textStyles}>
-                      <div>Orçamentos</div>
-                    </Link>
-                  </Nav.Item>
-                  <Nav.Item icon={<DashboardIcon />}>
-                    <Link to={"/vehicles"} style={textStyles}>
-                      <div>Veículos</div>
-                    </Link>
-                  </Nav.Item>
-                  <Nav.Item icon={<DashboardIcon />}>
-                    <Link to={"/reports"} style={textStyles}>
-                      <div>Relatórios</div>
-                    </Link>
-                  </Nav.Item>
+                 <Nav.Item  icon={<DashboardIcon/>} as={Link} to="/dashboard"><p className={styles.text}>Dashboard</p></Nav.Item>
+                 <Nav.Item icon={<CreditCardPlusIcon />} as={Link} to="/budgets"><p className={styles.text}>Orçamentos</p></Nav.Item>
+                 <Nav.Item icon={<ToolsIcon />} as={Link} to="/vehicles"><p className={styles.text}>Veículos</p></Nav.Item>
+                 <Nav.Item icon={<DocPassIcon />} as={Link} to="/reports"><p className={styles.text}>Relatórios</p></Nav.Item>
                 </Nav>
               )}
             </Sidenav.Body>

@@ -1,0 +1,38 @@
+.contentPicture {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.panel {
+    height: auto;
+    margin: 3% 3% 3% 0;
+    display: flex;
+    align-items: start;
+    background-color: whitesmoke;
+    border-top-right-radius: 0px;
+    border-top-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+}
+
+.faCalculator {
+    width: 120px;
+    height: 120px;
+    margin-right: 10px;
+}
+
+.content {
+    margin-left: 2%;
+}
+
+.value {
+    font-weight: bold;
+    padding: 2.5px 0;
+    width: 100%;
+    display: inline-block;
+}
+
+.actions:hover {
+    cursor: pointer;
+}

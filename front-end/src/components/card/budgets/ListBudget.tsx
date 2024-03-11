@@ -28,7 +28,6 @@ interface Props {
 }
 
 const ListBudget = ({ budgets, totalPages, totalCount }: Props) => {
-
   const [activeKey, setActiveKey] = useState<any>(null);
 
   const handlePanelToggle = (key: any) => {
