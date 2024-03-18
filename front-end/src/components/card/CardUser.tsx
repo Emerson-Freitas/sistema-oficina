@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Button, Tooltip, Whisper } from "rsuite";
-import { AuthContext } from "../../contexts/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { Uploader, Message, Loader, useToaster } from 'rsuite';
 import AvatarIcon from '@rsuite/icons/legacy/Avatar';
 
@@ -13,7 +13,7 @@ interface Props {
 
 const CardUser = ({ url_image, name, email, role }: Props) => {
   const [loading, setLoading] = useState(false)
-  const { signOut, token } = useContext(AuthContext)
+  const { signOut, token } = useAuth();
   const toaster = useToaster();
   const [uploading, setUploading] = useState(false);
   const [fileInfo, setFileInfo] = useState(null);

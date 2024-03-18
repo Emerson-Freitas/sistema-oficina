@@ -2,10 +2,10 @@ import { Button, ButtonToolbar, Input, SelectPicker } from 'rsuite';
 import { Modal as ModalRSuite } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import styles from '../Modal.module.css'
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
-import { AuthContext } from '../../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 
 interface Props {
     handleClose: () => void
@@ -31,7 +31,7 @@ const ModalService = ({ handleOpen, handleClose, open }: Props) => {
   const [color, setColor] = useState<string>("")
   const [userId, setUserId] = useState<string | null>(null)
   const [vehicleType, setVehicleType] = useState<string>('')
-  const { user } = useContext(AuthContext)
+  const { user, token  } = useAuth();
 
   useEffect(() => {
     if (user?.role.name === 'CLIENTE') {
@@ -42,7 +42,7 @@ const ModalService = ({ handleOpen, handleClose, open }: Props) => {
   const handleSubmit = async () => {
     setLoading(true)
     if (name && plate && color && userId) {
-      await axios.post(`${import.meta.env.VITE_BASE_URL}/vehicles`, { name, color, plate, userId })
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/vehicles`, { name, color, plate, userId }, { headers: { Authorization: token }})
         .then((res: AxiosResponse) => {
           setName("")
           setColor("")
@@ -65,7 +65,7 @@ const ModalService = ({ handleOpen, handleClose, open }: Props) => {
 
   useEffect(() => {
     const findClients = async () => {
-      await axios.get(`${import.meta.env.VITE_BASE_URL}/clients`)
+      await axios.get(`${import.meta.env.VITE_BASE_URL}/clients`, { headers: { Authorization: token }})
         .then((res: AxiosResponse) => {
           setClients(res.data)
         })

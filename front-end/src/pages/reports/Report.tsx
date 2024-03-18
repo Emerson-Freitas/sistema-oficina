@@ -11,7 +11,7 @@ const Report = () => {
 
   const handleClick = async () => {
     setLoading(true)
-    await axios.post(`${import.meta.env.VITE_BASE_URL}/report/excel`, { dateInit, dateEnd })
+    await axios.post(`${import.meta.env.VITE_BASE_URL}/report/excel`, { dateInit, dateEnd }, { headers: { Authorization: token }})
       .then((res: AxiosResponse) => {
         console.log("res.data::::", res.data)
       })

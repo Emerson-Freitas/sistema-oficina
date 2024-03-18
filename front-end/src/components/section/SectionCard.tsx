@@ -27,7 +27,7 @@ const SectionCard = ({ data, loading, find, countLimit, total }: Props) => {
     <>
       <Row>
         {data?.map((item: IBudget) => (
-          <Col md={8} sm={24} xs={24}>
+          <Col md={8} sm={24} xs={24} key={item.id}>
             <CardBudget
               key={item.id}
               value={item.value}

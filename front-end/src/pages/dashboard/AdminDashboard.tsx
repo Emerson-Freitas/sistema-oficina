@@ -2,25 +2,26 @@ import { Row } from 'rsuite';
 import CardDashboard from '../../components/card/dashboard/CardDashboard';
 import { useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
+import { useAuth } from '../../components/hooks/useAuth';
 
 const AdminDashboard = () => {
-
+  const { token } = useAuth()
   const [data, setData] = useState<any>([])
 
-  const findBudgets = async () => {
-    await axios
-      .get(`${import.meta.env.VITE_BASE_URL}/admin/dashboard`)
-      .then((res: AxiosResponse) => {
-        setData(res.data.budgets);
-      })
-      .catch((error: Error) => {
-        console.log(`${error.response.data.message}`);
-      })
-  }
+  // const findBudgets = async () => {
+  //   await axios
+  //     .get(`${import.meta.env.VITE_BASE_URL}/admin/dashboard`, { headers: { Authorization: token }})
+  //     .then((res: AxiosResponse) => {
+  //       setData(res.data.budgets);
+  //     })
+  //     .catch((error: Error) => {
+  //       console.log(`${error.response.data.message}`);
+  //     })
+  // }
 
-  useEffect(() => {
-    findBudgets()
-  }, [])
+  // useEffect(() => {
+  //   findBudgets()
+  // }, [])
 
   return (
     <Row style={{ width: "100%", display: 'flex', justifyContent:"center", gap: "1.2%", marginTop: "1%"}}>

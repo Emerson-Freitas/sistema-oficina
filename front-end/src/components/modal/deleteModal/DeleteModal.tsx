@@ -2,6 +2,7 @@ import { Button, Modal } from "rsuite";
 import { useState } from 'react'
 import axios, { AxiosResponse } from 'axios'
 import { toast } from "react-toastify";
+import { useAuth } from "../../hooks/useAuth";
 
 interface Props {
   name: string;
@@ -13,13 +14,13 @@ interface Props {
 }
 
 const DeleteModal = ({ name, id, open, table, handleClose }: Props) => {
-
+  const { token } = useAuth()
   const [loading, setLoading] = useState<boolean>(false)
 
   const handleSubmit = async () => {
     setLoading(true)
 
-    await axios.delete(`${import.meta.env.VITE_BASE_URL}/${table}/${id}`)
+    await axios.delete(`${import.meta.env.VITE_BASE_URL}/${table}/${id}`, { headers: { Authorization: token }})
         .then((res: AxiosResponse) => {
             toast.success(`${res.data.message}`)
         })

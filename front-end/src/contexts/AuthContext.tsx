@@ -1,16 +1,11 @@
 import axios, { AxiosResponse } from "axios";
-import { useEffect } from "react";
-import { createContext, ReactNode, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { PropsWithChildren, createContext, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-type Props = {
-  children?: ReactNode;
-};
-
 interface ILogin {
-    email: string
-    password: string
+  email: string;
+  password: string;
 }
 
 interface IUser {
@@ -20,40 +15,35 @@ interface IUser {
   role: {
     name: string;
   };
-  picture: string;
 }
 
-type IAuthContext = {
+interface AuthContextProps {
   authenticated: boolean;
-  setAuthenticated: (newState: boolean) => void;
-  user: IUser | null;
-  signIn: (credentials: ILogin) => void;
-  signOut: () => void;
   token: string;
+  user: IUser | undefined;
+  signOut: () => void;
+  signIn: (credentials: ILogin) => Promise<boolean>;
+}
+
+type AuthProviderProps = PropsWithChildren & {
+  isSignedIn?: boolean;
 };
 
-const initialValue = {
-  authenticated: false,
-  setAuthenticated: () => {},
-  user: null,
-  signIn: () => {},
-  signOut: () => {},
-  token: ""
-};
+export const AuthContext = createContext<AuthContextProps | undefined>(
+  undefined
+);
 
-const AuthContext = createContext<IAuthContext>(initialValue);
-
-const AuthProvider = ({ children }: Props) => {
-  const [authenticated, setAuthenticated] = useState<boolean>(false)
-  const [user, setUser] = useState<IUser | null>(null);
-  const [token, setToken] = useState<string>("")
-  const navigate = useNavigate();
+export default function AuthProvider({ children }: AuthProviderProps) {
+  const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const [user, setUser] = useState<IUser | undefined>(undefined);
+  const [token, setToken] = useState<string>("");
 
   const signOut = () => {
+    setAuthenticated(false);
+    setUser(undefined);
+    setToken("");
     localStorage.removeItem("ACCESS_TOKEN");
     localStorage.removeItem("USER");
-    setAuthenticated(false);
-    navigate("/login");
   };
 
   const signIn = async (credentials: ILogin) => {
@@ -63,35 +53,35 @@ const AuthProvider = ({ children }: Props) => {
         toast.success(`${res.data.message}`, {
           autoClose: 1000,
         });
-        localStorage.setItem('ACCESS_TOKEN', res.data.token)
-        localStorage.setItem('USER', JSON.stringify(res.data.user))
-        setAuthenticated(true)
-        setUser(res.data.user)
-        navigate('/dashboard');
+        localStorage.setItem("ACCESS_TOKEN", res.data.token);
+        localStorage.setItem("USER", JSON.stringify(res.data.user));
+        setAuthenticated(true);
+        setUser(res.data.user);
+        setToken(`Bearer ${res.data.token}`);
+
+        return true
       })
       .catch((error: Error) => {
         toast.error(`${error.response.data.message}`);
-      })
-  }
+      });
+  };
 
   useEffect(() => {
     const user = localStorage.getItem("USER");
     const token = localStorage.getItem("ACCESS_TOKEN");
-    if(token) {
-      setToken(`Bearer ${token}`)
-    }
+
     if (user && token) {
-      const loggedUser = JSON.parse(user);
+      setUser(JSON.parse(user));
+      setToken(token);
       setAuthenticated(true);
-      setUser(loggedUser);
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ authenticated, setAuthenticated, user, signOut, signIn, token }}>
+    <AuthContext.Provider
+      value={{ authenticated, signIn, signOut, user, token }}
+    >
       {children}
     </AuthContext.Provider>
   );
-};
-
-export { AuthContext, AuthProvider };
+}

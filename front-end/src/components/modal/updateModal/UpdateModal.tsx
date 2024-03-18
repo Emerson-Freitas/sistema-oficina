@@ -27,7 +27,7 @@ const UpdateModal = ({ data, table, handleClose, open, children, title}: Props) 
       }
     }
 
-    await axios.put(`${import.meta.env.VITE_BASE_URL}/${table}/${data.id}`, data)
+    await axios.put(`${import.meta.env.VITE_BASE_URL}/${table}/${data.id}`, data, { headers: { Authorization: token }})
       .then((res: AxiosResponse) => {
         toast.success(`${res.data.message}`)
         handleClose()

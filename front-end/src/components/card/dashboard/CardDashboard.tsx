@@ -17,17 +17,17 @@ const CardDashboard = ({ title, color }: Props) => {
     setVisible(!visible)
   }
 
-  const findDashboardData = async () => {
-    await axios.get(`${import.meta.env.VITE_BASE_URL}/dashboard`)
-      .then((res: AxiosResponse) => {
-      })
-      .catch((error: Error) => {
-      })
-  }
+  // const findDashboardData = async () => {
+  //   await axios.get(`${import.meta.env.VITE_BASE_URL}/dashboard`)
+  //     .then((res: AxiosResponse) => {
+  //     })
+  //     .catch((error: Error) => {
+  //     })
+  // }
 
-  useEffect(() => {
-    findDashboardData();
-  }, [])
+  // useEffect(() => {
+  //   findDashboardData();
+  // }, [])
 
   return (
     <Panel bordered style={{

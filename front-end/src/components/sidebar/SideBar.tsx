@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Sidebar as RSuiteSideBar, Sidenav, Nav } from 'rsuite';
 import DashboardIcon from '@rsuite/icons/Dashboard';
 import PeoplesIcon from '@rsuite/icons/Peoples';
@@ -8,11 +8,11 @@ import DocPassIcon from '@rsuite/icons/DocPass';
 import styles from './SideBar.module.css';
 import { Link } from 'react-router-dom'
 import NavToggle from './NavToggle';
-import { AuthContext } from '../../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 const SideBar = () => {
     const [expand, setExpand] = useState(true);
-    const { user } = useContext(AuthContext)
+    const { user } = useAuth();
 
     return (
       <RSuiteSideBar

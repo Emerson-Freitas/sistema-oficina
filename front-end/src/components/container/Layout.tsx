@@ -1,13 +1,9 @@
-import { Sidenav, Nav, Container, Content } from "rsuite";
-import DashboardIcon from "@rsuite/icons/legacy/Dashboard";
-import GroupIcon from "@rsuite/icons/legacy/Group";
-import { Link } from "react-router-dom";
-import styles from './Layout.module.css';
-import React from "react";
-import SideBar from "../sidebar/SideBar";
+import { Outlet } from "react-router-dom";
+import { Container, Content } from "rsuite";
 import Header from "../header/Header";
+import SideBar from "../sidebar/SideBar";
 
-const Layout = ({ children }: {children: React.ReactElement}) => {
+const Layout = ({ children }: { children: React.ReactNode}) => {
   return (
     <div className="show-fake-browser sidebar-page">
       <Container>

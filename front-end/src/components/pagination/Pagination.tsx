@@ -9,7 +9,6 @@ interface Props {
 const Pagination = ({ totalPages, totalCount }: Props) => {
     const [activePage, setActivePage] = useState(1);
 
-    console.log(totalPages)
     return (
         <RSuitePagination
             prev

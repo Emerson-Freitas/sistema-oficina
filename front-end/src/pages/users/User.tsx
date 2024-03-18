@@ -5,6 +5,7 @@ import ModalUser from "../../components/modal/modalUser/ModalUser";
 import Table from "../../components/table/Table";
 import axios, { AxiosResponse } from "axios";
 import IUser from "../../interfaces/IUser";
+import { useAuth } from "../../components/hooks/useAuth";
 
 const User = () => {
   const [open, setOpen] = useState(false);
@@ -15,6 +16,7 @@ const User = () => {
   const [limit, setLimit] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [initialTake, setInitalTake] = useState<number>(6);
+  const { token } = useAuth();
 
   const handleChangePage = (page: number) => {
     setPage(page);
@@ -24,7 +26,7 @@ const User = () => {
   const findUsers = async (page: number, take: number = 6) => {
     const skip = (page - 1) * take
     await axios
-      .get(`${import.meta.env.VITE_BASE_URL}/users?skip=${skip}&take=${take}`)
+      .get(`${import.meta.env.VITE_BASE_URL}/users?skip=${skip}&take=${take}`, { headers: { Authorization: token }})
       .then((res: AxiosResponse) => {
         setData(res.data.results);
         setTotal(res.data.totalPages);
@@ -38,7 +40,6 @@ const User = () => {
   useEffect(() => {
     findUsers(page, initialTake)
   }, []);
-
 
   return (
     <CustomContent title="Usuários">

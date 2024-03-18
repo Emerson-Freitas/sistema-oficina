@@ -1,32 +1,32 @@
-import { useContext, useEffect, useState } from 'react'
-import { AuthContext } from '../contexts/AuthContext'
-import { Outlet, useNavigate } from 'react-router-dom'
+import { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useAuth } from '../components/hooks/useAuth';
 
 interface Props {
-    roles: string[]
+    roles: string[],
+    children: React.ReactNode
 }
 
-const PrivateRoutes = ({ roles }: Props) => {
-    const { user } = useContext(AuthContext)
-    const [userHasRequiredRole, setUserHasRequiredRole] = useState<boolean>(false)
+const PrivateRoutes = ({ roles, children }: Props) => {
+    const { user } = useAuth();
+    const navigate = useNavigate()
 
-    const navigate = useNavigate();
+    console.log(user)
 
     useEffect(() => {
-        if (!user?.role.name) {
-            navigate("/login")
+        if (user === undefined) {
+            navigate('/login', { replace: true })
         }
-        if (user && roles.includes(user.role.name)) {
-            setUserHasRequiredRole(true)
+        if (user !== undefined) {
+            const acceptedRole = roles.includes(user.role.name)
+            if (acceptedRole === false ) {
+                navigate("/access-denied", { replace: true })
+            }
         }
-    }, [user])
+    }, [navigate, user])
 
-    if(user && !userHasRequiredRole) {
-        navigate("/access-denied")
-    } else {
-        return <Outlet/>
-    }
+    return children
     
-}
+};
 
 export default PrivateRoutes

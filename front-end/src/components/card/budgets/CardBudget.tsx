@@ -8,8 +8,8 @@ import {
   faCheck,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AuthContext } from "../../../contexts/AuthContext";
-import React, { useContext, useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
+import React, { useState } from "react";
 import CustomWhisper from "../../whisper/CustomWhisper";
 import UpdateModal from "../../modal/updateModal/UpdateModal";
 import IUpdateBudget from "../../../interfaces/IUpdateBudget";
@@ -24,7 +24,7 @@ interface Props {
 }
 
 const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const handleClose = () => setOpenModal(false);
   const [data, setData] = useState<IUpdateBudget>({

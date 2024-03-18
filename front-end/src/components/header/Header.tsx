@@ -1,12 +1,12 @@
 import { Navbar, Nav, Drawer, Button, Placeholder } from "rsuite";
 import CogIcon from "@rsuite/icons/legacy/Cog";
-import { AuthContext } from "../../contexts/AuthContext";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import CardUser from "../card/CardUser";
+import { useAuth } from "../hooks/useAuth";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
 
   const userName = (userName: string) => {
     return userName.split(' ')[0]

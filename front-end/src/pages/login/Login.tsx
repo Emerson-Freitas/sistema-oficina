@@ -6,6 +6,7 @@ import EyeSlashIcon from "@rsuite/icons/legacy/EyeSlash";
 import axios, { AxiosResponse } from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../components/hooks/useAuth";
 
 interface Auth {
   email: string;
@@ -19,7 +20,8 @@ const Login = () => {
   });
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState<boolean>(false);
-  const { signIn } = useContext(AuthContext);
+  const { signIn, authenticated, user, token } = useAuth();
+  const navigate = useNavigate();
 
   const handleVisible = () => {
     setVisible(!visible);
@@ -33,9 +35,17 @@ const Login = () => {
   };
 
   const handleSubmit = async () => {
-    setLoading(true);
-    signIn(credentials)
-    setLoading(false)
+    if (!credentials.email || !credentials.password) {
+      toast.warning("Por favor preencha todos os campos!")
+    }
+    if (credentials.email && credentials.password) {
+      setLoading(true);
+      const isLogged = signIn(credentials)
+      isLogged
+        .then(() => navigate("/dashboard"))
+        .catch(() => navigate("/login"))
+        .finally(() => setLoading(false))
+    }
   };
 
   return (

@@ -1,30 +1,27 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CustomContent from "../../components/content/CustomContent";
 import ModalBudget from "../../components/modal/modalBudget/ModalBudget";
 import axios, { AxiosResponse } from "axios";
-import CardBudget from "../../components/card/budgets/CardBudget";
-import { Loader } from "rsuite";
-import { AuthContext } from "../../contexts/AuthContext";
-import ListBudget from "../../components/card/budgets/ListBudget";
-import CustomPagination from "../../components/pagination/CustomPagination";
 import SectionCard from "../../components/section/SectionCard";
 import IBudget from "../../interfaces/IBudget";
+import { useAuth } from "../../components/hooks/useAuth";
 
 const Budget = () => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
   const [data, setData] = useState<IBudget[]>([])
-  const { user } = useContext(AuthContext)
+  const { user } = useAuth();
   const [total, setTotal] = useState<number>(0)
   const [limit, setLimit] = useState<number>(0)
   const [page, setPage] = useState<number>(1)
   const [initialTake, setInitialTake] = useState<number>(6)
   const [loading, setLoading] = useState<boolean>(false)
+  const { token } = useAuth()
 
   const findBudgets = async (page: number, take: number = 6) => {
     const skip = (page - 1) * take
-    await axios.get(`${import.meta.env.VITE_BASE_URL}/budgets?skip=${skip}&take=${take}`)
+    await axios.get(`${import.meta.env.VITE_BASE_URL}/budgets?skip=${skip}&take=${take}`, { headers: { Authorization: token }})
       .then((res: AxiosResponse) => {
         setLoading(true)
         setData(res.data.budgets)

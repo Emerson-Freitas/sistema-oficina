@@ -5,7 +5,7 @@ import styles from '../Modal.module.css'
 import { useContext, useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
-import { AuthContext } from '../../../contexts/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 
 interface Props {
     handleClose: () => void
@@ -25,12 +25,12 @@ const ModalBudget = ({ handleOpen, handleClose, open }: Props) => {
   const [value, setValue] = useState<number>(0)
   const [description, setDescription] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
-  const { user } = useContext(AuthContext)
+  const { user, token } = useAuth();
 
   const handleSubmit = async () => {
     setLoading(true)
     if (description && selectedClient) {
-      await axios.post(`${import.meta.env.VITE_BASE_URL}/budgets`, { value, description, selectedClient })
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/budgets`, { value, description, selectedClient }, { headers: { Authorization: token }})
         .then((res: AxiosResponse) => {
           setValue(0)
           setDescription("")
@@ -52,7 +52,7 @@ const ModalBudget = ({ handleOpen, handleClose, open }: Props) => {
   useEffect(() => {
     if (user?.role.name === 'ADMIN') {
       const findClients = async () => {
-        await axios.get(`${import.meta.env.VITE_BASE_URL}/clients`)
+        await axios.get(`${import.meta.env.VITE_BASE_URL}/clients`, { headers: { Authorization: token }})
           .then((res: AxiosResponse) => {
             setClients(res.data)
           })
