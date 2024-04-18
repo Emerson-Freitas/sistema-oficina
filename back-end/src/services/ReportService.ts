@@ -1,9 +1,11 @@
 import { Prisma } from "@prisma/client";
 import prismaClient from "../prisma";
-import dayjs from 'dayjs';
 import GenerateExcel from "./GenerateExcel";
 import fs from 'fs';
 import { Response } from "express";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(utc)
 
 interface Request {
     dateInit: Date | string;
@@ -13,10 +15,13 @@ interface Request {
 
 class ReportService {
     async generateExcelReport({ dateInit, dateEnd, res }: Request) {
+        const formatDateInit = dayjs(dateInit).utc().local().format();
+        const formatDateEnd = dayjs(dateEnd).utc().local().format();
+
         const where: Prisma.BudgetWhereInput = {
             created_at: {
-                lte: new Date(dateInit),
-                gte: new Date(dateEnd)
+                lte: formatDateInit,
+                gte: formatDateEnd
             }
         };
 
@@ -37,7 +42,7 @@ class ReportService {
                 },
                 status: true
             },
-            // where: where
+            where: where
         });
 
         const values = data.map((budget) => {

@@ -7,9 +7,9 @@ import { useAuth } from "../../components/hooks/useAuth";
 
 const Report = () => {
   const [dateInit, setDateInit] = useState<string>(
-    dayjs().subtract(30, "day").format()
+    dayjs().subtract(30, "day").format("YYYY-MM-DD 00:00:00:000")
   );
-  const [dateEnd, setDateEnd] = useState<string>(dayjs().format());
+  const [dateEnd, setDateEnd] = useState<string>(dayjs().format("YYYY-MM-DD 23:59:59:999"));
   const [loading, setLoading] = useState<boolean>(false);
   const { token } = useAuth();
   const handleClick = async () => {
@@ -74,7 +74,7 @@ const Report = () => {
             value={new Date(dateInit)}
             locale={locale}
             onChange={(date) => {
-              setDateInit(dayjs(date).format());
+              setDateInit(dayjs(date).format("YYYY-MM-DD 00:00:00:000"));
             }}
             placeholder={"DD/MM/YYYY"}
             style={{ width: 224, cursor: "pointer" }}
@@ -87,7 +87,7 @@ const Report = () => {
             value={new Date(dateEnd)}
             locale={locale}
             onChange={(date) => {
-              setDateEnd(dayjs(date).format());
+              setDateEnd(dayjs(date).format("YYYY-MM-DD 23:59:59:999"));
             }}
             placeholder={"DD/MM/YYYY"}
             style={{ width: 224, cursor: "pointer" }}

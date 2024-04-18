@@ -1,9 +1,5 @@
 import { Request, Response } from "express";
 import ReportService from "../services/ReportService";
-import fs from "fs";
-import dayjs from "dayjs";
-import xl from "excel4node";
-import * as path from "path";
 
 class ReportController {
   static async reportExcel(req: Request, res: Response) {
@@ -27,8 +23,6 @@ class ReportController {
       res.download(filePath, fileName, (err) => {
         if (err) throw new Error("Erro ao consultar o arquivo excel: " + fileName) 
       });
-
-      // res.status(200).send({ fileName: fileName })
 
     } catch (error) {
       console.error(error);
