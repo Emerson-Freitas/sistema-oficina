@@ -53,7 +53,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
         toast.success(`${res.data.message}`, {
           autoClose: 1000,
         });
-        localStorage.setItem("ACCESS_TOKEN", res.data.token);
+        localStorage.setItem("ACCESS_TOKEN", `Bearer ${res.data.token}`);
         localStorage.setItem("USER", JSON.stringify(res.data.user));
         setAuthenticated(true);
         setUser(res.data.user);

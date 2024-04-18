@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { Container, Loader, Sidebar } from "rsuite";
 import CustomContent from "../../components/content/CustomContent";
 import ModalUser from "../../components/modal/modalUser/ModalUser";
@@ -6,6 +6,8 @@ import Table from "../../components/table/Table";
 import axios, { AxiosResponse } from "axios";
 import IUser from "../../interfaces/IUser";
 import { useAuth } from "../../components/hooks/useAuth";
+import { UserService } from "../../services/api/users/UserService";
+import { ApiException } from "../../services/api/ApiException";
 
 const User = () => {
   const [open, setOpen] = useState(false);
@@ -38,7 +40,16 @@ const User = () => {
   };
 
   useEffect(() => {
-    findUsers(page, initialTake)
+    UserService.findUsers({ skip: page, take: initialTake, token: token || localStorage.getItem("ACCESS_TOKEN") as string })
+      .then((res) => {
+        if (res instanceof ApiException) {
+          alert("ERRO: " + res.message)
+        } else {
+          setData(res.results)
+          setTotal(res.totalPages);
+          setLimit(res.count);
+        }
+      })
   }, []);
 
   return (

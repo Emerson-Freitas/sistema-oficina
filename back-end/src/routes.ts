@@ -30,7 +30,7 @@ router.post('/login', AuthController.login)
 router.get("/profile", authMiddleware, AuthController.getProfile)
 // router.get("/admin/dashboard", isAdminMiddleware, BudgetController.findBudgets)
 router.post("/users/picture", authMiddleware, upload.single('file'), UserController.uploadPicture)
-router.post("/report/excel", authMiddleware, ReportController.reportExcel)
+router.get("/report/excel", authMiddleware, ReportController.reportExcel)
 router.get("/dashboard", authMiddleware, DashboardController.budgetsStatus)
 
 export default router

@@ -3,14 +3,16 @@ import prismaClient from "../prisma";
 import dayjs from 'dayjs';
 import GenerateExcel from "./GenerateExcel";
 import fs from 'fs';
+import { Response } from "express";
 
 interface Request {
     dateInit: Date | string;
     dateEnd: Date | string;
+    res: Response
 }
 
 class ReportService {
-    async generateExcelReport({ dateInit, dateEnd }: Request) {
+    async generateExcelReport({ dateInit, dateEnd, res }: Request) {
         const where: Prisma.BudgetWhereInput = {
             created_at: {
                 lte: new Date(dateInit),
@@ -49,13 +51,11 @@ class ReportService {
             }
         })
 
-        const { fileName, filePath } = await GenerateExcel.createExcelFile(values)
-        
-        const file = fs.readFile(filePath, (err, data) => {
-            if (err) console.log(err);
-        });
+        const { filePath, fileName } = await GenerateExcel.createExcelFile({ values, res })
 
-        return file
+        return {
+            fileName, filePath
+        }
     }
 }
 

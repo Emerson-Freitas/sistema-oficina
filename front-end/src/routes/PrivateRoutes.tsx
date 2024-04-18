@@ -11,8 +11,6 @@ const PrivateRoutes = ({ roles, children }: Props) => {
     const { user } = useAuth();
     const navigate = useNavigate()
 
-    console.log(user)
-
     useEffect(() => {
         if (user === undefined) {
             navigate('/login', { replace: true })

@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
 import xl from 'excel4node'
+import { Response } from 'express'
 import fs from 'fs'
 import * as path from 'path'
 
@@ -20,10 +21,15 @@ interface IReportBudget {
     status: string
 }
 
+interface Params {
+    values: any
+    res: Response
+}
+
 const headerColumns = ["description", "value", "user", "created_at", "vehicle", "status"]
 
 class GenerateExcel {
-    static async createExcelFile(data: any) {
+    static async createExcelFile({ values, res }: Params) {
         const wb = new xl.Workbook({
             dateFormat: "dd/mm/yyyy hh:mm:ss"
         })
@@ -42,7 +48,7 @@ class GenerateExcel {
         })
 
         let rowIndex = 2
-        data.forEach((item: any) => {
+        values.forEach((item: any) => {
             let columnIndex = 1
             Object.keys(item).forEach((colName: any) => {
                 if (item[colName] instanceof Date) {
@@ -57,14 +63,17 @@ class GenerateExcel {
             rowIndex++;
         })
 
-        const fileName = `${dayjs().format("DD-MM-YYYY-HH-mm-ss")}.xlsx`
-        const filePath = `./src/excel/relatorio-orcamento-${fileName}`
-        
-        await wb.write(path);
-       
+        const fileName = `relatorio-orcamento-${dayjs().format("DD-MM-YYYY-HH-mm-ss")}.xlsx`
+        const filePath = path.join(__dirname, '..', 'excel', fileName)
+
+        // res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
+
+        // await wb.write(filePath, res);
+
+        await wb.write(filePath);
+
         return {
-            fileName,
-            filePath
+            fileName, filePath
         }
     }
 }

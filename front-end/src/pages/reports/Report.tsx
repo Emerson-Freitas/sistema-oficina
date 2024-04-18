@@ -3,23 +3,45 @@ import CustomContent from "../../components/content/CustomContent";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
+import { useAuth } from "../../components/hooks/useAuth";
 
 const Report = () => {
-  const [dateInit, setDateInit] = useState<string>(dayjs().subtract(30, "day").format())
-  const [dateEnd, setDateEnd] = useState<string>(dayjs().format())
-  const [loading, setLoading] = useState<boolean>(false)
-
+  const [dateInit, setDateInit] = useState<string>(
+    dayjs().subtract(30, "day").format()
+  );
+  const [dateEnd, setDateEnd] = useState<string>(dayjs().format());
+  const [loading, setLoading] = useState<boolean>(false);
+  const { token } = useAuth();
   const handleClick = async () => {
-    setLoading(true)
-    await axios.post(`${import.meta.env.VITE_BASE_URL}/report/excel`, { dateInit, dateEnd }, { headers: { Authorization: token }})
+    setLoading(true);
+    await axios
+      .get(
+        `${
+          import.meta.env.VITE_BASE_URL
+        }/report/excel?dateInit=${dateInit}&dateEnd=${dateEnd}`,
+        {
+          headers: { Authorization: token },
+          responseType: "blob"
+        }
+      )
       .then((res: AxiosResponse) => {
-        console.log("res.data::::", res.data)
+        const blob = res.data;
+        const fileNameHeaders= res.headers['content-disposition']
+        const match = fileNameHeaders.match(/filename="([^"]+)"/);
+        const fileName = match[1]
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = fileName
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
       })
       .catch((error) => {
-        console.log(error.response.data.message)
+        console.log(error);
       })
-      .finally(() => setLoading(false))
-  }
+      .finally(() => setLoading(false));
+  };
 
   const locale = {
     sunday: "Sun",
@@ -77,6 +99,7 @@ const Report = () => {
           appearance="primary"
           color="green"
           loading={loading}
+          type="submit"
         >
           Gerar Relatório
         </Button>
