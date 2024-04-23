@@ -39,6 +39,17 @@ class BudgetController {
         }
     }
 
+    static async infoDashboardAdmin(req: Request, res: Response) {
+        try {
+            const budgetService = new BudgetService();
+            const data = await budgetService.infoDashboardAdmin();
+
+            return res.status(200).json(data)
+        } catch (error) {
+            return res.status(400).json({ message: "Erro ao consultar informações do dashboard" })
+        }
+    }
+
     static async editBudget(req: Request, res: Response) {
         const { id, value, description, vehicle } = req.body
         // console.log("data>>>>", req.body)

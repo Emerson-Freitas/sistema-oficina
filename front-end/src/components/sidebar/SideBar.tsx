@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Sidebar as RSuiteSideBar, Sidenav, Nav } from 'rsuite';
 import DashboardIcon from '@rsuite/icons/Dashboard';
 import PeoplesIcon from '@rsuite/icons/Peoples';
@@ -9,6 +9,8 @@ import styles from './SideBar.module.css';
 import { Link } from 'react-router-dom'
 import NavToggle from './NavToggle';
 import { useAuth } from '../hooks/useAuth';
+import logoMax from '../../assets/logo-max.png'
+import logoMin from '../../assets/logo-min.png'
 
 const SideBar = () => {
     const [expand, setExpand] = useState(true);
@@ -23,7 +25,7 @@ const SideBar = () => {
         <Sidenav style={{ height: '92vh'}}>
           <Sidenav.Header>
             <div className={styles.content}>
-              <span>Brand</span>
+              { expand ? <img src={logoMax} alt='Logo no tamanho máximo' className={styles.logo}/> : <img src={logoMin} alt='Logo no tamanho mínimo' className={styles.logo}/>}
             </div>
           </Sidenav.Header>
           <Sidenav

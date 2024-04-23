@@ -1,5 +1,6 @@
 import { Navbar, Nav, Drawer, Button, Placeholder } from "rsuite";
 import CogIcon from "@rsuite/icons/legacy/Cog";
+import NoticeIcon from '@rsuite/icons/Notice';
 import { useState } from "react";
 import CardUser from "../card/CardUser";
 import { useAuth } from "../hooks/useAuth";
@@ -22,10 +23,11 @@ const Header = () => {
           <div style={{ marginRight: 30 }} >
             <p>Bem vindo: <span style={{ fontWeight: "bold"}}>{userName(`${user?.name}`)}</span></p>
           </div>
+          <div>
+            <Nav.Item icon={<NoticeIcon onClick={() => setOpen(true)} />}/>
+          </div>
           <div onClick={() => setOpen(true)}>
-            <Nav.Item  icon={<CogIcon onClick={() => setOpen(true)} />}>
-              Settings
-            </Nav.Item>
+            <Nav.Item icon={<CogIcon onClick={() => setOpen(true)} />}/>
           </div>
         </Nav>
       </Navbar>
