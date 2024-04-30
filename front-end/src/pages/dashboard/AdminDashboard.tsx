@@ -8,14 +8,13 @@ const AdminDashboard = () => {
   const { token } = useAuth()
   const [data, setData] = useState<any>([])
 
-  
 
   useEffect(() => {
     const findBudgets = async () => {
       await axios
         .get(`${import.meta.env.VITE_BASE_URL}/admin/dashboard`, { headers: { Authorization: token }})
         .then((res: AxiosResponse) => {
-          console.log("res>>>", res.data)
+          // console.log("res>>>", res.data)
           setData(res.data.budgets);
         })
         .catch((error: Error) => {

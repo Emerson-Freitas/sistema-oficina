@@ -19,6 +19,7 @@ model User {
   password String
   budgets Budget[]
   vehicles Vehicle[]
+  notifications Notification[]
   role Role @relation(fields: [role_id], references: [id])
   role_id String
   picture String? 
@@ -66,5 +67,16 @@ model Vehicle {
   updated_at DateTime @updatedAt
   
   @@map("vehicles")
+}
+
+model Notification {
+  id String @id @default(uuid())
+  user User @relation(fields: [user_id], references: [id])
+  user_id String
+  description String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("notifications")
 }
 

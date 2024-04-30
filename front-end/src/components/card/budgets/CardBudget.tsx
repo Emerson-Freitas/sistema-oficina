@@ -14,6 +14,8 @@ import CustomWhisper from "../../whisper/CustomWhisper";
 import UpdateModal from "../../modal/updateModal/UpdateModal";
 import IUpdateBudget from "../../../interfaces/IUpdateBudget";
 import stylesModal from "../../modal/Modal.module.css";
+import { formatDate } from "../../../utils/FormatDate";
+import { currencyFormat } from "../../../utils/FormatCurrency";
 
 interface Props {
   id: string;
@@ -34,13 +36,9 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
     vehicle: "",
   });
 
-  const formatDate = (date: Date) => {
-    return dayjs(date).format("DD/MM/YYYY HH:mm");
-  };
-
-  const currencyFormat = (value: string | number) => {
-    return `R$${value}`;
-  };
+  // const currencyFormat = (value: string | number) => {
+  //   return `R$${value}`;
+  // };
 
   const handleChangeModal = () => {
     setOpenModal(!openModal);

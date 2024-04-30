@@ -1,13 +1,18 @@
 import { Navbar, Nav, Drawer, Button, Placeholder } from "rsuite";
 import CogIcon from "@rsuite/icons/legacy/Cog";
 import NoticeIcon from '@rsuite/icons/Notice';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardUser from "../card/CardUser";
 import { useAuth } from "../hooks/useAuth";
+import NotificationComponent from "../notification/NotificationComponent";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
+  const [openNotification, setOpenNotification] = useState<boolean>(false)
   const { user } = useAuth();
+  const handleCloseNotification = () => {
+    setOpenNotification(false)
+  }
 
   const userName = (userName: string) => {
     return userName.split(' ')[0]
@@ -23,15 +28,14 @@ const Header = () => {
           <div style={{ marginRight: 30 }} >
             <p>Bem vindo: <span style={{ fontWeight: "bold"}}>{userName(`${user?.name}`)}</span></p>
           </div>
-          <div>
-            <Nav.Item icon={<NoticeIcon onClick={() => setOpen(true)} />}/>
+          <div  onClick={() => setOpenNotification(true)}>
+            <Nav.Item icon={<NoticeIcon />}/>
           </div>
           <div onClick={() => setOpen(true)}>
-            <Nav.Item icon={<CogIcon onClick={() => setOpen(true)} />}/>
+            <Nav.Item icon={<CogIcon />}/>
           </div>
         </Nav>
       </Navbar>
-
       <Drawer size={"xs"} open={open} onClose={() => setOpen(false)}>
         <Drawer.Body style={{ overflowX: "hidden", overflowY: "hidden"}}>
             <CardUser
@@ -42,6 +46,12 @@ const Header = () => {
             />
         </Drawer.Body>
       </Drawer>
+      {openNotification && 
+        <NotificationComponent 
+          open={openNotification} 
+          handleCloseNotification={handleCloseNotification}
+        />
+      }
     </div>
   );
 };

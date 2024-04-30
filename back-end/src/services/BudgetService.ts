@@ -5,6 +5,9 @@ import prismaClient from "../prisma";
 import { Prisma } from "@prisma/client";
 import { io } from "../../server";
 import { Socket } from "socket.io";
+import SocketService from "./SocketService";
+import { userIds as socketIds } from "../../server";
+import NotificationService from "./NotificationService";
 
 interface BudgetRequest {
   value: number;
@@ -12,9 +15,29 @@ interface BudgetRequest {
   selectedClient: string;
 }
 
+export type Budget = {
+    id: string;
+    description: string;
+    value: Prisma.Decimal;
+    vehicle_id: string;
+    user_id: string;
+    status: string;
+    created_at: Date;
+    updated_at: Date;
+}
+
+export type BudgetSocket = {
+    description: string;
+    created_at: Date;
+    userName: string | undefined;
+}
+
 class BudgetService {
+  private readonly socketService = new SocketService();
+  private readonly notificationService = new NotificationService();
+
   async createBudget({ value, description, selectedClient }: BudgetRequest) {
-    const budget = await prismaClient.budget.create({
+    const budget: Budget = await prismaClient.budget.create({
       data: {
         value: value,
         description: description,
@@ -25,25 +48,57 @@ class BudgetService {
     const user = await prismaClient.user.findFirst({
       where: {
         id: budget.user_id,
-        role: {
-          name: "CLIENTE"
-        }
       },
       select: {
-        name: true
+        name: true,
+        role: {
+          select: {
+            name: true
+          }
+        }
       }
     });
-    
-    if (!user) {
-      return budget;
-    } else {
-      const { description, created_at } = budget
-      const userName = user.name
-      const newBudget = { description, created_at, userName }
 
-      io.emit("create budget", newBudget)
-      return budget
-    }
+    if (user?.role.name === "CLIENTE") {
+      const { user_id, description, created_at } = budget
+      const userName = user?.name
+      const newBudget = { description, created_at, userName }
+      
+      // Mapeia apenas os IDs dos usuários conectados
+      const connectedUserIds = socketIds.map(user => user.userId)
+
+      // Filtra os IDs de usuários conectados que também estão no banco e têm o papel desejado
+      const usersToNotify = await prismaClient.user.findMany({
+        where: {
+          id: {
+            in: connectedUserIds
+          },
+          role: {
+            OR: [
+              { name: "FUNCIONARIO" },
+              { name: "ADMIN" }
+            ]
+          }
+        },
+        select: {
+          id: true
+        }
+      });
+
+      // Filtra os IDs de socket dos usuários para notificação
+      const userIds = usersToNotify.map(user => {
+        // Retorna o socketId se o ID do usuário estiver na lista de IDs dos usuários conectados
+        const socketUser = socketIds.find(socketUser => socketUser.userId === user.id);
+        return socketUser?.socketId;
+      }).filter(Boolean); // Filtra quaisquer valores nulos
+
+      await this.notificationService.createNotification({ user_id, description })
+      this.socketService.notificationAllUsers("create budget", newBudget, userIds)
+
+      return newBudget
+    } 
+    
+    return budget;
   }
 
   async findBudgets({ skip, take }: any) {

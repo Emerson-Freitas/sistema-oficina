@@ -8,6 +8,7 @@ class RoleService {
                 name: true
             }
         })
+
         return roles
     }
 }

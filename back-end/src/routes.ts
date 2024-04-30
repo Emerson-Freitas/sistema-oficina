@@ -11,6 +11,7 @@ import uploadConfig from './config/multer'
 import multer from "multer";
 import ReportController from "./controllers/ReportController";
 import DashboardController from "./controllers/DashboardController";
+import NotificationController from "./controllers/NotificationController";
 
 const router = Router();
 const upload = multer(uploadConfig.upload("./tmp"))
@@ -25,12 +26,16 @@ router.post('/vehicles', authMiddleware, VehicleController.createVehicle)
 router.get("/clients", authMiddleware, UserController.findClients)
 router.put("/users/:id", authMiddleware, UserController.editUser)
 router.delete("/:table/:id", authMiddleware, GenericController.genericDelete)
-router.get('/roles', authMiddleware, RoleController.findRoles)
+router.get('/roles', isAdminMiddleware, RoleController.findRoles)
 router.post('/login', AuthController.login)
 router.get("/profile", authMiddleware, AuthController.getProfile)
 router.get("/admin/dashboard", isAdminMiddleware, BudgetController.infoDashboardAdmin)
 router.post("/users/picture", authMiddleware, upload.single('file'), UserController.uploadPicture)
 router.get("/report/excel", authMiddleware, ReportController.reportExcel)
 router.get("/dashboard", authMiddleware, DashboardController.budgetsStatus)
+
+//notifications
+router.get("/notifications/:id", authMiddleware, NotificationController.notificationsByUserClient)
+router.get("/notifications", isAdminMiddleware, NotificationController.notificationsAdminAndEmployee)
 
 export default router

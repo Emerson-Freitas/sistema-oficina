@@ -132,8 +132,7 @@ const ModalUser = ({ handleOpen, handleClose, open }: Props) => {
           setRoles(roles)
         })
         .catch((error: Error) => {
-          console.log('Erro ao buscar as roles', error.message)
-          setRoles([])
+          console.log(error.message)
         })
     }
     findRoles()
@@ -243,7 +242,7 @@ const ModalUser = ({ handleOpen, handleClose, open }: Props) => {
           <Button onClick={handleClose} appearance="primary" color="red">
             CANCELAR
           </Button>
-    </ModalRSuite.Footer> 
+        </ModalRSuite.Footer> 
       </ModalRSuite>
     </div>
   );

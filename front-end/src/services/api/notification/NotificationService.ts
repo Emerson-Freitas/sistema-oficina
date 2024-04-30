@@ -1,43 +1,32 @@
-import io, { Socket } from 'socket.io-client'
-const ENDPOINT = "http://localhost:3000";
-const socket = io(ENDPOINT)
+import { Api } from "../ApiConfig"
+import { ApiException } from "../ApiException"
 
-const connectionSocket = async () => {
+interface Params {
+    id?: string
+    token: string
+}
+
+const notificationsByUserClient = async ({ token, id }: Params) => {
     try {
-        socket.emit("connection", "teste");
-        console.log("connection");
+        const { data } = await Api({ token }).get(`/notifications/${id}`)
+
+        return data
     } catch (error: any) {
-        console.log("error in socket")
+        return new ApiException(error.message || 'Erro ao consultar a API')
     }
 }
 
-const userCreateBudget = () => {
-    return new Promise((resolve, reject) => {
-      socket.on("create budget", (newBudget) => {
-        console.log("create budget", newBudget);
-        resolve(newBudget);
-      });
-  
-      socket.on("error", (error) => {
-        console.error("Socket error", error);
-        reject(error);
-      });
-    });
-  };
+const notificationsAdminAndEmployee = async ({ token }: Params) => {
+    try {
+        const { data } = await Api({ token }).get(`/notifications`)
 
-// const userCreateBudget = async () => {
-//     try {
-//         socket.on("create budget", (socket: Socket) => {
-//             console.log("create budget", socket);
-//             return socket
-//         });
-//     } catch (error: any) {
-//         console.log("error in socket")
-//     }
-// }
+        return data
+    } catch (error: any) {
+        return new ApiException(error.message || 'Erro ao consultar a API')
+    }
+}
 
 export const NotificationService = {
-    connectionSocket,
-    userCreateBudget,
-    socket
+    notificationsByUserClient,
+    notificationsAdminAndEmployee
 }

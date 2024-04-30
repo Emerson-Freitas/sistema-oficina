@@ -7,11 +7,9 @@ import axios, { AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../hooks/useAuth';
 import { NotificationState } from '../../../contexts/NotificationContext';
-import { NotificationService } from '../../../services/api/notification/NotificationService';
 import Budget from '../../../pages/budgets/Budget';
 import INotification from '../../../interfaces/INotification';
 import { ROLE } from '../../../enum/Role';
-import { useNotification } from '../../hooks/useNotification';
 
 interface Props {
     handleClose: () => void
@@ -31,8 +29,6 @@ const ModalBudget = ({ handleOpen, handleClose, open }: Props) => {
   const [description, setDescription] = useState<string>("")
   const [loading, setLoading] = useState<boolean>(false)
   const { user, token } = useAuth();
-  const { notification, setNotification } = useNotification()
-  const { userCreateBudget, socket } = NotificationService
 
   const handleSubmit = async () => {
     setLoading(true)
@@ -55,14 +51,6 @@ const ModalBudget = ({ handleOpen, handleClose, open }: Props) => {
       toast.warning("Por favor preencha todos os campos!")
     }
   }
-
-  useEffect(() => {
-      userCreateBudget()
-        .then((budget) => {
-          console.log(budget)
-            setNotification([...notification, budget as INotification])
-        })
-  }, [])
 
   useEffect(() => {
     if (user?.role.name === 'ADMIN') {
