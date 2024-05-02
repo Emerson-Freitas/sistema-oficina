@@ -43,7 +43,7 @@ const Header = () => {
             <p>Bem vindo: <span style={{ fontWeight: "bold"}}>{userName(`${user?.name}`)}</span></p>
           </div>
           <div onClick={() => setOpenNotification(true)}>
-            <Nav.Item icon={afterOpenNotification ? <NoticeIcon /> : <Badge content={count - viewedCount}><NoticeIcon /></Badge>} /> {/* Subtrai a quantidade de notificações visualizadas */}
+            <Nav.Item icon={afterOpenNotification ? <NoticeIcon /> : <Badge content={count - viewedCount}><NoticeIcon /></Badge>} />
           </div>
           <div onClick={() => setOpen(true)}>
             <Nav.Item icon={<CogIcon />}/>

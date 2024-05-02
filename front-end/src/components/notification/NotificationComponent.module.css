@@ -1,0 +1,18 @@
+.content {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px 1.5% 12px;
+}
+
+.card {
+    margin: 0 auto;
+    background: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+}
+
+.card:hover {
+    background-color: whitesmoke;
+    cursor: pointer;
+}
