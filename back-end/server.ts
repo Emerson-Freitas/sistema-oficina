@@ -26,8 +26,8 @@ let socket: Socket;
 io.on("connection", (connectedSocket: Socket) => {
     socket = connectedSocket;
     socket.on("user logged", (userId: any) => {
-      // console.log("userId", userId)
-      if (userId !== null) {
+      const containsId = userIds.includes(userId)
+      if (containsId === false) {
         const userSocket: IUserSocket = {
           userId: userId,
           socketId: socket.id

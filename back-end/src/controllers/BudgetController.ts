@@ -4,7 +4,6 @@ import SocketService from "../services/SocketService";
 import { BudgetSocket } from "../services/BudgetService";
 
 class BudgetController {
-
     static async createBudget(req: Request, res: Response) {
         try {
             const { value, description, selectedClient} = req.body

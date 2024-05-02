@@ -58,14 +58,15 @@ export default function NotificationProvider({ children }: notificationProviderP
   }, [user, token])
 
   useEffect(() => {
-    socket.emit("user logged", user?.id)
+    if (user !== undefined) {
+      socket.emit("user logged", user?.id)
+    }
   }, [user])
 
   useEffect(() => {
     socket.on("create budget", (newBudget: INotification) => {
-      console.log("newBudget", newBudget)
-      setNotification([...notification, newBudget as INotification])
       setCount(count + 1)
+      setNotification([...notification, newBudget as INotification])
     });
 
     return () => {
