@@ -33,6 +33,14 @@
     display: inline-block;
 }
 
+.contentActions {
+    margin-bottom: 0;
+    background-color: blue;
+    gap: 8px;
+    padding: 3px;
+    display: flex;
+}
+
 .actions:hover {
     cursor: pointer;
 }

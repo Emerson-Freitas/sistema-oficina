@@ -1,55 +1,36 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import EyeIcon from '@rsuite/icons/legacy/Eye';
 import EyeSlashIcon from '@rsuite/icons/legacy/EyeSlash';
 import { Panel, Placeholder } from 'rsuite';
-import axios, { AxiosResponse } from 'axios';
+import styles from '../dashboard/CardDashboard.module.css' 
 
 interface Props {
     title: string
     color: string
+    count: number
 }
 
-const CardDashboard = ({ title, color }: Props) => {
-
+const CardDashboard = ({ title, color, count }: Props) => {
   const [visible, setVisible] = useState<boolean>(false)
   
   const handleVisible = () => {
     setVisible(!visible)
   }
 
-  // const findDashboardData = async () => {
-  //   await axios.get(`${import.meta.env.VITE_BASE_URL}/dashboard`)
-  //     .then((res: AxiosResponse) => {
-  //     })
-  //     .catch((error: Error) => {
-  //     })
-  // }
-
-  // useEffect(() => {
-  //   findDashboardData();
-  // }, [])
-
   return (
-    <Panel bordered style={{
-        height: 180,
-        width: "33%",
-        backgroundColor: `${color}`,
-        borderRadius: 10,
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.175)',
-        overflow: 'hidden',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center'}}>
-            <h4 style={{ color: 'white', fontWeight: 'bold' }}>{title}</h4>
-            <div onClick={handleVisible} style={{ cursor: "pointer", marginLeft: "25%", color: 'white' }}>
-                {visible ? <EyeIcon style={{ width: 25, height: 25 }}/> : <EyeSlashIcon style={{ width: 25, height: 25 }}/>}
+    <Panel bordered className={styles.panel} style={{ backgroundColor: `${color}` }}>
+        <div className={styles.box}>
+            <h4 className={styles.title}>{title}</h4>
+            <div onClick={handleVisible} className={styles.boxIcon}>
+                {visible ? <EyeIcon className={styles.icon} /> : <EyeSlashIcon className={styles.icon}/>}
             </div>
         </div>
         {visible ? (
-            <div style={{ margin: "16px 0px", color: 'white'}}>
-                <h1>Batata</h1>
+            <div className={styles.boxCount}>
+                <h1>{count}</h1>
             </div>
         ) : (
-            <Placeholder.Paragraph rows={3} style={{ marginLeft: "1%", marginTop: "5%", marginBottom: "5%" }} />
+            <Placeholder.Paragraph rows={3} className={styles.placeholder} />
         )}
     </Panel>
   )

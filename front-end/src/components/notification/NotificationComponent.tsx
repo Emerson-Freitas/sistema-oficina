@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNotification } from "../hooks/useNotification";
-import { Drawer } from "rsuite";
+import { Button, Drawer } from "rsuite";
 import INotification from "../../interfaces/INotification";
 import { formatDate } from "../../utils/FormatDate";
 import styles from "./NotificationComponent.module.css";

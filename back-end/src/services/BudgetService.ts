@@ -63,11 +63,8 @@ class BudgetService {
       const { user_id, description, created_at } = budget
       const userName = user?.name
       const newBudget = { description, created_at, userName }
-      
-      // Mapeia apenas os IDs dos usuários conectados
       const connectedUserIds = socketIds.map(user => user.userId)
 
-      // Filtra os IDs de usuários conectados que também estão no banco e têm o papel desejado
       const usersToNotify = await prismaClient.user.findMany({
         where: {
           id: {
@@ -85,12 +82,10 @@ class BudgetService {
         }
       });
 
-      // Filtra os IDs de socket dos usuários para notificação
       const userIds = usersToNotify.map(user => {
-        // Retorna o socketId se o ID do usuário estiver na lista de IDs dos usuários conectados
         const socketUser = socketIds.find(socketUser => socketUser.userId === user.id);
         return socketUser?.socketId;
-      }).filter(Boolean); // Filtra quaisquer valores nulos
+      }).filter(Boolean);
 
       await this.notificationService.createNotification({ user_id, description })
       this.socketService.notificationAllUsers("create budget", newBudget, userIds)
@@ -164,33 +159,6 @@ class BudgetService {
     const totalPages = Math.ceil(totalCount / Number(take));
 
     return { budgets, totalCount, totalPages };
-  }
-
-  async infoDashboardAdmin() {
-    const dateInit = dayjs().subtract(1, "year").toDate();
-    const dateEnd = dayjs().toDate();
-
-    // console.log({
-    //     dateInit, dateEnd
-    // })
-    const where: Prisma.BudgetWhereInput = {
-      created_at: {
-        gte: dateInit,
-        lte: dateEnd,
-      },
-    };
-
-    const budgetsByStatus = await prismaClient.budget.groupBy({
-      by: ["status"],
-      _count: {
-        status: true,
-      },
-      where: where,
-    });
-
-    // console.log("budgetsByStatus>>>>", budgetsByStatus);
-
-    return budgetsByStatus;
   }
 }
 

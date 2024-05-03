@@ -16,6 +16,7 @@ import IUpdateBudget from "../../../interfaces/IUpdateBudget";
 import stylesModal from "../../modal/Modal.module.css";
 import { formatDate } from "../../../utils/FormatDate";
 import { currencyFormat } from "../../../utils/FormatCurrency";
+import { ROLE } from "../../../enum/Role";
 
 interface Props {
   id: string;
@@ -36,10 +37,6 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
     vehicle: "",
   });
 
-  // const currencyFormat = (value: string | number) => {
-  //   return `R$${value}`;
-  // };
-
   const handleChangeModal = () => {
     setOpenModal(!openModal);
   };
@@ -53,16 +50,8 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
 
   return (
     <>
-      <div
-        style={{
-          marginBottom: 0,
-          backgroundColor: "blue",
-          gap: 8,
-          padding: "3px",
-          display: "flex",
-        }}
-      >
-        {user?.role.name === "ADMIN" || user?.role.name === "FUNCIONARIO" ? (
+      <div className={styles.contentActions}>
+        {user?.role.name === ROLE.ADMIN || user?.role.name === ROLE.FUNCIONARIO ? (
           <>
             {openModal && (
               <UpdateModal
@@ -177,9 +166,7 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
             <span className={styles.value}>Veículo: {vehicle}</span>
             <span className={styles.value}>Descrição: {description}</span>
             <span className={styles.value}>Valor: {currencyFormat(value)}</span>
-            <span className={styles.value}>
-              Criado em: {formatDate(created_at)}
-            </span>
+            <span className={styles.value}>Criado em: {formatDate(created_at)}</span>
           </div>
         </div>
       </Panel>

@@ -17,7 +17,6 @@ class UserController {
     }
 
     static async editUser(req: Request, res: Response) {
-
         try {
             const { id, name, cpf, telephone, email } = req.body
             const userService = new UserService();

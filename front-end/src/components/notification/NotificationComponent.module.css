@@ -2,6 +2,7 @@
     width: 100%;
     max-width: 100%;
     padding: 12px 1.5% 12px;
+    background-color: white;
 }
 
 .card {
@@ -15,4 +16,5 @@
 .card:hover {
     background-color: whitesmoke;
     cursor: pointer;
+    max-height: 100%;
 }

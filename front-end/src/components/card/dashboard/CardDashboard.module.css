@@ -1,0 +1,40 @@
+.panel {
+    height: 180px;
+    width: 33%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.175);
+    overflow: hidden
+}
+
+.box {
+    display: flex;
+    align-items: center;
+}
+
+.title {
+    color: white;
+    font-weight: bold;
+}
+
+.boxIcon {
+    cursor: pointer;
+    margin-left: 25%;
+    color: white;
+}
+
+.icon {
+    width: 25px;
+    height: 25px;
+
+}
+
+.boxCount {
+    margin: 16px 0px;
+    color: white;
+}
+
+.placeHolder {
+    margin-left: 1%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
