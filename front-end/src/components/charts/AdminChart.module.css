@@ -1,0 +1,10 @@
+.chartContainer {
+    width: 97.2%; 
+    margin: 1% 1.8% 0% 1%;
+    padding: 10px;
+    background-color: whitesmoke;
+    color: black;
+    border-radius: 5px;
+    height: 61vh;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }

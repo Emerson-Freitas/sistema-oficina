@@ -1,6 +1,7 @@
 import { Nav } from "rsuite";
 import AngleLeftIcon from "@rsuite/icons/legacy/AngleLeft";
 import AngleRightIcon from "@rsuite/icons/legacy/AngleRight";
+import styles from '../sidebar/NavToggle.module.css'
 
 interface Props {
   expand: boolean;
@@ -9,9 +10,9 @@ interface Props {
 
 const NavToggle = ({ expand, onChange }: Props) => {
   return (
-    <Nav pullRight style={{ color: "#FFF"}}>
-      <Nav.Item onClick={onChange} style={{ width: "100%", textAlign: "center", height: "8vh" }}>
-        {expand ? <AngleLeftIcon style={{ color: "black" }} /> : <AngleRightIcon style={{ color: "black"}}/>}
+    <Nav pullRight>
+      <Nav.Item onClick={onChange} className={styles.item} >
+        {expand ? <AngleLeftIcon className={styles.icon} /> : <AngleRightIcon className={styles.icon} />}
       </Nav.Item>
     </Nav>
   );

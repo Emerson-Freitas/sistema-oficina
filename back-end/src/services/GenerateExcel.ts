@@ -12,15 +12,6 @@ interface IVehicle {
     name: string
 }
 
-interface IReportBudget {
-    description: string,
-    value: number,
-    user: IUser
-    created_at: Date | string
-    vehicle: IVehicle
-    status: string
-}
-
 interface Params {
     values: any
     res: Response
@@ -65,10 +56,6 @@ class GenerateExcel {
 
         const fileName = `relatorio-orcamento-${dayjs().format("DD-MM-YYYY-HH-mm-ss")}.xlsx`
         const filePath = path.join(__dirname, '..', 'excel', fileName)
-
-        // res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
-
-        // await wb.write(filePath, res);
 
         await wb.write(filePath);
 
