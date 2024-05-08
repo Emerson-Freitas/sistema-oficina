@@ -33,6 +33,7 @@ router.get("/admin/dashboard", isAdminMiddleware, DashboardController.infoDashbo
 router.post("/users/picture", authMiddleware, upload.single('file'), UserController.uploadPicture)
 router.get("/report/excel", authMiddleware, ReportController.reportExcel)
 router.get("/dashboard", authMiddleware, DashboardController.budgetsStatus)
+router.get("/admin/graph", isAdminMiddleware, DashboardController.dataGraphic)
 
 //notifications
 router.get("/notifications/:id", authMiddleware, NotificationController.notificationsByUserClient)

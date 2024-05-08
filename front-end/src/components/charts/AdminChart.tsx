@@ -1,22 +1,18 @@
 import dayjs from 'dayjs';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const AdminChart = () => {
-    const [initDate] = useState(dayjs().format('DD/MM/YYYY'))
-    const [endDate] = useState(dayjs().subtract(1, "year").format('DD/MM/YYYY'))
+interface Props {
+    series: any
+    categories: string[]
+}
+
+const AdminChart = ({ series, categories }: Props) => {
+    const [endDate] = useState(dayjs().format('DD/MM/YYYY'))
+    const [initDate] = useState(dayjs().subtract(1, "year").format('DD/MM/YYYY'))
 
     const [chartData, setChartData] = useState({
-        series: [{
-            name: 'Aceitos',
-            data: [44, 55, 57, 56, 61, 58, 63, 60, 66]
-        }, {
-            name: 'Pendentes',
-            data: [76, 85, 101, 98, 87, 105, 91, 114, 94]
-        }, {
-            name: 'Rejeitados',
-            data: [35, 41, 36, 26, 45, 48, 52, 53, 41]
-        }],
+        series: series,
         options: {
             chart: {
                 type: 'bar',
@@ -38,7 +34,7 @@ const AdminChart = () => {
                 colors: ['transparent']
             },
             xaxis: {
-                categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dez'],
+                categories: categories
             },
             yaxis: {
                 title: {
