@@ -12,7 +12,7 @@ const AdminChart = ({ series, categories }: Props) => {
     const [initDate] = useState(dayjs().subtract(1, "year").format('DD/MM/YYYY'))
 
     const [chartData, setChartData] = useState({
-        series: series,
+        series: [],
         options: {
             chart: {
                 type: 'bar',
@@ -22,9 +22,10 @@ const AdminChart = ({ series, categories }: Props) => {
                 bar: {
                     horizontal: false,
                     columnWidth: '55%',
-                    endingShape: 'rounded'
+                    endingShape: 'rounded',
                 },
             },
+            colors: ["#FFD700", "#3CB371", "#FF6347"],
             dataLabels: {
                 enabled: false
             },
@@ -34,7 +35,7 @@ const AdminChart = ({ series, categories }: Props) => {
                 colors: ['transparent']
             },
             xaxis: {
-                categories: categories
+                categories: []
             },
             yaxis: {
                 title: {
@@ -46,13 +47,26 @@ const AdminChart = ({ series, categories }: Props) => {
             },
             tooltip: {
                 y: {
-                    formatter: function (val: string | number) {
+                    formatter: function (val: number) {
                         return + val + " Orçamentos"
                     }
                 }
             }
         }
     });
+
+    useEffect(() => {
+        setChartData((prevState: any) => ({
+            ...prevState,
+            options: {
+                ...prevState.options,
+                xaxis: {
+                    categories: categories
+                }
+            },
+            series: series
+        }));
+    }, [categories, series]);
 
     return (
         <div>
