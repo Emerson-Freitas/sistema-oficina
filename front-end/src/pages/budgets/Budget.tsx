@@ -5,6 +5,7 @@ import axios, { AxiosResponse } from "axios";
 import SectionCard from "../../components/section/SectionCard";
 import IBudget from "../../interfaces/IBudget";
 import { useAuth } from "../../components/hooks/useAuth";
+import { Loader } from "rsuite";
 
 const Budget = () => {
   const [open, setOpen] = useState(false);
@@ -38,7 +39,7 @@ const Budget = () => {
     if (user?.role.name === 'ADMIN') {
       findBudgets(page, initialTake)
     } 
-  }, [])
+  }, [user])
 
   return (
     <CustomContent title="Orçamentos">
@@ -50,7 +51,6 @@ const Budget = () => {
       {user?.role.name === 'ADMIN' && (
         <>
           <SectionCard 
-            loading={loading} 
             data={data}
             find={findBudgets}
             total={total}
