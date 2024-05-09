@@ -42,9 +42,14 @@ class BudgetController {
     }
 
     static async editBudget(req: Request, res: Response) {
-        const { id, value, description, vehicle } = req.body
-        // console.log("data>>>>", req.body)
-        return true
+       try {
+            const { id, value, description, vehicle } = req.body
+            const budgetService = new BudgetService
+            const data = await budgetService.editBudget({ id, value, description, vehicle })
+            return res.status(200).json({ message: `Orçamento: ${data.description} foi atualizado com sucesso!`})
+       } catch (error) {
+            return res.status(400).json({ message: "Erro ao atualizar o orçamento"})
+       }
     }
 }
 

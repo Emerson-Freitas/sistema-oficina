@@ -4,6 +4,7 @@ import IUser from "../../../interfaces/IUser";
 import { toast } from "react-toastify";
 import axios, { AxiosResponse } from "axios";
 import IUpdateBudget from "../../../interfaces/IUpdateBudget";
+import { useAuth } from "../../hooks/useAuth";
 
 interface Props {
   data: IUser | IUpdateBudget;
@@ -16,6 +17,7 @@ interface Props {
 
 const UpdateModal = ({ data, table, handleClose, open, children, title}: Props) => {
   const [loading, setLoading] = useState<boolean>(false)
+  const { token } = useAuth()
 
   const handleSubmit = async () => {
     setLoading(true)

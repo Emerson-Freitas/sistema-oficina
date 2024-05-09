@@ -42,7 +42,7 @@ const AdminDashboard = () => {
     await axios.get(`${import.meta.env.VITE_BASE_URL}/admin/graph`, { headers: { Authorization: token }})
       .then((res) => {
         const data = res.data
-        const categories = Object.keys(data)
+        const categories = Object.keys(data).map((key) => key.toUpperCase())
         const transformedData: any = {
           "EM ANÁLISE": [],
           "ACEITO": [],

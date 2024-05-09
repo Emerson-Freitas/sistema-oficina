@@ -32,6 +32,13 @@ export type BudgetSocket = {
     userName: string | undefined;
 }
 
+interface IUpdateBudget {
+  id: string
+  value: string | number
+  description: string
+  vehicle: string
+}
+
 class BudgetService {
   private readonly socketService = new SocketService();
   private readonly notificationService = new NotificationService();
@@ -159,6 +166,44 @@ class BudgetService {
     const totalPages = Math.ceil(totalCount / Number(take));
 
     return { budgets, totalCount, totalPages };
+  }
+
+  async editBudget({ id, value, description, vehicle }: IUpdateBudget) {
+      if(!id) {
+        throw new Error("O id do orçamento é obrigatório")
+      }
+
+      if(!value) {
+          throw new Error("O valor do orçamento é obrigatório")
+      }
+
+      if(!description) {
+          throw new Error("A descrição do orçamento é obrigatório")
+      }
+
+      if(!vehicle) {
+          throw new Error("O veículo relacionado a esse orçamento é obrigatório")
+      }
+
+      const budget = await prismaClient.budget.update({
+        where: {
+            id: id
+        },
+        data: {
+            value, 
+            description,
+            vehicle: {
+              update: {
+                name: vehicle
+              }
+            }
+        },
+        select: {
+          description: true
+        }
+      })
+
+      return budget
   }
 }
 

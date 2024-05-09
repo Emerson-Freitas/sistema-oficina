@@ -15,6 +15,7 @@ const AdminChart = ({ series, categories }: Props) => {
         series: [],
         options: {
             chart: {
+                id: "grafico-anual",
                 type: 'bar',
                 width: "100%"
             },

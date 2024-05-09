@@ -23,7 +23,7 @@ interface Props {
   value: string | number;
   description: string;
   vehicle: string;
-  created_at: Date;
+  created_at: string | Date;
 }
 
 const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
@@ -36,12 +36,17 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
     description: "",
     vehicle: "",
   });
-
   const handleChangeModal = () => {
     setOpenModal(!openModal);
   };
 
-  const handleChange = ({ name, value }: { name: string; value: string | number}) => {
+  const handleChange = ({
+    name,
+    value,
+  }: {
+    name: string;
+    value: string | number;
+  }) => {
     setData({
       ...data,
       [name]: value,
@@ -49,7 +54,7 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
   };
 
   return (
-    <>
+    <div style={{ marginTop: "1.5%" }}>
       <div className={styles.contentActions}>
         {user?.role.name === ROLE.ADMIN || user?.role.name === ROLE.FUNCIONARIO ? (
           <>
@@ -71,34 +76,34 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
                     onChange={(
                       value: string,
                       event: React.ChangeEvent<HTMLInputElement>
-                      ) => handleChange({ name: event.target.name, value })}
+                    ) => handleChange({ name: event.target.name, value })}
                   />
-                <Input
-                  name="description"
-                  value={data.description}
-                  type="text"
-                  className={stylesModal.input}
-                  placeholder="Descrição"
-                  onChange={(
-                    value: string,
-                    event: React.ChangeEvent<HTMLInputElement>
-                  ) => handleChange({ name: event.target.name, value })}
-                />
-                <InputNumber
-                  name="value"
-                  type="number"
-                  prefix="R$"
-                  placeholder="Valor"
-                  min={0}
-                  onChange={(value: string | number) =>
-                    handleChange({ name: "value", value })
-                  }
-                  value={data.value}
-                  style={{
-                    height: 42,
-                    marginBottom: 10,
-                  }}
-                />
+                  <Input
+                    name="description"
+                    value={data.description}
+                    type="text"
+                    className={stylesModal.input}
+                    placeholder="Descrição"
+                    onChange={(
+                      value: string,
+                      event: React.ChangeEvent<HTMLInputElement>
+                    ) => handleChange({ name: event.target.name, value })}
+                  />
+                  <InputNumber
+                    name="value"
+                    type="number"
+                    prefix="R$"
+                    placeholder="Valor"
+                    min={0}
+                    onChange={(value: string | number) =>
+                      handleChange({ name: "value", value })
+                    }
+                    value={data.value}
+                    style={{
+                      height: 42,
+                      marginBottom: 10,
+                    }}
+                  />
                 </div>
               </UpdateModal>
             )}
@@ -127,16 +132,26 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
             ></CustomWhisper>
             <CustomWhisper
               content={
-                <FontAwesomeIcon icon={faCheck} color="white" size="lg" className={styles.actions}/>
+                <FontAwesomeIcon
+                  icon={faCheck}
+                  color="white"
+                  size="lg"
+                  className={styles.actions}
+                />
               }
               controlId="control-id-hover"
               message="Aceitar Orçamento"
               trigger="hover"
               placement="top"
             ></CustomWhisper>
-             <CustomWhisper
+            <CustomWhisper
               content={
-                <FontAwesomeIcon icon={faXmark} color="white" size="lg" className={styles.actions}/>
+                <FontAwesomeIcon
+                  icon={faXmark}
+                  color="white"
+                  size="lg"
+                  className={styles.actions}
+                />
               }
               controlId="control-id-hover"
               message="Rejeitar Orçamento"
@@ -146,13 +161,18 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
           </>
         ) : (
           <CustomWhisper
-              content={
-                <FontAwesomeIcon icon={faXmark} color="white" size="lg" className={styles.actions}/>
-              }
-              controlId="control-id-hover"
-              message="Rejeitar Orçamento"
-              trigger="hover"
-              placement="top"
+            content={
+              <FontAwesomeIcon
+                icon={faXmark}
+                color="white"
+                size="lg"
+                className={styles.actions}
+              />
+            }
+            controlId="control-id-hover"
+            message="Rejeitar Orçamento"
+            trigger="hover"
+            placement="top"
           ></CustomWhisper>
         )}
       </div>
@@ -166,11 +186,13 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
             <span className={styles.value}>Veículo: {vehicle}</span>
             <span className={styles.value}>Descrição: {description}</span>
             <span className={styles.value}>Valor: {currencyFormat(value)}</span>
-            <span className={styles.value}>Criado em: {formatDate(created_at)}</span>
+            <span className={styles.value}>
+              Criado em: {formatDate(created_at)}
+            </span>
           </div>
         </div>
       </Panel>
-    </>
+    </div>
   );
 };
 
