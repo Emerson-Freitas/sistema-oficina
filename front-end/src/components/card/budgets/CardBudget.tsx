@@ -48,7 +48,7 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
 
   const [reject, setReject] = useState<boolean>(false)
   const handleCloseReject = () => setReject(false);
-  const handleOpeneReject = () => setReject(true);
+  const handleOpenReject = () => setReject(true);
 
   const [actionBudget, setActionBudget] = useState<IAcceptOrRejectBudget>({
     id: ""
@@ -175,6 +175,12 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
                   color="white"
                   size="lg"
                   className={styles.actions}
+                  onClick={() => {
+                    setActionBudget({
+                      id: id
+                    })
+                    handleOpenReject()
+                  }}
                 />
               }
               controlId="control-id-hover"
@@ -225,6 +231,17 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
             open={accept}
             title={`Deseja aceitar o orçamento: ${description}?`}
             token={token}
+        />
+      }
+      {reject && 
+        <ActionsBudget
+          id={actionBudget.id}
+          handleClose={handleCloseReject}
+          handleOpen={handleOpenReject}
+          route="reject"
+          token={token}
+          open={reject}
+          title={`Deseja rejeitar o orçamento: ${description}?`}
         />
       }
     </div>

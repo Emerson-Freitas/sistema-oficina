@@ -237,6 +237,38 @@ class BudgetService {
 
     return budget
   }
+
+  async rejectBudget({ id }: any) {
+    if(!id) {
+      throw new Error("Erro ao rejeitar o orçamento")
+    }
+
+    const budget = await prismaClient.budget.findFirst({
+      where: {
+        id
+      },
+      select: {
+        description: true
+      }
+    })
+
+    if (!budget) {
+      throw new Error("Erro ao rejeitar o orçamento")
+    }
+
+    if (budget) {
+      await prismaClient.budget.update({
+        where: {
+          id
+        },
+        data: {
+          status: "REJEITADO"
+        }
+      })
+    }
+
+    return budget
+  }
 }
 
 export default BudgetService;

@@ -36,6 +36,7 @@ router.get("/report/excel", authMiddleware, ReportController.reportExcel)
 router.get("/dashboard", authMiddleware, DashboardController.budgetsStatus)
 router.get("/admin/graph", isAdminMiddleware, DashboardController.dataGraphic)
 router.put("/accept/:id", canAuthorizeBudgetMiddleware, BudgetController.acceptBudget)
+router.put("/reject/:id", canAuthorizeBudgetMiddleware, BudgetController.rejectBudget)
 //notifications
 router.get("/notifications/:id", authMiddleware, NotificationController.notificationsByUserClient)
 router.get("/notifications", isAdminMiddleware, NotificationController.notificationsAdminAndEmployee)

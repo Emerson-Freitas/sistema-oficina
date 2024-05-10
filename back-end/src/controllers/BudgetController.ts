@@ -62,6 +62,17 @@ class BudgetController {
             return res.status(400).json({ message: "Erro ao aceitar o orçamento" })
         }
     }
+
+    static async rejectBudget(req: Request, res: Response) {
+        try {
+            const { id } = req.params as any
+            const budgetService = new BudgetService()
+            const data = await budgetService.rejectBudget({ id })
+            return res.status(200).json({ message: `Orçamento: ${data.description} foi rejeitado com sucesso!`} )
+        } catch (error) {
+            return res.status(400).json({ message: "Erro ao rejeitar o orçamento" })
+        }
+    }
 }
 
 export default BudgetController

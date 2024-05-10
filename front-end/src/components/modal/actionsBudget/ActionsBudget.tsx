@@ -40,12 +40,11 @@ const ActionsBudget = ({ id, route, open, handleClose, handleOpen, title, token 
         </Modal.Title>
       </Modal.Header>
       <Modal.Body style={{ display: "flex", gap: 10, marginTop: "30px" }}>
-        <Button onClick={handleSubmit} appearance="primary" color="green">
+        <Button onClick={handleSubmit} appearance="primary" color="green" loading={loading}>
           <span>ACEITAR</span>
         </Button>
         <Button
           appearance="primary"
-          loading={loading}
           color="red"
           onClick={() => handleClose()}
         >
