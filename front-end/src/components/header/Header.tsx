@@ -1,4 +1,4 @@
-import { Navbar, Nav, Drawer, Button, Placeholder, Badge } from "rsuite";
+import { Navbar, Nav, Drawer, Button, Placeholder, Badge, Toggle } from "rsuite";
 import CogIcon from "@rsuite/icons/legacy/Cog";
 import NoticeIcon from '@rsuite/icons/Notice';
 import { useEffect, useState } from "react";
@@ -6,6 +6,7 @@ import CardUser from "../card/CardUser";
 import { useAuth } from "../hooks/useAuth";
 import NotificationComponent from "../notification/NotificationComponent";
 import { useNotification } from "../hooks/useNotification";
+import { useTheme } from "../hooks/useTheme";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -14,6 +15,7 @@ const Header = () => {
   const { count } = useNotification();
   const [afterOpenNotification, setAfterOpenNotification] = useState<boolean>(false)
   const [viewedCount, setViewedCount] = useState<number>(0);
+  const { theme, handleChangeTheme } = useTheme()
 
   const handleCloseNotification = () => {
     setOpenNotification(false)
@@ -39,8 +41,19 @@ const Header = () => {
           pullRight
           style={{ display: "flex", alignItems: "center", color: "white" }}
         >
-          <div style={{ marginRight: 30 }} >
+          <div style={{ padding: "0px 10px 0 10px" }}>
             <p>Bem vindo: <span style={{ fontWeight: "bold"}}>{userName(`${user?.name}`)}</span></p>
+          </div>
+          <div style={{ padding: "0px 10px 0 10px" }}>
+            <Toggle 
+              size={"lg"} 
+              checkedChildren="Modo Escuro" 
+              unCheckedChildren="Modo Claro"
+              onChange={(event) => {
+                handleChangeTheme(event)
+              }}
+              defaultChecked={theme === "light" ? false : true }
+            />
           </div>
           <div onClick={() => setOpenNotification(true)}>
             <Nav.Item icon={afterOpenNotification ? <NoticeIcon /> : <Badge content={count - viewedCount}><NoticeIcon /></Badge>} />

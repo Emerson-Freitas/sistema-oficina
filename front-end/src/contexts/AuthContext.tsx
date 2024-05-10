@@ -15,6 +15,7 @@ interface IUser {
   role: {
     name: string;
   };
+  picture?: string
 }
 
 interface AuthContextProps {
