@@ -44,12 +44,23 @@ class BudgetController {
     static async editBudget(req: Request, res: Response) {
        try {
             const { id, value, description, vehicle } = req.body
-            const budgetService = new BudgetService
+            const budgetService = new BudgetService()
             const data = await budgetService.editBudget({ id, value, description, vehicle })
             return res.status(200).json({ message: `Orçamento: ${data.description} foi atualizado com sucesso!`})
        } catch (error) {
             return res.status(400).json({ message: "Erro ao atualizar o orçamento"})
        }
+    }
+
+    static async acceptBudget(req: Request, res: Response) {
+        try {
+            const { id } = req.params as any
+            const budgetService = new BudgetService()
+            const data = await budgetService.acceptBudget({ id })
+            return res.status(200).json({ message: `Orçamento: ${data.description} foi aceito com sucesso!`} )
+        } catch (error) {
+            return res.status(400).json({ message: "Erro ao aceitar o orçamento" })
+        }
     }
 }
 

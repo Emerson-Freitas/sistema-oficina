@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAuth } from "../../hooks/useAuth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomWhisper from "../../whisper/CustomWhisper";
 import UpdateModal from "../../modal/updateModal/UpdateModal";
 import IUpdateBudget from "../../../interfaces/IUpdateBudget";
@@ -17,6 +17,7 @@ import stylesModal from "../../modal/Modal.module.css";
 import { formatDate } from "../../../utils/FormatDate";
 import { currencyFormat } from "../../../utils/FormatCurrency";
 import { ROLE } from "../../../enum/Role";
+import ActionsBudget from "../../modal/actionsBudget/ActionsBudget";
 
 interface Props {
   id: string;
@@ -26,8 +27,12 @@ interface Props {
   created_at: string | Date;
 }
 
+interface IAcceptOrRejectBudget {
+  id: string
+}
+
 const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const handleClose = () => setOpenModal(false);
   const [data, setData] = useState<IUpdateBudget>({
@@ -36,6 +41,19 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
     description: "",
     vehicle: "",
   });
+
+  const [accept, setAccept] = useState<boolean>(false)
+  const handleCloseAccept = () => setAccept(false);
+  const handleOpenAccept = () => setAccept(true);
+
+  const [reject, setReject] = useState<boolean>(false)
+  const handleCloseReject = () => setReject(false);
+  const handleOpeneReject = () => setReject(true);
+
+  const [actionBudget, setActionBudget] = useState<IAcceptOrRejectBudget>({
+    id: ""
+  })
+
   const handleChangeModal = () => {
     setOpenModal(!openModal);
   };
@@ -137,6 +155,12 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
                   color="white"
                   size="lg"
                   className={styles.actions}
+                  onClick={() => {
+                    setActionBudget({
+                      id: id
+                    })
+                    handleOpenAccept()
+                  }}
                 />
               }
               controlId="control-id-hover"
@@ -192,6 +216,17 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
           </div>
         </div>
       </Panel>
+      {accept && 
+        <ActionsBudget
+            id={actionBudget.id}
+            handleClose={handleCloseAccept}
+            handleOpen={handleOpenAccept}
+            route="accept"
+            open={accept}
+            title={`Deseja aceitar o orçamento: ${description}?`}
+            token={token}
+        />
+      }
     </div>
   );
 };

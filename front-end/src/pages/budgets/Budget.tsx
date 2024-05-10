@@ -5,7 +5,6 @@ import axios, { AxiosResponse } from "axios";
 import SectionCard from "../../components/section/SectionCard";
 import IBudget from "../../interfaces/IBudget";
 import { useAuth } from "../../components/hooks/useAuth";
-import { Loader } from "rsuite";
 
 const Budget = () => {
   const [open, setOpen] = useState(false);
@@ -17,14 +16,12 @@ const Budget = () => {
   const [limit, setLimit] = useState<number>(0)
   const [page, setPage] = useState<number>(1)
   const [initialTake, setInitialTake] = useState<number>(6)
-  const [loading, setLoading] = useState<boolean>(false)
   const { token } = useAuth()
 
   const findBudgets = async (page: number, take: number = 6) => {
     const skip = (page - 1) * take
     await axios.get(`${import.meta.env.VITE_BASE_URL}/budgets?skip=${skip}&take=${take}`, { headers: { Authorization: token }})
       .then((res: AxiosResponse) => {
-        setLoading(true)
         setData(res.data.budgets)
         setTotal(res.data.totalPages)
         setLimit(res.data.count)
@@ -32,7 +29,6 @@ const Budget = () => {
       .catch((error: Error) => {
         console.log(`${error.response.data.message}`);
       })
-      .finally(() => setLoading(false))
   }
 
   useEffect(() => {

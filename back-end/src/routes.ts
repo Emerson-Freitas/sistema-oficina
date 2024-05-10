@@ -12,6 +12,7 @@ import multer from "multer";
 import ReportController from "./controllers/ReportController";
 import DashboardController from "./controllers/DashboardController";
 import NotificationController from "./controllers/NotificationController";
+import { canAuthorizeBudgetMiddleware } from "./middleware/canAuthorizeBudgetMiddleware";
 
 const router = Router();
 const upload = multer(uploadConfig.upload("./tmp"))
@@ -34,7 +35,7 @@ router.post("/users/picture", authMiddleware, upload.single('file'), UserControl
 router.get("/report/excel", authMiddleware, ReportController.reportExcel)
 router.get("/dashboard", authMiddleware, DashboardController.budgetsStatus)
 router.get("/admin/graph", isAdminMiddleware, DashboardController.dataGraphic)
-
+router.put("/accept/:id", canAuthorizeBudgetMiddleware, BudgetController.acceptBudget)
 //notifications
 router.get("/notifications/:id", authMiddleware, NotificationController.notificationsByUserClient)
 router.get("/notifications", isAdminMiddleware, NotificationController.notificationsAdminAndEmployee)

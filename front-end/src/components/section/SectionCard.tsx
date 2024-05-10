@@ -31,39 +31,38 @@ const SectionCard = ({ data, find, countLimit, total }: Props) => {
     }
   }, [data]);
 
-  useEffect(() => {
-    console.log("activeLoading", activeLoading)
-  }, [activeLoading])
-  
   return (
     <>
-      {activeLoading && (
-        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Loader size="lg"/>
+      {activeLoading ? (
+        <Row style={{ display: "flex", justifyContent: "center", alignItems: "center"}}>
+          <Loader size="md"/>
+        </Row>
+      ) : (
+        <>
+          <Row>
+          {data?.map((item: IBudget) => (
+            <Col md={8} sm={24} xs={24} key={item.id}>
+              <CardBudget
+                key={item.id}
+                value={item.value}
+                description={item.description}
+                created_at={item.created_at}
+                vehicle={item.vehicle.name}
+                id={item.id}
+              />
+            </Col>
+          ))}
+        </Row>
+        <div style={{ width: "100%", padding: "20px 0 20px 0"}}>
+          <CustomPagination
+            totalPages={total}
+            activePage={activePage}
+            onSelectPage={handlePageChange}
+            totalCount={countLimit}
+          />
         </div>
+      </>
       )}
-      <Row>
-        {data?.map((item: IBudget) => (
-          <Col md={8} sm={24} xs={24} key={item.id}>
-            <CardBudget
-              key={item.id}
-              value={item.value}
-              description={item.description}
-              created_at={item.created_at}
-              vehicle={item.vehicle.name}
-              id={item.id}
-            />
-          </Col>
-        ))}
-      </Row>
-      <div style={{ width: "100%", padding: "20px 0 20px 0"}}>
-        <CustomPagination
-          totalPages={total}
-          activePage={activePage}
-          onSelectPage={handlePageChange}
-          totalCount={countLimit}
-        />
-      </div>
     </>
   );
 };

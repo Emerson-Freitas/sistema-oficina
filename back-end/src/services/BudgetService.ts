@@ -205,6 +205,38 @@ class BudgetService {
 
       return budget
   }
+
+  async acceptBudget({ id }: any) {
+    if(!id) {
+      throw new Error("Erro ao aceitar o orçamento")
+    }
+
+    const budget = await prismaClient.budget.findFirst({
+      where: {
+        id
+      },
+      select: {
+        description: true
+      }
+    })
+
+    if (!budget) {
+      throw new Error("Erro ao aceitar o orçamento")
+    }
+
+    if (budget) {
+      await prismaClient.budget.update({
+        where: {
+          id
+        },
+        data: {
+          status: "ACEITO"
+        }
+      })
+    }
+
+    return budget
+  }
 }
 
 export default BudgetService;
