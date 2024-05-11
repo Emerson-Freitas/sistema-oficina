@@ -10,12 +10,13 @@ import { MaskTelephone } from "../../utils/MaskTelephone";
 import UpdateModal from "../modal/updateModal/UpdateModal";
 import styles from "../modal/Modal.module.css";
 import CustomPagination from "../pagination/CustomPagination";
+import CustomWhisper from "../whisper/CustomWhisper";
 
 const { Column, HeaderCell, Cell } = TableRSuite;
 
 interface Props {
   data: IUser[];
-  find: (page:number, take: number) => void;
+  find: (page: number, take: number) => void;
   countLimit: number;
   handleChangePage: (page: number) => void;
   total: number;
@@ -25,17 +26,17 @@ const Table = ({ data, countLimit, find, total }: Props) => {
   const [limit, setLimit] = useState<number>(6);
   const [page, setPage] = useState<number>(1);
   const [activePage, setActivePage] = useState(1);
-  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
+  const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false);
   const handleClose = () => setOpenDeleteModal(false);
   const handleOpen = () => setOpenDeleteModal(true);
 
-  const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false)
+  const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
   const handleCloseUpdate = () => setOpenUpdateModal(false);
   const handleOpenUpdate = () => setOpenUpdateModal(true);
 
   const handlePageChange = (page: number) => {
     setActivePage(page);
-    find(page, limit)
+    find(page, limit);
   };
 
   const [updateUser, setUpdateUser] = useState({
@@ -43,13 +44,13 @@ const Table = ({ data, countLimit, find, total }: Props) => {
     name: "",
     cpf: "",
     telephone: "",
-    email: ""
-  })
+    email: "",
+  });
 
   const [user, setUser] = useState({
     name: "",
     id: "",
-  })
+  });
 
   const handleChange = ({ name, value }: { name: string; value: string }) => {
     setUpdateUser({
@@ -67,10 +68,10 @@ const Table = ({ data, countLimit, find, total }: Props) => {
   const handleDelete = (name: string, id: string) => {
     setUser({
       name: name,
-      id: id
-    })
-    handleOpen()
-  }
+      id: id,
+    });
+    handleOpen();
+  };
 
   const handleUpdate = (rowData: any) => {
     setUpdateUser({
@@ -78,14 +79,18 @@ const Table = ({ data, countLimit, find, total }: Props) => {
       name: rowData.name,
       cpf: rowData.cpf,
       telephone: rowData.telephone,
-      email: rowData.email
-    })
-    handleOpenUpdate()
-  }
+      email: rowData.email,
+    });
+    handleOpenUpdate();
+  };
 
   return (
     <div>
-      <TableRSuite height={420} data={dataFilter}>
+      <TableRSuite
+        style={{ borderRadius: 2 }}
+        height={420}
+        data={dataFilter}
+      >
         <Column width={200} fixed>
           <HeaderCell>Nome</HeaderCell>
           <Cell dataKey="name" />
@@ -123,16 +128,32 @@ const Table = ({ data, countLimit, find, total }: Props) => {
           <Cell>
             {(rowData: IUser | any) => (
               <div style={{ display: "flex", gap: 20, cursor: "pointer" }}>
-                <EditIcon
-                  height={24}
-                  title="Editar"
-                  onClick={() => handleUpdate(rowData)}
-                />
-                <DeleteIcon
-                  height={24}
-                  title="Deletar"
-                  onClick={() => handleDelete(rowData.name, rowData.id)}
-                />
+                <CustomWhisper
+                  content={
+                    <EditIcon
+                      height={24}
+                      title="Editar"
+                      onClick={() => handleUpdate(rowData)}
+                    />
+                  }
+                  controlId="control-id-hover"
+                  message="Editar Usuario"
+                  trigger="hover"
+                  placement="top"
+                ></CustomWhisper>
+                <CustomWhisper
+                  content={
+                    <DeleteIcon
+                      height={24}
+                      title="Deletar"
+                      onClick={() => handleDelete(rowData.name, rowData.id)}
+                    />
+                  }
+                  controlId="control-id-hover"
+                  message="Excluir Usuario"
+                  trigger="hover"
+                  placement="top"
+                ></CustomWhisper>
               </div>
             )}
           </Cell>

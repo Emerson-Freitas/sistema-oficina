@@ -7,7 +7,7 @@ interface Props {
 
 const CustomContent = ({ title, children }: Props & { children: ReactNode }) => {
   return (
-    <Content style={{ backgroundColor: "#fff", padding: "2.5%" }}>
+    <Content style={{ padding: "2.5%" }}>
         <div style={{ display: 'flex', alignItems: 'center', marginBottom: "2.5%"}}>
             <h2>{title}</h2>
         </div>

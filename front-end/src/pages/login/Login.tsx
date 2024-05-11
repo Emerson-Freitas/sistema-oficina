@@ -7,6 +7,7 @@ import axios, { AxiosResponse } from "axios";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../components/hooks/useAuth";
+import { useTheme } from "../../components/hooks/useTheme";
 
 interface Auth {
   email: string;
@@ -14,13 +15,14 @@ interface Auth {
 }
 
 const Login = () => {
+  const { theme } = useTheme()
   const [credentials, setCredentials] = useState<Auth>({
     email: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState<boolean>(false);
-  const { signIn, authenticated, user, token } = useAuth();
+  const { signIn } = useAuth();
   const navigate = useNavigate();
 
   const handleVisible = () => {
@@ -53,9 +55,9 @@ const Login = () => {
       style={{
         width: "100vw",
         height: "100vh",
-        background: "black",
         display: "flex",
         justifyContent: "center",
+        backgroundColor: theme === 'light' ? "#3e3e42" : ""
       }}
     >
       <div
@@ -68,7 +70,7 @@ const Login = () => {
         <Form
           style={{
             padding: "5% 3% 2.5% 2.5%",
-            backgroundColor: "whitesmoke",
+            backgroundColor: theme === 'light' ? "whitesmoke" : "#3e3e42",
             borderRadius: "10px",
           }}
         >
@@ -90,7 +92,7 @@ const Login = () => {
             />
             <InputGroup.Button
               onClick={handleVisible}
-              style={{ display: "center", alignItems: "center" }}
+              style={{ display: "center", alignItems: "center", backgroundColor: theme === 'light' ? "whitesmoke" : '#1A1D24' }}
             >
               {visible ? <EyeIcon /> : <EyeSlashIcon />}
             </InputGroup.Button>

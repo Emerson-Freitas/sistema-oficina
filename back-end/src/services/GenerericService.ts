@@ -7,7 +7,6 @@ interface GenericRequest {
 
 class GenericService {
     async deleteRegister({ table, id } : GenericRequest) {
-
         try {
             const result = await prismaClient.$queryRawUnsafe(`SELECT * FROM ${table} WHERE id = '${id}'`)
 
