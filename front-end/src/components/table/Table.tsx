@@ -124,13 +124,11 @@ const Table = ({ data, countLimit, find, total }: Props) => {
             {(rowData: IUser | any) => (
               <div style={{ display: "flex", gap: 20, cursor: "pointer" }}>
                 <EditIcon
-                  color="black"
                   height={24}
                   title="Editar"
                   onClick={() => handleUpdate(rowData)}
                 />
                 <DeleteIcon
-                  color="black"
                   height={24}
                   title="Deletar"
                   onClick={() => handleDelete(rowData.name, rowData.id)}

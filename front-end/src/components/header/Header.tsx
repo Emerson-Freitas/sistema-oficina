@@ -7,6 +7,9 @@ import { useAuth } from "../hooks/useAuth";
 import NotificationComponent from "../notification/NotificationComponent";
 import { useNotification } from "../hooks/useNotification";
 import { useTheme } from "../hooks/useTheme";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSun, faMoon} from "@fortawesome/free-solid-svg-icons";
+import styles from './Header.module.css'
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -36,19 +39,19 @@ const Header = () => {
 
   return (
     <div>
-      <Navbar style={{ height: "8vh", backgroundColor: "#282F66", width: "100%" }}>
+      <Navbar style={{ height: "8vh", width: "100%" }}>
         <Nav
           pullRight
-          style={{ display: "flex", alignItems: "center", color: "white" }}
+          style={{ display: "flex", alignItems: "center" }}
         >
           <div style={{ padding: "0px 10px 0 10px" }}>
             <p>Bem vindo: <span style={{ fontWeight: "bold"}}>{userName(`${user?.name}`)}</span></p>
           </div>
           <div style={{ padding: "0px 10px 0 10px" }}>
-            <Toggle 
+            <Toggle
               size={"lg"} 
-              checkedChildren="Modo Escuro" 
-              unCheckedChildren="Modo Claro"
+              checkedChildren={<FontAwesomeIcon icon={faSun} size="1x"/> }
+              unCheckedChildren={<FontAwesomeIcon icon={faMoon} size="1x"/>}
               onChange={(event) => {
                 handleChangeTheme(event)
               }}

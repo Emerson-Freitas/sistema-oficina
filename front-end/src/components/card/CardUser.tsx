@@ -3,6 +3,7 @@ import { Button, Tooltip, Whisper } from "rsuite";
 import { useAuth } from "../hooks/useAuth";
 import { Uploader, Message, Loader, useToaster } from 'rsuite';
 import AvatarIcon from '@rsuite/icons/legacy/Avatar';
+import { useTheme } from "../hooks/useTheme";
 
 interface Props {
   url_image?: string | undefined;
@@ -17,6 +18,7 @@ const CardUser = ({ url_image, name, email, role }: Props) => {
   const toaster = useToaster();
   const [uploading, setUploading] = useState(false);
   const [fileInfo, setFileInfo] = useState(null);
+  const { theme } = useTheme()
 
   const handleClick = () => {
     setLoading(true)
@@ -38,7 +40,7 @@ const CardUser = ({ url_image, name, email, role }: Props) => {
         padding: 20,
         width: 300,
         height: "auto",
-        backgroundColor: "whitesmoke",
+        backgroundColor: theme === "light" ? "whitesmoke" : "#3e3e42",
         borderRadius: 10,
         display: "flex",
         flexDirection: "column",
@@ -55,7 +57,7 @@ const CardUser = ({ url_image, name, email, role }: Props) => {
           style={{
             borderRadius: "50%",
             marginBottom: 20,
-            border: "4px solid #fff",
+            border: theme === "light" ? "4px solid #fff" : "4px solid #252526",
             boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
           }}
         />

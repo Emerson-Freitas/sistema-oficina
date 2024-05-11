@@ -12,7 +12,7 @@ const NavToggle = ({ expand, onChange }: Props) => {
   return (
     <Nav pullRight>
       <Nav.Item onClick={onChange} className={styles.item} >
-        {expand ? <AngleLeftIcon className={styles.icon} /> : <AngleRightIcon className={styles.icon} />}
+        {expand ? <AngleLeftIcon /> : <AngleRightIcon />}
       </Nav.Item>
     </Nav>
   );

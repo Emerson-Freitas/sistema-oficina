@@ -1,4 +1,4 @@
-import { Button, ButtonToolbar, Input, InputNumber, SelectPicker } from 'rsuite';
+import { Button, ButtonToolbar, IconButton, Input, InputNumber, SelectPicker } from 'rsuite';
 import { Modal as ModalRSuite } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import styles from '../Modal.module.css'

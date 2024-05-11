@@ -20,6 +20,7 @@ const CardDashboard = ({ title, color, count }: Props) => {
   return (
     <Panel bordered className={styles.panel} style={{ backgroundColor: `${color}` }}>
         <div className={styles.box}>
+        {/* #3e3e42 */}
             <h4 className={styles.title}>{title}</h4>
             <div onClick={handleVisible} className={styles.boxIcon}>
                 {visible ? <EyeIcon className={styles.icon} /> : <EyeSlashIcon className={styles.icon}/>}

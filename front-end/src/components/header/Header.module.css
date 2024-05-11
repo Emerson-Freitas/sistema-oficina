@@ -1,0 +1,11 @@
+.toggle {
+    /* Estilos padrão do Toggle */
+  }
+  
+.toggle .lightBackground {
+    background-color: verde; /* Cor de fundo para o modo claro */
+  }
+  
+.toggle .darkBackground {
+    background-color: vermelho; /* Cor de fundo para o modo escuro */
+  }

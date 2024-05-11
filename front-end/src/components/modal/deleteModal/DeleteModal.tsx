@@ -43,17 +43,18 @@ const DeleteModal = ({ name, id, open, table, handleClose }: Props) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body style={{display: "flex", gap:10, marginTop: '30px'}}>
-        <Button onClick={handleClose} appearance="primary" color="green">
-          <span>Cancelar</span>
-        </Button>
         <Button
-          onClick={handleSubmit}
-          appearance="primary"
-          loading={loading}
-          color="red"
-        >
-          <span>Deletar</span>
+            onClick={handleSubmit}
+            appearance="primary"
+            loading={loading}
+            color="red"
+          >
+          <span>DELETAR</span>
         </Button>
+        <Button onClick={handleClose} appearance="primary" color="green">
+          <span>CANCELAR</span>
+        </Button>
+       
       </Modal.Body>
     </Modal>
   );
