@@ -5,6 +5,7 @@ import axios, { AxiosResponse } from 'axios';
 import { useAuth } from '../../components/hooks/useAuth';
 import AdminChart from '../../components/charts/AdminChart';
 import styles from '../../components/charts/AdminChart.module.css'
+import { useTheme } from '../../components/hooks/useTheme';
 
 export interface ISeries {
   name: string
@@ -18,6 +19,7 @@ const AdminDashboard = () => {
   const [rejected, setRejected] = useState<number>(0)
   const [series, setSeries] = useState<ISeries[]>([])
   const [categories, setCategories] = useState<string[]>([])
+  const { theme } = useTheme()
 
   const findBudgets = async () => {
     await axios

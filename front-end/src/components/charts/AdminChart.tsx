@@ -33,7 +33,7 @@ const AdminChart = ({ series, categories }: Props) => {
             stroke: {
                 show: true,
                 width: 2,
-                colors: ['transparent']
+                // colors: ['transparent']
             },
             xaxis: {
                 categories: []
