@@ -50,8 +50,8 @@ const Header = () => {
           <div style={{ padding: "0px 10px 0 10px" }}>
             <Toggle
               size={"lg"} 
-              checkedChildren={<FontAwesomeIcon icon={faSun} size="1x"/> }
-              unCheckedChildren={<FontAwesomeIcon icon={faMoon} size="1x"/>}
+              checkedChildren={<FontAwesomeIcon color="yellow" icon={faSun} size="1x"/> }
+              unCheckedChildren={<FontAwesomeIcon color="#2d2d30" icon={faMoon} size="1x"/>}
               onChange={(event) => {
                 handleChangeTheme(event)
               }}

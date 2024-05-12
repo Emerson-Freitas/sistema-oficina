@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { Input, InputNumber, Panel, Tooltip, Whisper } from "rsuite";
 import styles from "./CardBudget.module.css";
+import stylesDarkMode from "./CardBudgetDarkMode.module.css";
 import {
   faCalculator,
   faPenToSquare,
@@ -18,6 +19,7 @@ import { formatDate } from "../../../utils/FormatDate";
 import { currencyFormat } from "../../../utils/FormatCurrency";
 import { ROLE } from "../../../enum/Role";
 import ActionsBudget from "../../modal/actionsBudget/ActionsBudget";
+import { useTheme } from "../../hooks/useTheme";
 
 interface Props {
   id: string;
@@ -54,6 +56,8 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
     id: ""
   })
 
+  const { theme } = useTheme()
+
   const handleChangeModal = () => {
     setOpenModal(!openModal);
   };
@@ -73,7 +77,7 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
 
   return (
     <div style={{ marginTop: "1.5%" }}>
-      <div className={styles.contentActions}>
+      <div className={ theme === 'light' ? styles.contentActions : stylesDarkMode.contentActions}>
         {user?.role.name === ROLE.ADMIN || user?.role.name === ROLE.FUNCIONARIO ? (
           <>
             {openModal && (
@@ -128,7 +132,7 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
             <CustomWhisper
               content={
                 <FontAwesomeIcon
-                  className={styles.actions}
+                  className={ theme === 'light' ? styles.actions : stylesDarkMode.actions }
                   icon={faPenToSquare}
                   color="white"
                   size="lg"
@@ -154,7 +158,7 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
                   icon={faCheck}
                   color="white"
                   size="lg"
-                  className={styles.actions}
+                  className={ theme === 'light' ? styles.actions : stylesDarkMode.actions }
                   onClick={() => {
                     setActionBudget({
                       id: id
@@ -174,7 +178,7 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
                   icon={faXmark}
                   color="white"
                   size="lg"
-                  className={styles.actions}
+                  className={ theme === 'light' ? styles.actions : stylesDarkMode.actions }
                   onClick={() => {
                     setActionBudget({
                       id: id
@@ -196,7 +200,7 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
                 icon={faXmark}
                 color="white"
                 size="lg"
-                className={styles.actions}
+                className={ theme === 'light' ? styles.actions : stylesDarkMode.actions }
               />
             }
             controlId="control-id-hover"
@@ -206,7 +210,7 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
           ></CustomWhisper>
         )}
       </div>
-      <Panel bordered className={styles.panel}>
+      <Panel bordered className={ theme === "light" ? styles.panel : stylesDarkMode.panel}>
         <div className={styles.contentPicture}>
           <FontAwesomeIcon
             icon={faCalculator}
