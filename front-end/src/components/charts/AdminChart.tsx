@@ -10,7 +10,7 @@ interface Props {
 const AdminChart = ({ series, categories }: Props) => {
     const [endDate] = useState(dayjs().format('DD/MM/YYYY'))
     const [initDate] = useState(dayjs().subtract(1, "year").format('DD/MM/YYYY'))
-
+    
     const [chartData, setChartData] = useState({
         series: [],
         options: {

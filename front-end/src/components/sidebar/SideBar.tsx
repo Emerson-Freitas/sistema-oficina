@@ -11,10 +11,12 @@ import NavToggle from './NavToggle';
 import { useAuth } from '../hooks/useAuth';
 import logoMax from '../../assets/logo-max.png'
 import logoMin from '../../assets/logo-min.png'
+import { useTheme } from '../hooks/useTheme';
 
 const SideBar = () => {
     const [expand, setExpand] = useState(true);
     const { user } = useAuth();
+    const { theme } = useTheme()
 
     return (
       <RSuiteSideBar
@@ -36,26 +38,26 @@ const SideBar = () => {
             <Sidenav.Body >
               {user?.role.name === "ADMIN" && (
                 <Nav activeKey="1">
-                  <Nav.Item  icon={<DashboardIcon/>} as={Link} to="/dashboard"><p className={styles.text}>Dashboard</p></Nav.Item>
-                  <Nav.Item icon={<PeoplesIcon />} as={Link} to="/users"><p className={styles.text}>Usuários</p></Nav.Item>
-                  <Nav.Item icon={<CreditCardPlusIcon />} as={Link} to="/budgets"><p className={styles.text}>Orçamentos</p></Nav.Item>
-                  <Nav.Item icon={<ToolsIcon />} as={Link} to="/vehicles"><p className={styles.text}>Veículos</p></Nav.Item>
-                  <Nav.Item icon={<DocPassIcon />} as={Link} to="/reports"><p className={styles.text}>Relatórios</p></Nav.Item>
+                  <Nav.Item  icon={<DashboardIcon/>} as={Link} to="/dashboard"><p style={{ color: theme === "dark" ? "#007acc" : "" }} className={styles.text}>Dashboard</p></Nav.Item>
+                  <Nav.Item icon={<PeoplesIcon />} as={Link} to="/users"><p style={{ color: theme === "dark" ? "#007acc" : "" }} className={styles.text}>Usuários</p></Nav.Item>
+                  <Nav.Item icon={<CreditCardPlusIcon />} as={Link} to="/budgets"><p style={{ color: theme === "dark" ? "#007acc" : "" }} className={styles.text}>Orçamentos</p></Nav.Item>
+                  <Nav.Item icon={<ToolsIcon />} as={Link} to="/vehicles"><p style={{ color: theme === "dark" ? "#007acc" : "" }} className={styles.text}>Veículos</p></Nav.Item>
+                  <Nav.Item icon={<DocPassIcon />} as={Link} to="/reports"><p style={{ color: theme === "dark" ? "#007acc" : "" }} className={styles.text}>Relatórios</p></Nav.Item>
                 </Nav>
               )}
               {user?.role.name === "CLIENTE" && (
                 <Nav activeKey="1">
-                  <Nav.Item  icon={<DashboardIcon/>} as={Link} to="/dashboard"><p className={styles.text}>Dashboard</p></Nav.Item>
-                  <Nav.Item icon={<CreditCardPlusIcon />} as={Link} to="/budgets"><p className={styles.text}>Orçamentos</p></Nav.Item>
-                  <Nav.Item icon={<ToolsIcon />} as={Link} to="/vehicles"><p className={styles.text}>Veículos</p></Nav.Item>
+                  <Nav.Item  icon={<DashboardIcon/>} as={Link} to="/dashboard"><p style={{ color: theme === "dark" ? "#007acc" : "" }} className={styles.text}>Dashboard</p></Nav.Item>
+                  <Nav.Item icon={<CreditCardPlusIcon />} as={Link} to="/budgets"><p style={{ color: theme === "dark" ? "#007acc" : "" }} className={styles.text}>Orçamentos</p></Nav.Item>
+                  <Nav.Item icon={<ToolsIcon />} as={Link} to="/vehicles"><p style={{ color: theme === "dark" ? "#007acc" : "" }} className={styles.text}>Veículos</p></Nav.Item>
                 </Nav>
               )}
               {user?.role.name === "FUNCIONARIO" && (
                 <Nav activeKey="1">
-                 <Nav.Item  icon={<DashboardIcon/>} as={Link} to="/dashboard"><p className={styles.text}>Dashboard</p></Nav.Item>
-                 <Nav.Item icon={<CreditCardPlusIcon />} as={Link} to="/budgets"><p className={styles.text}>Orçamentos</p></Nav.Item>
-                 <Nav.Item icon={<ToolsIcon />} as={Link} to="/vehicles"><p className={styles.text}>Veículos</p></Nav.Item>
-                 <Nav.Item icon={<DocPassIcon />} as={Link} to="/reports"><p className={styles.text}>Relatórios</p></Nav.Item>
+                 <Nav.Item  icon={<DashboardIcon/>} as={Link} to="/dashboard"><p style={{ color: theme === "dark" ? "#007acc" : "" }} className={styles.text}>Dashboard</p></Nav.Item>
+                 <Nav.Item icon={<CreditCardPlusIcon />} as={Link} to="/budgets"><p style={{ color: theme === "dark" ? "#007acc" : "" }} className={styles.text}>Orçamentos</p></Nav.Item>
+                 <Nav.Item icon={<ToolsIcon />} as={Link} to="/vehicles"><p style={{ color: theme === "dark" ? "#007acc" : "" }} className={styles.text}>Veículos</p></Nav.Item>
+                 <Nav.Item icon={<DocPassIcon />} as={Link} to="/reports"><p style={{ color: theme === "dark" ? "#007acc" : "" }} className={styles.text}>Relatórios</p></Nav.Item>
                 </Nav>
               )}
             </Sidenav.Body>
