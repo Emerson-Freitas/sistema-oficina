@@ -10,7 +10,7 @@ interface ThemeContextProps {
 export const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export default function ThemeProvider({ children }: PropsWithChildren) {
-    const [theme, setTheme] = useState<Theme | any>(localStorage.getItem("THEME_PREFERENCE_USER") as Theme)
+    const [theme, setTheme] = useState<Theme>(localStorage.getItem("THEME_PREFERENCE_USER") as Theme)
 
     const handleChangeTheme = (checked: boolean) => {
         setTheme(checked ? 'dark' : 'light');

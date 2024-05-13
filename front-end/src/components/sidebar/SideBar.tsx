@@ -14,9 +14,16 @@ import logoMin from '../../assets/logo-min.png'
 import { useTheme } from '../hooks/useTheme';
 
 const SideBar = () => {
-    const [expand, setExpand] = useState(true);
+    const [expand, setExpand] = useState(() => {
+      const storedValue = localStorage.getItem("SIDEBAR_EXPAND");
+      return storedValue ? JSON.parse(storedValue) : false;
+    });
     const { user } = useAuth();
     const { theme } = useTheme()
+
+    useEffect(() => {
+      localStorage.setItem("SIDEBAR_EXPAND", JSON.stringify(expand));
+    }, [expand]);
 
     return (
       <RSuiteSideBar
