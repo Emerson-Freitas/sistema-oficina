@@ -7,12 +7,13 @@ import IBudget from "../../interfaces/IBudget";
 
 interface Props {
   data: IBudget[];
-  find: (page:number, take: number) => void;
+  find: (page:number, take: number, queryInput: string) => void;
   countLimit: number;
   total: number;
+  queryInput: string;
 }
 
-const SectionCard = ({ data, find, countLimit, total }: Props) => {
+const SectionCard = ({ data, find, countLimit, total, queryInput }: Props) => {
   const [activePage, setActivePage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(6);
   const [page, setPage] = useState<number>(1);
@@ -20,7 +21,7 @@ const SectionCard = ({ data, find, countLimit, total }: Props) => {
 
   const handlePageChange = (page: number) => {
     setActivePage(page);
-    find(page, limit)
+    find(page, limit, queryInput)
   };
 
   useEffect(() => {

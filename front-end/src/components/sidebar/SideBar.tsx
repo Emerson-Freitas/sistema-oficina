@@ -31,8 +31,8 @@ const SideBar = () => {
         width={expand ? 220 : 56}
         collapsible
       >
-        <Sidenav style={{ height: '92vh'}}>
-          <Sidenav.Header>
+        <Sidenav>
+          <Sidenav.Header style={{ height: '8vh'}}>
             <div className={styles.content}>
               { expand ? <img src={logoMax} alt='Logo no tamanho máximo' className={styles.logo}/> : <img src={logoMin} alt='Logo no tamanho mínimo' className={styles.logo}/>}
             </div>
@@ -42,7 +42,7 @@ const SideBar = () => {
             defaultOpenKeys={["5"]}
             appearance="subtle"
           >
-            <Sidenav.Body >
+            <Sidenav.Body style={{ height: "84vh" }} >
               {user?.role.name === "ADMIN" && (
                 <Nav activeKey="1">
                   <Nav.Item  icon={<DashboardIcon/>} as={Link} to="/dashboard"><p style={{ color: theme === "dark" ? "#007acc" : "" }} className={styles.text}>Dashboard</p></Nav.Item>
@@ -70,7 +70,9 @@ const SideBar = () => {
             </Sidenav.Body>
           </Sidenav>
         </Sidenav>
-        <NavToggle expand={expand} onChange={() => setExpand(!expand)} />
+        <div>
+            <NavToggle expand={expand} onChange={() => setExpand(!expand)} />
+        </div>
       </RSuiteSideBar>
     );
 }

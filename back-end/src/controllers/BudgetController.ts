@@ -18,9 +18,9 @@ class BudgetController {
 
     static async findBudgets(req: Request, res: Response) {
         try {
-            const { skip, take } = req.query
+            const { skip, take, queryInput } = req.query
             const budgetService = new BudgetService();
-            const data = await budgetService.findBudgets({skip, take})
+            const data = await budgetService.findBudgets({skip, take, queryInput})
 
             return res.status(200).json(data)
         } catch (error: any) {

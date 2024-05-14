@@ -103,7 +103,25 @@ class BudgetService {
     return budget;
   }
 
-  async findBudgets({ skip, take }: any) {
+  async findBudgets({ skip, take, queryInput}: any) {
+    let where: any
+    let ids: any
+    queryInput = queryInput.trim()
+
+    if (queryInput) {
+      const query = `%${queryInput}%`; 
+
+      ids = await prismaClient.$queryRaw<{ id: number }[]>`
+        SELECT id FROM "budgets"
+        WHERE "description" LIKE ${query} 
+        OR "value"::text LIKE ${query}
+        OR "created_at"::text LIKE ${query}
+      `;
+
+      if (ids.length > 0) {
+        where = { id: { in: ids.map((row: any) => row.id) } };
+      }
+    }
     const budgets = await prismaClient.budget.findMany({
       select: {
         id: true,
@@ -117,6 +135,7 @@ class BudgetService {
         },
         created_at: true,
       },
+      where: where,
       orderBy: {
         created_at: "asc",
       },
@@ -124,7 +143,7 @@ class BudgetService {
       take: Number(take),
     });
 
-    const totalCount = await prismaClient.budget.count();
+    const totalCount = queryInput ? budgets.length : await prismaClient.budget.count();
     const totalPages = Math.ceil(totalCount / take);
 
     return {

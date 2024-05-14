@@ -1,4 +1,3 @@
-import { Outlet } from "react-router-dom";
 import { Container, Content } from "rsuite";
 import Header from "../header/Header";
 import SideBar from "../sidebar/SideBar";

@@ -5,6 +5,7 @@ import axios, { AxiosResponse } from "axios";
 import SectionCard from "../../components/section/SectionCard";
 import IBudget from "../../interfaces/IBudget";
 import { useAuth } from "../../components/hooks/useAuth";
+import { toast } from "react-toastify";
 
 const Budget = () => {
   const [open, setOpen] = useState(false);
@@ -17,25 +18,44 @@ const Budget = () => {
   const [page, setPage] = useState<number>(1)
   const [initialTake, setInitialTake] = useState<number>(6)
   const { token } = useAuth()
+  const [queryInput, setQueryInput] = useState<string>("");
+  const [callQueryInput, setCallQueryInput] = useState<boolean>(false)
+  const handleCallQueryInput = () => setCallQueryInput(true);
 
-  const findBudgets = async (page: number, take: number = 6) => {
+  const handleQueryInput = (event: string) => {
+    setQueryInput(event);
+  }
+
+  const findBudgets = async (page: number, take: number = 6, queryInput: string) => {
     const skip = (page - 1) * take
-    await axios.get(`${import.meta.env.VITE_BASE_URL}/budgets?skip=${skip}&take=${take}`, { headers: { Authorization: token }})
+    await axios.get(`${import.meta.env.VITE_BASE_URL}/budgets?queryInput=${queryInput}&skip=${skip}&take=${take}`, { headers: { Authorization: token }})
       .then((res: AxiosResponse) => {
         setData(res.data.budgets)
         setTotal(res.data.totalPages)
         setLimit(res.data.count)
       })
       .catch((error: Error) => {
-        console.log(`${error.response.data.message}`);
+        toast.error(`${error.response.data.message}`);
       })
   }
 
   useEffect(() => {
     if (user?.role.name === 'ADMIN') {
-      findBudgets(page, initialTake)
+      findBudgets(page, initialTake, queryInput)
     } 
   }, [user])
+
+  useEffect(() => {
+    if (callQueryInput === true) {
+      findBudgets(page, initialTake, queryInput)
+      setCallQueryInput(false)
+    }
+  }, [queryInput, callQueryInput])
+
+  
+  useEffect(() => {
+    console.log("query_input", queryInput)
+  }, [queryInput])
 
   return (
     <CustomContent title="Orçamentos">
@@ -43,6 +63,8 @@ const Budget = () => {
         handleClose={handleClose}
         handleOpen={handleOpen}
         open={open}
+        handleQueryInput={handleQueryInput}
+        handleCallQueryInput={handleCallQueryInput}
       />
       {user?.role.name === 'ADMIN' && (
         <>
@@ -51,6 +73,7 @@ const Budget = () => {
             find={findBudgets}
             total={total}
             countLimit={limit}
+            queryInput={queryInput}
           />
       </>
     )}

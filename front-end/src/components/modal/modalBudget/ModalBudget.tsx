@@ -1,20 +1,19 @@
-import { Button, ButtonToolbar, IconButton, Input, InputNumber, SelectPicker } from 'rsuite';
+import { Button, ButtonToolbar, IconButton, Input, InputGroup, InputNumber, SelectPicker } from 'rsuite';
 import { Modal as ModalRSuite } from 'rsuite';
 import 'rsuite/dist/rsuite.min.css';
 import styles from '../Modal.module.css'
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../hooks/useAuth';
-import { NotificationState } from '../../../contexts/NotificationContext';
-import Budget from '../../../pages/budgets/Budget';
-import INotification from '../../../interfaces/INotification';
-import { ROLE } from '../../../enum/Role';
+import SearchIcon from '@rsuite/icons/Search';
 
 interface Props {
     handleClose: () => void
     handleOpen: () => void
     open: boolean
+    handleQueryInput: (event: string) => void
+    handleCallQueryInput: () => void
 }
 
 interface RSuiteComponent {
@@ -22,7 +21,8 @@ interface RSuiteComponent {
   label: string
 }
 
-const ModalBudget = ({ handleOpen, handleClose, open }: Props) => {
+
+const ModalBudget = ({ handleOpen, handleClose, open, handleQueryInput, handleCallQueryInput }: Props) => {
   const [clients, setClients] = useState<RSuiteComponent[]>([])
   const [selectedClient, setSelectedClient] = useState<unknown | string>()
   const [value, setValue] = useState<number>(0)
@@ -75,6 +75,12 @@ const ModalBudget = ({ handleOpen, handleClose, open }: Props) => {
     <div>
       <ButtonToolbar>
         <Button style={{ backgroundColor: "#282F66", color: 'white'}} onClick={handleOpen}>Novo Orçamento</Button>
+      <InputGroup inside style={{ width: "30%" }}>
+        <Input maxLength={100} onChange={handleQueryInput} placeholder='Digite o que deseja filtrar...'/>
+        <InputGroup.Button onClick={handleCallQueryInput}>
+          <SearchIcon />
+        </InputGroup.Button>
+      </InputGroup>
       </ButtonToolbar>
       <ModalRSuite open={open} onClose={handleClose} style={{ marginTop: 10, marginBottom: 10 }}>
         <ModalRSuite.Header>
