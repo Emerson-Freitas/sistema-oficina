@@ -65,6 +65,7 @@ const Budget = () => {
         open={open}
         handleQueryInput={handleQueryInput}
         handleCallQueryInput={handleCallQueryInput}
+        queryInput={queryInput}
       />
       <SectionCard
         data={data}

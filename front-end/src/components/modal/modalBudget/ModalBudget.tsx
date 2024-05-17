@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 import SearchIcon from "@rsuite/icons/Search";
 import { ROLE } from "../../../enum/Role";
+import CloseIcon from '@rsuite/icons/Close';
 
 interface Props {
   handleClose: () => void;
@@ -23,6 +24,7 @@ interface Props {
   open: boolean;
   handleQueryInput: (event: string) => void;
   handleCallQueryInput: () => void;
+  queryInput: string
 }
 
 interface RSuiteComponent {
@@ -36,6 +38,7 @@ const ModalBudget = ({
   open,
   handleQueryInput,
   handleCallQueryInput,
+  queryInput
 }: Props) => {
   const [clients, setClients] = useState<RSuiteComponent[]>([]);
   const [selectedClient, setSelectedClient] = useState<unknown | string>();
@@ -45,6 +48,7 @@ const ModalBudget = ({
   const { user, token } = useAuth();
   const [vehicles, setVehicles] = useState<RSuiteComponent[]>([]);
   const [selectedVehicle, setSelectedVehicle] = useState<unknown | string>();
+  const [includesValueInput, setIncludesValueInput] = useState<boolean>();
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -130,6 +134,22 @@ const ModalBudget = ({
     }
   }, [user]);
 
+  const handleKeyPress: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
+    if (event.key === 'Enter') {
+      handleCallQueryInput();
+    }
+  };
+
+  const handleEmptyInput = () => {
+    setIncludesValueInput(false);
+  }
+
+  useEffect(() => {
+    if (!queryInput && includesValueInput === false) {
+      handleEmptyInput()
+    }
+  }, [queryInput, includesValueInput]) 
+
   return (
     <div>
       <ButtonToolbar>
@@ -142,10 +162,24 @@ const ModalBudget = ({
         <InputGroup inside style={{ width: "30%" }}>
           <Input
             maxLength={100}
-            onChange={handleQueryInput}
+            onChange={(event) => {
+              handleQueryInput(event)
+              setIncludesValueInput(true)
+            }}
             placeholder="Digite o que deseja filtrar..."
+            onKeyDown={handleKeyPress}
+            value={queryInput}
           />
           <InputGroup.Button onClick={handleCallQueryInput}>
+            {includesValueInput && (
+              <CloseIcon
+                style={{  marginRight: "20px" }}
+                onClick={() => {
+                  handleEmptyInput()
+                  handleQueryInput("");
+                }}
+              />
+            )}
             <SearchIcon />
           </InputGroup.Button>
         </InputGroup>
