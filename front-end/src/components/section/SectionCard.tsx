@@ -41,19 +41,20 @@ const SectionCard = ({ data, find, countLimit, total, queryInput }: Props) => {
       ) : (
         <>
           <Row>
-          {data?.map((item: IBudget) => (
-            <Col md={8} sm={24} xs={24} key={item.id}>
-              <CardBudget
-                key={item.id}
-                value={item.value}
-                description={item.description}
-                created_at={item.created_at}
-                vehicle={item.vehicle.name}
-                id={item.id}
-              />
-            </Col>
-          ))}
-        </Row>
+            {data?.map((item: IBudget) => (
+              <Col md={8} sm={24} xs={24} key={item.id}>
+                <CardBudget
+                  key={item.id}
+                  value={item.value}
+                  description={item.description}
+                  created_at={item.created_at}
+                  vehicle={item.vehicle.name}
+                  status={item.status}
+                  id={item.id}
+                />
+              </Col>
+            ))}
+          </Row>
         <div style={{ width: "100%", padding: "20px 0 20px 0"}}>
           <CustomPagination
             totalPages={total}

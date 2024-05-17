@@ -14,6 +14,27 @@ class VehicleController {
             return res.status(400).json({ message: `Erro ao cadastrar o veículo` })
         }
     }
+
+    static async findVehicles(req: Request, res: Response) {
+        try {
+            const vehicleService = new VehicleService();
+            const data = await vehicleService.findVehicles();
+            return res.status(200).json(data)
+        } catch (error) {
+            return res.status(400).json({ message: `Erro ao consultar os veículos` })
+        }
+    }
+
+    static async findVehiclesClient(req: Request, res: Response) {
+        try {
+            const { user_id } = req.body
+            const vehicleService = new VehicleService();
+            const data = await vehicleService.findVehiclesClient({ user_id });
+            return res.status(200).json(data)
+        } catch (error) {
+            return res.status(400).json({ message: `Erro ao consultar os veículos` })
+        }
+    }
 }
 
 export default VehicleController

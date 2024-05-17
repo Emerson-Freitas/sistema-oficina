@@ -16,14 +16,14 @@ interface BudgetRequest {
 }
 
 export type Budget = {
-    id: string;
-    description: string;
-    value: Prisma.Decimal;
-    vehicle_id: string;
-    user_id: string;
-    status: string;
-    created_at: Date;
-    updated_at: Date;
+  id: string;
+  description: string;
+  value: Prisma.Decimal;
+  vehicle_id: string;
+  user_id: string;
+  status: string;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export type BudgetSocket = {
@@ -37,6 +37,12 @@ interface IUpdateBudget {
   value: string | number
   description: string
   vehicle: string
+}
+
+interface IFindBudget {
+  role: string
+  id: string
+  query: string
 }
 
 class BudgetService {
@@ -103,54 +109,111 @@ class BudgetService {
     return budget;
   }
 
-  async findBudgets({ skip, take, queryInput}: any) {
-    let where: any
+  async findBudgetsUser ({ id, role, query }: IFindBudget) {
     let ids: any
+    if (role !== "CLIENTE") {
+      ids = await prismaClient.$queryRaw<{ id: number }[]>`
+          SELECT id FROM "budgets"
+          WHERE "description" LIKE ${query} 
+          OR "value"::text LIKE ${query}
+          OR "created_at"::text LIKE ${query}
+          OR UPPER("status") LIKE UPPER(${query})
+        `;
+    } else {
+      ids = await prismaClient.$queryRaw<{ id: number }[]>`
+          SELECT id FROM "budgets"
+          WHERE "user_id" = ${id}
+          AND (
+            "description" LIKE ${query} 
+            OR "value"::text LIKE ${query}
+            OR "created_at"::text LIKE ${query}
+            OR UPPER("status") LIKE UPPER(${query})
+          )
+      `;
+    }
+
+    return ids
+  }
+
+  async findBudgets({ skip, take, queryInput, id}: any) {
+    let where: any
     queryInput = queryInput.trim()
 
-    if (queryInput) {
-      const query = `%${queryInput}%`; 
+    const roleUser = await prismaClient.user.findFirst({
+      where: {
+        id: id
+      },
+      select: {
+        role: {
+          select: {
+            name: true
+          }
+        }
+      }
+    })
+    
+    const role = roleUser?.role.name
 
-      ids = await prismaClient.$queryRaw<{ id: number }[]>`
-        SELECT id FROM "budgets"
-        WHERE "description" LIKE ${query} 
-        OR "value"::text LIKE ${query}
-        OR "created_at"::text LIKE ${query}
-      `;
-
-      if (ids.length > 0) {
-        where = { id: { in: ids.map((row: any) => row.id) } };
+    if (role === "CLIENTE") {
+      where = {
+        user_id: id
       }
     }
-    const budgets = await prismaClient.budget.findMany({
-      select: {
-        id: true,
-        description: true,
-        value: true,
-        user_id: true,
-        vehicle: {
-          select: {
-            name: true,
+
+    if (queryInput && role) {
+      const query = `%${queryInput}%`;
+      const ids = await this.findBudgetsUser({ id, role, query });
+      if (ids.length > 0) {
+        where = {
+          id: {
+            in: ids.map((row: any) => row.id),
           },
+        };
+      }
+    }
+
+    const budgets = await prismaClient.budget.findMany({
+        select: {
+          id: true,
+          description: true,
+          value: true,
+          user_id: true,
+          vehicle: {
+            select: {
+              name: true,
+            },
+          },
+          created_at: true,
+          status: true
         },
-        created_at: true,
-      },
-      where: where,
-      orderBy: {
-        created_at: "asc",
-      },
-      skip: Number(skip),
-      take: Number(take),
-    });
+        where: where,
+        orderBy: {
+          created_at: "asc",
+        },
+        skip: Number(skip),
+        take: Number(take),
+      });
 
-    const totalCount = queryInput ? budgets.length : await prismaClient.budget.count();
-    const totalPages = Math.ceil(totalCount / take);
+      let totalCount: number
+      let totalPages: number
 
-    return {
-      budgets,
-      count: totalCount,
-      totalPages,
-    };
+      if (role !== "CLIENTE") {
+        totalCount = queryInput ? budgets.length : await prismaClient.budget.count();
+        totalPages = Math.ceil(totalCount / take);
+      } else {
+        totalCount = queryInput ? budgets.length : await prismaClient.budget.count({
+          where: {
+            user_id: id
+          }
+        });
+        totalPages = Math.ceil(totalCount / take);
+      }
+
+      return {
+        budgets,
+        count: totalCount,
+        totalPages,
+      };
   }
 
   async findBudgetsByUser({ id, take = 5, skip = 0 }: any) {

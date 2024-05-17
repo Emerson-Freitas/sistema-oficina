@@ -11,51 +11,51 @@ const Budget = () => {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   const handleOpen = () => setOpen(true);
-  const [data, setData] = useState<IBudget[]>([])
+  const [data, setData] = useState<IBudget[]>([]);
   const { user } = useAuth();
-  const [total, setTotal] = useState<number>(0)
-  const [limit, setLimit] = useState<number>(0)
-  const [page, setPage] = useState<number>(1)
-  const [initialTake, setInitialTake] = useState<number>(6)
-  const { token } = useAuth()
+  const [total, setTotal] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
+  const [initialTake, setInitialTake] = useState<number>(6);
+  const { token } = useAuth();
   const [queryInput, setQueryInput] = useState<string>("");
-  const [callQueryInput, setCallQueryInput] = useState<boolean>(false)
+  const [callQueryInput, setCallQueryInput] = useState<boolean>(false);
   const handleCallQueryInput = () => setCallQueryInput(true);
 
   const handleQueryInput = (event: string) => {
     setQueryInput(event);
-  }
+  };
 
-  const findBudgets = async (page: number, take: number = 6, queryInput: string) => {
-    const skip = (page - 1) * take
-    await axios.get(`${import.meta.env.VITE_BASE_URL}/budgets?queryInput=${queryInput}&skip=${skip}&take=${take}`, { headers: { Authorization: token }})
+  const findBudgets = async (
+    page: number,
+    take: number = 6,
+    queryInput: string
+  ) => {
+    const skip = (page - 1) * take;
+    await axios
+      .get(`${import.meta.env.VITE_BASE_URL}/budgets?queryInput=${queryInput}&skip=${skip}&take=${take}`, { headers: { Authorization: token } })
       .then((res: AxiosResponse) => {
-        setData(res.data.budgets)
-        setTotal(res.data.totalPages)
-        setLimit(res.data.count)
+        setData(res.data.budgets);
+        setTotal(res.data.totalPages);
+        setLimit(res.data.count);
       })
       .catch((error: Error) => {
         toast.error(`${error.response.data.message}`);
-      })
-  }
+      });
+  };
 
   useEffect(() => {
-    if (user?.role.name === 'ADMIN') {
-      findBudgets(page, initialTake, queryInput)
-    } 
-  }, [user])
+    if (user?.role.name) {
+      findBudgets(page, initialTake, queryInput);
+    }
+  }, [user]);
 
   useEffect(() => {
     if (callQueryInput === true) {
-      findBudgets(page, initialTake, queryInput)
-      setCallQueryInput(false)
+      findBudgets(page, initialTake, queryInput);
+      setCallQueryInput(false);
     }
-  }, [queryInput, callQueryInput])
-
-  
-  useEffect(() => {
-    console.log("query_input", queryInput)
-  }, [queryInput])
+  }, [queryInput, callQueryInput]);
 
   return (
     <CustomContent title="Orçamentos">
@@ -66,17 +66,13 @@ const Budget = () => {
         handleQueryInput={handleQueryInput}
         handleCallQueryInput={handleCallQueryInput}
       />
-      {user?.role.name === 'ADMIN' && (
-        <>
-          <SectionCard 
-            data={data}
-            find={findBudgets}
-            total={total}
-            countLimit={limit}
-            queryInput={queryInput}
-          />
-      </>
-    )}
+      <SectionCard
+        data={data}
+        find={findBudgets}
+        total={total}
+        countLimit={limit}
+        queryInput={queryInput}
+      />
     </CustomContent>
   );
 };

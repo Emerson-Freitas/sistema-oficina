@@ -37,6 +37,9 @@ router.get("/dashboard", authMiddleware, DashboardController.budgetsStatus)
 router.get("/admin/graph", isAdminMiddleware, DashboardController.dataGraphic)
 router.put("/accept/:id", canAuthorizeBudgetMiddleware, BudgetController.acceptBudget)
 router.put("/reject/:id", canAuthorizeBudgetMiddleware, BudgetController.rejectBudget)
+router.get("/admin/vehicles", isAdminMiddleware, VehicleController.findVehicles)
+router.post("/client/vehicles", authMiddleware, VehicleController.findVehiclesClient)
+
 //notifications
 router.get("/notifications/:id", authMiddleware, NotificationController.notificationsByUserClient)
 router.get("/notifications", isAdminMiddleware, NotificationController.notificationsAdminAndEmployee)

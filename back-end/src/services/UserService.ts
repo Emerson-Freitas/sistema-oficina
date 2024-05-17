@@ -119,8 +119,8 @@ class UserService {
                 name: true,
             },
             where: {
-                role_id: {
-                    equals: "36a664f4-3f50-4575-b96b-c4f74b91f5ce"
+                role: {
+                    name: "CLIENTE"
                 }
             },
             orderBy: {

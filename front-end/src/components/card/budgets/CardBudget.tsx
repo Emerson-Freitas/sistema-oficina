@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Input, InputNumber, Panel, Tooltip, Whisper } from "rsuite";
+import { Input, InputGroup, InputNumber, Panel, Tooltip, Whisper } from "rsuite";
 import styles from "./CardBudget.module.css";
 import stylesDarkMode from "./CardBudgetDarkMode.module.css";
 import {
@@ -27,13 +27,14 @@ interface Props {
   description: string;
   vehicle: string;
   created_at: string | Date;
+  status: string;
 }
 
 interface IAcceptOrRejectBudget {
   id: string
 }
 
-const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
+const CardBudget = ({ value, description, vehicle, created_at, id, status }: Props) => {
   const { user, token } = useAuth();
   const [openModal, setOpenModal] = useState<boolean>(false);
   const handleClose = () => setOpenModal(false);
@@ -220,9 +221,8 @@ const CardBudget = ({ value, description, vehicle, created_at, id }: Props) => {
             <span className={styles.value}>Veículo: {vehicle}</span>
             <span className={styles.value}>Descrição: {description}</span>
             <span className={styles.value}>Valor: {currencyFormat(value)}</span>
-            <span className={styles.value}>
-              Criado em: {formatDate(created_at)}
-            </span>
+            <span className={styles.value}>Status: {status}</span>
+            <span className={styles.value}>Criado em: {formatDate(created_at)}</span>
           </div>
         </div>
       </Panel>
