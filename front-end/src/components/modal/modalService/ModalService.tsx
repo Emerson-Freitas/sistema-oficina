@@ -63,18 +63,21 @@ const ModalService = ({ handleOpen, handleClose, open }: Props) => {
     }
   }
 
+  const findClients = async () => {
+    await axios.get(`${import.meta.env.VITE_BASE_URL}/clients`, { headers: { Authorization: token }})
+      .then((res: AxiosResponse) => {
+        setClients(res.data)
+      })
+      .catch((error: Error) => {
+        toast.error(`${error.response.data.message}`);
+      })
+  }
+
   useEffect(() => {
-    const findClients = async () => {
-      await axios.get(`${import.meta.env.VITE_BASE_URL}/clients`, { headers: { Authorization: token }})
-        .then((res: AxiosResponse) => {
-          setClients(res.data)
-        })
-        .catch((error: Error) => {
-          console.log(`${error.response.data.message}`);
-        })
+    if (user) {
+      findClients()
     }
-    findClients()
-  }, [])
+  }, [user])
 
   return (
     <div>
@@ -83,7 +86,7 @@ const ModalService = ({ handleOpen, handleClose, open }: Props) => {
       </ButtonToolbar>
       <ModalRSuite open={open} onClose={handleClose} style={{ marginTop: 10, marginBottom: 10 }}>
         <ModalRSuite.Header>
-          <ModalRSuite.Title style={{ fontWeight: 'bold', marginLeft: "1%", marginTop: "2%"}}>Cadastro de Veículo</ModalRSuite.Title>
+          <ModalRSuite.Title style={{ fontWeight: 'bold', marginLeft: "1%", marginTop: "2%"}}>Cadastro do Veículo</ModalRSuite.Title>
         </ModalRSuite.Header>
         <ModalRSuite.Body>
           <Input type='text' placeholder="Nome do Veículo" className={styles.input} value={name} onChange={(event) => setName(event)}/>

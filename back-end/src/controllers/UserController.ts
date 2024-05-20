@@ -2,7 +2,6 @@ import { Request, Response } from "express"
 import UserService from "../services/UserService"
 
 class UserController {
-    
     static async createUser(req: Request, res: Response) {
         try {
             const { name, cpf, telephone, email, password, role_id } = req.body
@@ -49,7 +48,6 @@ class UserController {
         } catch (error: any) {
             return res.send(400).json({ message: error.message})
         }
-        
     }
 
     static async uploadPicture(req: Request, res: Response) {

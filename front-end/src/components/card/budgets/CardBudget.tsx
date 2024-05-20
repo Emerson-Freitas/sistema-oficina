@@ -78,8 +78,15 @@ const CardBudget = ({ value, description, vehicle, created_at, id, status }: Pro
 
   return (
     <div style={{ marginTop: "1.5%" }}>
-      <div className={ theme === 'light' ? styles.contentActions : stylesDarkMode.contentActions}>
-        {user?.role.name === ROLE.ADMIN || user?.role.name === ROLE.FUNCIONARIO ? (
+      <div
+        className={
+          theme === "light"
+            ? styles.contentActions
+            : stylesDarkMode.contentActions
+        }
+      >
+        {user?.role.name === ROLE.ADMIN ||
+        user?.role.name === ROLE.FUNCIONARIO ? (
           <>
             {openModal && (
               <UpdateModal
@@ -133,7 +140,9 @@ const CardBudget = ({ value, description, vehicle, created_at, id, status }: Pro
             <CustomWhisper
               content={
                 <FontAwesomeIcon
-                  className={ theme === 'light' ? styles.actions : stylesDarkMode.actions }
+                  className={
+                    theme === "light" ? styles.actions : stylesDarkMode.actions
+                  }
                   icon={faPenToSquare}
                   color="white"
                   size="lg"
@@ -159,12 +168,14 @@ const CardBudget = ({ value, description, vehicle, created_at, id, status }: Pro
                   icon={faCheck}
                   color="white"
                   size="lg"
-                  className={ theme === 'light' ? styles.actions : stylesDarkMode.actions }
+                  className={
+                    theme === "light" ? styles.actions : stylesDarkMode.actions
+                  }
                   onClick={() => {
                     setActionBudget({
-                      id: id
-                    })
-                    handleOpenAccept()
+                      id: id,
+                    });
+                    handleOpenAccept();
                   }}
                 />
               }
@@ -179,12 +190,14 @@ const CardBudget = ({ value, description, vehicle, created_at, id, status }: Pro
                   icon={faXmark}
                   color="white"
                   size="lg"
-                  className={ theme === 'light' ? styles.actions : stylesDarkMode.actions }
+                  className={
+                    theme === "light" ? styles.actions : stylesDarkMode.actions
+                  }
                   onClick={() => {
                     setActionBudget({
-                      id: id
-                    })
-                    handleOpenReject()
+                      id: id,
+                    });
+                    handleOpenReject();
                   }}
                 />
               }
@@ -201,7 +214,10 @@ const CardBudget = ({ value, description, vehicle, created_at, id, status }: Pro
                 icon={faXmark}
                 color="white"
                 size="lg"
-                className={ theme === 'light' ? styles.actions : stylesDarkMode.actions }
+                className={
+                  theme === "light" ? styles.actions : stylesDarkMode.actions
+                }
+                onClick={handleOpenReject}
               />
             }
             controlId="control-id-hover"
@@ -211,7 +227,10 @@ const CardBudget = ({ value, description, vehicle, created_at, id, status }: Pro
           ></CustomWhisper>
         )}
       </div>
-      <Panel bordered className={ theme === "light" ? styles.panel : stylesDarkMode.panel}>
+      <Panel
+        bordered
+        className={theme === "light" ? styles.panel : stylesDarkMode.panel}
+      >
         <div className={styles.contentPicture}>
           <FontAwesomeIcon
             icon={faCalculator}
@@ -222,22 +241,24 @@ const CardBudget = ({ value, description, vehicle, created_at, id, status }: Pro
             <span className={styles.value}>Descrição: {description}</span>
             <span className={styles.value}>Valor: {currencyFormat(value)}</span>
             <span className={styles.value}>Status: {status}</span>
-            <span className={styles.value}>Criado em: {formatDate(created_at)}</span>
+            <span className={styles.value}>
+              Criado em: {formatDate(created_at)}
+            </span>
           </div>
         </div>
       </Panel>
-      {accept && 
+      {accept && (
         <ActionsBudget
-            id={actionBudget.id}
-            handleClose={handleCloseAccept}
-            handleOpen={handleOpenAccept}
-            route="accept"
-            open={accept}
-            title={`Deseja aceitar o orçamento: ${description}?`}
-            token={token}
+          id={actionBudget.id}
+          handleClose={handleCloseAccept}
+          handleOpen={handleOpenAccept}
+          route="accept"
+          open={accept}
+          title={`Deseja aceitar o orçamento: ${description}?`}
+          token={token}
         />
-      }
-      {reject && 
+      )}
+      {reject && (
         <ActionsBudget
           id={actionBudget.id}
           handleClose={handleCloseReject}
@@ -247,7 +268,7 @@ const CardBudget = ({ value, description, vehicle, created_at, id, status }: Pro
           open={reject}
           title={`Deseja rejeitar o orçamento: ${description}?`}
         />
-      }
+      )}
     </div>
   );
 };

@@ -17,11 +17,12 @@ class VehicleController {
 
     static async findVehicles(req: Request, res: Response) {
         try {
+            const { id } = req.params as any
             const vehicleService = new VehicleService();
-            const data = await vehicleService.findVehicles();
+            const data = await vehicleService.findVehicles({ id });
             return res.status(200).json(data)
-        } catch (error) {
-            return res.status(400).json({ message: `Erro ao consultar os veículos` })
+        } catch (error: any) {
+            return res.status(400).json({ message: `${error.message}` })
         }
     }
 
@@ -33,6 +34,17 @@ class VehicleController {
             return res.status(200).json(data)
         } catch (error) {
             return res.status(400).json({ message: `Erro ao consultar os veículos` })
+        }
+    }
+
+    static async vehiclesByUser(req: Request, res: Response) {
+        try {
+            const { id } = req.params as any
+            const vehicleService = new VehicleService()
+            const data = await vehicleService.vehiclesByUser(id)
+            return res.status(200).json(data)
+        } catch (error) {
+            return res.status(400).json({ message: `Erro ao consultar os veículos criados` })
         }
     }
 }

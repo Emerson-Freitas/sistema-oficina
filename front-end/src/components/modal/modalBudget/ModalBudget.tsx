@@ -94,9 +94,9 @@ const ModalBudget = ({
       });
   };
 
-  const findVehiclesAdmin = async () => {
+  const findVehiclesAdmin = async (id: unknown) => {
     await axios
-      .get(`${import.meta.env.VITE_BASE_URL}/admin/vehicles`, {
+      .get(`${import.meta.env.VITE_BASE_URL}/admin/vehicles/${id}`,{
         headers: { Authorization: token },
       })
       .then((res: AxiosResponse) => {
@@ -121,12 +121,14 @@ const ModalBudget = ({
   };
 
   useEffect(() => {
-    if (
-      user?.role.name === ROLE.ADMIN ||
-      user?.role.name === ROLE.FUNCIONARIO
-    ) {
+    if (selectedClient) {
+      findVehiclesAdmin(selectedClient)
+    }
+  }, [selectedClient])
+
+  useEffect(() => {
+    if (user?.role.name === ROLE.ADMIN || user?.role.name === ROLE.FUNCIONARIO) {
       findClients();
-      findVehiclesAdmin();
     }
     if (user?.role.name === "CLIENTE") {
       findVehiclesClient();
@@ -145,7 +147,7 @@ const ModalBudget = ({
   }
 
   useEffect(() => {
-    if (!queryInput && includesValueInput === false) {
+    if (!queryInput && includesValueInput) {
       handleEmptyInput()
     }
   }, [queryInput, includesValueInput]) 
