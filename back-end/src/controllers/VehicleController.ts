@@ -7,7 +7,7 @@ class VehicleController {
         try {
             const { name, plate, color, userId, vehicleType } = req.body
             const vehicleService = new VehicleService();
-            const data = await vehicleService.createVehicle({ name, plate, color, userId })
+            const data = await vehicleService.createVehicle({ name, plate, color, userId, vehicleType })
 
             return res.status(200).json({ message: `Veículo cadastrado com sucesso!`})
         } catch (error: any) {

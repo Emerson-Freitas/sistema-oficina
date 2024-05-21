@@ -33,7 +33,11 @@ const NotificationComponent = ({ open, handleCloseNotification }: Props) => {
         <Drawer.Title>Notificações</Drawer.Title>
       </Drawer.Header>
       <div className={theme === "light" ? stylesLightMode.content : stylesDarkMode.content}>
-        {notification.length < 1 && <p>Nenhuma notificação no momento!</p>}
+        {notification.length < 1 && 
+          <div className={ theme === 'light' ? stylesLightMode.emptyNotification : stylesDarkMode.emptyNotification  }>
+            <p>Nenhuma notificação no momento</p>
+          </div>
+        }
         {notification.map((data: INotification, index: number) => (
           <div key={index} className={ theme === 'light' ? stylesLightMode.card : stylesDarkMode.card} onClick={handleClick}>
             <p>Descrição: {data.description}</p>

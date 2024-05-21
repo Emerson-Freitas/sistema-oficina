@@ -42,7 +42,7 @@ const ModalService = ({ handleOpen, handleClose, open }: Props) => {
   const handleSubmit = async () => {
     setLoading(true)
     if (name && plate && color && userId) {
-      await axios.post(`${import.meta.env.VITE_BASE_URL}/vehicles`, { name, color, plate, userId }, { headers: { Authorization: token }})
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/vehicles`, { name, color, plate, userId, vehicleType }, { headers: { Authorization: token }})
         .then((res: AxiosResponse) => {
           setName("")
           setColor("")

@@ -6,6 +6,7 @@ interface VehicleRequest {
     plate: string 
     color: string
     userId: string
+    vehicleType: string
 }
 
 interface FindVehiclesByUser {
@@ -23,10 +24,10 @@ type Vehicle = {
 }
 
 class VehicleService {
-    async createVehicle({ name, plate, color, userId }: VehicleRequest) {
+    async createVehicle({ name, plate, color, userId, vehicleType}: VehicleRequest) {
         const vehicle = await prismaClient.vehicle.create({
             data: {
-                name, plate, color, user_id: userId
+                name, plate, color, user_id: userId, type: vehicleType
             }
         })
         return vehicle 

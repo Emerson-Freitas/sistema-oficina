@@ -18,3 +18,9 @@
     cursor: pointer;
     max-height: 100%;
 }
+
+.emptyNotification {
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
+}

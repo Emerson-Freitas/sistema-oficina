@@ -62,7 +62,7 @@ model Vehicle {
   budgets Budget[]
   user User @relation(fields: [user_id], references: [id])
   user_id String
-  type String @default("Carro")
+  type String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   

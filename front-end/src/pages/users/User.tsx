@@ -8,6 +8,7 @@ import IUser from "../../interfaces/IUser";
 import { useAuth } from "../../components/hooks/useAuth";
 import { UserService } from "../../services/api/users/UserService";
 import { ApiException } from "../../services/api/ApiException";
+import { toast } from "react-toastify";
 
 const User = () => {
   const [open, setOpen] = useState(false);
@@ -43,7 +44,7 @@ const User = () => {
     UserService.findUsers({ skip: page, take: initialTake, token: token || localStorage.getItem("ACCESS_TOKEN") as string })
       .then((res) => {
         if (res instanceof ApiException) {
-          alert("ERRO: " + res.message)
+          toast.error(res.message)
         } else {
           setData(res.results)
           setTotal(res.totalPages);
