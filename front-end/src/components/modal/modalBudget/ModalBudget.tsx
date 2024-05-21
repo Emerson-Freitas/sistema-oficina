@@ -49,6 +49,7 @@ const ModalBudget = ({
   const [vehicles, setVehicles] = useState<RSuiteComponent[]>([]);
   const [selectedVehicle, setSelectedVehicle] = useState<unknown | string>();
   const [includesValueInput, setIncludesValueInput] = useState<boolean>();
+  const [readOnlyVehicle, setReadOnlyVehicle] = useState<boolean>(true)
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -103,6 +104,7 @@ const ModalBudget = ({
         setVehicles(res.data);
       })
       .catch((error: Error) => {
+        setVehicles([]);
         toast.error(`${error.response.data.message}`);
       });
   };
@@ -116,6 +118,7 @@ const ModalBudget = ({
         setVehicles(res.data);
       })
       .catch((error: Error) => {
+        setVehicles([]);
         toast.error(`${error.response.data.message}`);
       });
   };
@@ -135,6 +138,23 @@ const ModalBudget = ({
       setSelectedClient(user.id);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (!selectedClient) {
+      setSelectedVehicle("")
+      setReadOnlyVehicle(true)
+    }
+    if (selectedClient) {
+      setReadOnlyVehicle(false)
+    }
+  }, [selectedClient])
+
+  // useEffect(() => {
+  //   if (selectedClient) {
+  //     setSelectedVehicle("")
+  //     setReadOnlyVehicle(false)
+  //   }
+  // }, [selectedClient])
 
   const handleKeyPress: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     if (event.key === 'Enter') {
@@ -239,6 +259,7 @@ const ModalBudget = ({
               setSelectedVehicle(event);
             }}
             value={selectedVehicle}
+            disabled={readOnlyVehicle}
           />
         </ModalRSuite.Body>
         <ModalRSuite.Footer>
