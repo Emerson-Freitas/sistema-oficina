@@ -1,13 +1,13 @@
-import React from 'react'
 import { Pagination } from 'rsuite'
 
 interface Props {
     totalPages: number;
-    activePage: () => number;
-    onSelectPage: () => void;
+    activePage: number
+    onSelectPage: (page: number) => void;
+    totalCount: number
 }
 
-const CustomPagination = ({totalPages, activePage, onSelectPage, totalCount}: any) => {
+const CustomPagination = ({totalPages, activePage, onSelectPage, totalCount}: Props) => {
     return (
         <Pagination
           prev

@@ -23,6 +23,12 @@ type Vehicle = {
     created_at: Date;
 }
 
+interface RequestParams {
+    id: string
+    skip: string | number
+    take: string | number
+}
+
 class VehicleService {
     async createVehicle({ name, plate, color, userId, vehicleType}: VehicleRequest) {
         const vehicle = await prismaClient.vehicle.create({
@@ -93,7 +99,10 @@ class VehicleService {
         return data
     }
 
-    async vehiclesByUser(id: string) {
+    async vehiclesByUser({ id, skip, take }: RequestParams ) {
+        skip = Number(skip)
+        take = Number(take)
+
         if (!id) {
             throw new Error("Erro ao consultar os veículos do usuário")
         }
@@ -112,8 +121,13 @@ class VehicleService {
         })
 
         let vehicles: Vehicle[]
+        let totalCount: number
+        let totalPages: number
 
         if (roleUser?.role.name !== "CLIENTE") {
+            totalCount = await prismaClient.vehicle.count()
+            totalPages = Math.ceil(totalCount/take)
+
             vehicles = await prismaClient.vehicle.findMany({
                 select: {
                     id: true,
@@ -123,12 +137,27 @@ class VehicleService {
                     user_id: true,
                     type: true,
                     created_at: true
-                }
+                },
+                skip: skip,
+                take: take
             })
-            return vehicles
+
+            return {
+                vehicles,
+                count: totalCount,
+                totalPages
+            }
         } 
 
         if (roleUser?.role.name === "CLIENTE") {
+            totalCount = await prismaClient.vehicle.count({
+                where: {
+                    user_id: id
+                }
+            })
+
+            totalPages = Math.ceil(totalCount/take)
+
             vehicles = await prismaClient.vehicle.findMany({
                 where: {
                     user_id: id
@@ -141,9 +170,16 @@ class VehicleService {
                     user_id: true,
                     type: true,
                     created_at: true
-                }
+                },
+                skip: skip,
+                take: take
             })
-            return vehicles
+
+            return {
+                vehicles,
+                count: totalCount,
+                totalPages
+            }
         }
     }
 }

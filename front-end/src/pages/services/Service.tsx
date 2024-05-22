@@ -4,7 +4,6 @@ import ModalService from "../../components/modal/modalService/ModalService";
 import { useAuth } from "../../components/hooks/useAuth";
 import axios, { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
-import { useTheme } from "../../components/hooks/useTheme";
 import SectionVehicle from "../../components/section/SectionVehicle";
 
 export interface IVehicle {
@@ -23,29 +22,33 @@ const Service = () => {
   const handleOpen = () => setOpen(true);
   const { user, token } = useAuth()
   const [vehicles, setVehicles] = useState<IVehicle[]>([])
-  const { theme } = useTheme()
-  const [loading, setLoading] = useState<boolean>(false)
+  const [total, setTotal] = useState<number>(0);
+  const [limit, setLimit] = useState<number>(0);
+  const page: number = 1;
+  const initialTake: number = 6
 
-  const findVehicles = async (id: string) => {
+  const findVehicles = async (page: number, take: number = 6) => {
+    const id = user?.id
     if (id) {
-      setLoading(true)
+      const skip = (page - 1) * take 
       await axios
-        .get(`${import.meta.env.VITE_BASE_URL}/vehicles/${id}`, {
+        .get(`${import.meta.env.VITE_BASE_URL}/vehicles/${id}?skip=${skip}&take=${take}`, {
           headers: { Authorization: token },
         })
         .then((res: AxiosResponse) => {
-          setVehicles(res.data);
+          setVehicles(res.data.vehicles);
+          setTotal(res.data.totalPages);
+          setLimit(res.data.count);
         })
         .catch((error: Error) => {
           toast.error(`${error}`);
         })
-        .finally(() => setLoading(false))
     }
   };
 
   useEffect(() => {
     if (user) {
-      findVehicles(user.id)
+      findVehicles(page, initialTake)
     }
   }, [user])
 
@@ -58,7 +61,9 @@ const Service = () => {
       />
       <SectionVehicle
         data={vehicles}
-        loading={loading}
+        find={findVehicles}
+        countLimit={limit}
+        total={total}
       />
     </CustomContent>
   );

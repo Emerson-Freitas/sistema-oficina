@@ -39,9 +39,12 @@ class VehicleController {
 
     static async vehiclesByUser(req: Request, res: Response) {
         try {
-            const { id } = req.params as any
+            const { id } = req.params
+            const { skip, take } = req.query as any
             const vehicleService = new VehicleService()
-            const data = await vehicleService.vehiclesByUser(id)
+            const data = await vehicleService.vehiclesByUser({
+                id, skip, take
+            })
             return res.status(200).json(data)
         } catch (error) {
             return res.status(400).json({ message: `Erro ao consultar os veículos criados` })
