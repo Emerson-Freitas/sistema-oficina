@@ -1,5 +1,6 @@
 import { ReactNode } from 'react'
 import { Content } from 'rsuite'
+import styles from './CustomContent.module.css'
 
 interface Props {
     title: string
@@ -7,8 +8,8 @@ interface Props {
 
 const CustomContent = ({ title, children }: Props & { children: ReactNode }) => {
   return (
-    <Content style={{ padding: "2.5%" }}>
-        <div style={{ display: 'flex', alignItems: 'center', marginBottom: "2.5%"}}>
+    <Content className={styles.container}>
+        <div className={styles.content}>
             <h2>{title}</h2>
         </div>
         {children}

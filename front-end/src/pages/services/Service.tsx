@@ -50,7 +50,7 @@ const Service = () => {
   }, [user])
 
   return (
-    <CustomContent title={"Meus Veículos"}>
+    <CustomContent title={"Veículos"}>
       <ModalService
         open={open}
         handleClose={handleClose}

@@ -1,0 +1,10 @@
+.container {
+    padding: 2.5% 2.5% 0 2.5%;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2.5%;
+}
+

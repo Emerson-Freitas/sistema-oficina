@@ -1,6 +1,7 @@
 import { Col, Loader, Row } from 'rsuite'
 import { IVehicle } from '../../pages/services/Service'
 import CardVehicle from '../card/vehicles/CardVehicle'
+import styles from './SectionVehicle.module.css'
 
 interface Props {
     data: IVehicle[]
@@ -11,7 +12,7 @@ const SectionVehicle = ({ data, loading }: Props) => {
     return (
         <Row>
             {loading && 
-                <div style={{ display: 'flex', alignItems: "center", justifyContent: "center" }}>
+                <div className={styles.loader}>
                     <Loader size='lg' />
                 </div>
             }
