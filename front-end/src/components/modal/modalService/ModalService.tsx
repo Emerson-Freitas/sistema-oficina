@@ -51,7 +51,7 @@ const ModalService = ({ handleOpen, handleClose, open }: Props) => {
           toast.success(`${res.data.message}`)
         })
         .catch((error: Error) => {
-          toast.error(`${error.response.data.message}`);
+          toast.error(`${error}`);
         })
         .finally(() => {
           setLoading(false)

@@ -15,8 +15,8 @@ const Budget = () => {
   const { user } = useAuth();
   const [total, setTotal] = useState<number>(0);
   const [limit, setLimit] = useState<number>(0);
-  const [page, setPage] = useState<number>(1);
-  const [initialTake, setInitialTake] = useState<number>(6);
+  const page: number = 1;
+  const initialTake: number = 6
   const { token } = useAuth();
   const [queryInput, setQueryInput] = useState<string>("");
   const [callQueryInput, setCallQueryInput] = useState<boolean>(false);

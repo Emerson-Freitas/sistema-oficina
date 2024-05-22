@@ -149,13 +149,6 @@ const ModalBudget = ({
     }
   }, [selectedClient])
 
-  // useEffect(() => {
-  //   if (selectedClient) {
-  //     setSelectedVehicle("")
-  //     setReadOnlyVehicle(false)
-  //   }
-  // }, [selectedClient])
-
   const handleKeyPress: React.KeyboardEventHandler<HTMLInputElement> = (event) => {
     if (event.key === 'Enter') {
       handleCallQueryInput();
