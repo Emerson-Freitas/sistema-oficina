@@ -1,5 +1,5 @@
 import { Button, Modal } from "rsuite";
-import { useState } from 'react'
+import React, { useState } from 'react'
 import axios, { AxiosResponse } from 'axios'
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
@@ -11,9 +11,10 @@ interface Props {
   open: boolean;
   handleClose: () => void;
   handleOpen: () => void;
+  children?: React.ReactNode
 }
 
-const DeleteModal = ({ name, id, open, table, handleClose }: Props) => {
+const DeleteModal = ({ name, id, open, table, handleClose, children }: Props) => {
   const { token } = useAuth()
   const [loading, setLoading] = useState<boolean>(false)
 
@@ -42,19 +43,23 @@ const DeleteModal = ({ name, id, open, table, handleClose }: Props) => {
           <p>Deseja deletar o usuário: <span>{name}?</span></p>
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body style={{display: "flex", gap:10, marginTop: '30px'}}>
-        <Button
-            onClick={handleSubmit}
-            appearance="primary"
-            loading={loading}
-            color="red"
-          >
-          <span>DELETAR</span>
-        </Button>
-        <Button onClick={handleClose} appearance="primary" color="green">
-          <span>CANCELAR</span>
-        </Button>
-       
+      <Modal.Body style={{ display: "flex", flexDirection: "column", alignItems: "start", gap: 10, marginTop: '30px' }}>
+        <div style={{ marginBottom: "10px", width: "100%" }}>
+          {children}
+        </div>
+        <div style={{ display: "flex", gap: "2.5%", width: "100%" }}>
+          <Button
+              onClick={handleSubmit}
+              appearance="primary"
+              loading={loading}
+              color="red"
+            >
+            <span>DELETAR</span>
+          </Button>
+          <Button onClick={handleClose} appearance="primary" color="green">
+            <span>CANCELAR</span>
+          </Button>
+        </div>
       </Modal.Body>
     </Modal>
   );

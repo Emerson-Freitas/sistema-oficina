@@ -10,6 +10,7 @@ import { userIds as socketIds } from "../../server";
 import NotificationService from "./NotificationService";
 
 interface BudgetRequest {
+  selectedVehicle: string;
   value: number;
   description: string;
   selectedClient: string;
@@ -45,13 +46,18 @@ interface IFindBudget {
   query: string
 }
 
+interface IFindBudgetsByVehicle {
+  id: string
+}
+
 class BudgetService {
   private readonly socketService = new SocketService();
   private readonly notificationService = new NotificationService();
 
-  async createBudget({ value, description, selectedClient }: BudgetRequest) {
+  async createBudget({ value, description, selectedClient, selectedVehicle }: BudgetRequest) {
     const budget: Budget = await prismaClient.budget.create({
       data: {
+        vehicle_id: selectedVehicle,
         value: value,
         description: description,
         user_id: selectedClient,
@@ -66,51 +72,59 @@ class BudgetService {
         name: true,
         role: {
           select: {
-            name: true
-          }
-        }
-      }
+            name: true,
+          },
+        },
+      },
     });
 
     if (user?.role.name === "CLIENTE") {
-      const { user_id, description, created_at } = budget
-      const userName = user?.name
-      const newBudget = { description, created_at, userName }
-      const connectedUserIds = socketIds.map(user => user.userId)
+      const { user_id, description, created_at } = budget;
+      const userName = user?.name;
+      const newBudget = { description, created_at, userName };
+      const connectedUserIds = socketIds.map((user) => user.userId);
 
       const usersToNotify = await prismaClient.user.findMany({
         where: {
           id: {
-            in: connectedUserIds
+            in: connectedUserIds,
           },
           role: {
-            OR: [
-              { name: "FUNCIONARIO" },
-              { name: "ADMIN" }
-            ]
-          }
+            OR: [{ name: "FUNCIONARIO" }, { name: "ADMIN" }],
+          },
         },
         select: {
-          id: true
-        }
+          id: true,
+        },
       });
 
-      const userIds = usersToNotify.map(user => {
-        const socketUser = socketIds.find(socketUser => socketUser.userId === user.id);
-        return socketUser?.socketId;
-      }).filter(Boolean);
+      const userIds = usersToNotify
+        .map((user) => {
+          const socketUser = socketIds.find(
+            (socketUser) => socketUser.userId === user.id
+          );
+          return socketUser?.socketId;
+        })
+        .filter(Boolean);
 
-      await this.notificationService.createNotification({ user_id, description })
-      this.socketService.notificationAllUsers("create budget", newBudget, userIds)
+      await this.notificationService.createNotification({
+        user_id,
+        description,
+      });
+      this.socketService.notificationAllUsers(
+        "create budget",
+        newBudget,
+        userIds
+      );
 
-      return newBudget
-    } 
-    
+      return newBudget;
+    }
+
     return budget;
   }
 
-  async findBudgetsUser ({ id, role, query }: IFindBudget) {
-    let ids: any
+  async findBudgetsUser({ id, role, query }: IFindBudget) {
+    let ids: any;
     if (role !== "CLIENTE") {
       ids = await prismaClient.$queryRaw<{ id: number }[]>`
           SELECT id FROM "budgets"
@@ -132,32 +146,32 @@ class BudgetService {
       `;
     }
 
-    return ids
+    return ids;
   }
 
-  async findBudgets({ skip, take, queryInput, id}: any) {
-    let where: any
-    queryInput = queryInput.trim()
+  async findBudgets({ skip, take, queryInput, id }: any) {
+    let where: any;
+    queryInput = queryInput.trim();
 
     const roleUser = await prismaClient.user.findFirst({
       where: {
-        id: id
+        id: id,
       },
       select: {
         role: {
           select: {
-            name: true
-          }
-        }
-      }
-    })
-    
-    const role = roleUser?.role.name
+            name: true,
+          },
+        },
+      },
+    });
+
+    const role = roleUser?.role.name;
 
     if (role === "CLIENTE") {
       where = {
-        user_id: id
-      }
+        user_id: id,
+      };
     }
 
     if (queryInput && role) {
@@ -173,47 +187,51 @@ class BudgetService {
     }
 
     const budgets = await prismaClient.budget.findMany({
-        select: {
-          id: true,
-          description: true,
-          value: true,
-          user_id: true,
-          vehicle: {
-            select: {
-              name: true,
-            },
+      select: {
+        id: true,
+        description: true,
+        value: true,
+        user_id: true,
+        vehicle: {
+          select: {
+            name: true,
           },
-          created_at: true,
-          status: true
         },
-        where: where,
-        orderBy: {
-          created_at: "asc",
-        },
-        skip: Number(skip),
-        take: Number(take),
-      });
+        created_at: true,
+        status: true,
+      },
+      where: where,
+      orderBy: {
+        created_at: "asc",
+      },
+      skip: Number(skip),
+      take: Number(take),
+    });
 
-      let totalCount: number
-      let totalPages: number
+    let totalCount: number;
+    let totalPages: number;
 
-      if (role !== "CLIENTE") {
-        totalCount = queryInput ? budgets.length : await prismaClient.budget.count();
-        totalPages = Math.ceil(totalCount / take);
-      } else {
-        totalCount = queryInput ? budgets.length : await prismaClient.budget.count({
-          where: {
-            user_id: id
-          }
-        });
-        totalPages = Math.ceil(totalCount / take);
-      }
+    if (role !== "CLIENTE") {
+      totalCount = queryInput
+        ? budgets.length
+        : await prismaClient.budget.count();
+      totalPages = Math.ceil(totalCount / take);
+    } else {
+      totalCount = queryInput
+        ? budgets.length
+        : await prismaClient.budget.count({
+            where: {
+              user_id: id,
+            },
+          });
+      totalPages = Math.ceil(totalCount / take);
+    }
 
-      return {
-        budgets,
-        count: totalCount,
-        totalPages,
-      };
+    return {
+      budgets,
+      count: totalCount,
+      totalPages,
+    };
   }
 
   async findBudgetsByUser({ id, take = 5, skip = 0 }: any) {
@@ -251,105 +269,125 @@ class BudgetService {
   }
 
   async editBudget({ id, value, description, vehicle }: IUpdateBudget) {
-      if(!id) {
-        throw new Error("O id do orçamento é obrigatório")
-      }
+    if (!id) {
+      throw new Error("O id do orçamento é obrigatório");
+    }
 
-      if(!value) {
-          throw new Error("O valor do orçamento é obrigatório")
-      }
+    if (!value) {
+      throw new Error("O valor do orçamento é obrigatório");
+    }
 
-      if(!description) {
-          throw new Error("A descrição do orçamento é obrigatório")
-      }
+    if (!description) {
+      throw new Error("A descrição do orçamento é obrigatório");
+    }
 
-      if(!vehicle) {
-          throw new Error("O veículo relacionado a esse orçamento é obrigatório")
-      }
+    if (!vehicle) {
+      throw new Error("O veículo relacionado a esse orçamento é obrigatório");
+    }
 
-      const budget = await prismaClient.budget.update({
-        where: {
-            id: id
+    const budget = await prismaClient.budget.update({
+      where: {
+        id: id,
+      },
+      data: {
+        value,
+        description,
+        vehicle: {
+          update: {
+            name: vehicle,
+          },
         },
-        data: {
-            value, 
-            description,
-            vehicle: {
-              update: {
-                name: vehicle
-              }
-            }
-        },
-        select: {
-          description: true
-        }
-      })
+      },
+      select: {
+        description: true,
+      },
+    });
 
-      return budget
+    return budget;
   }
 
   async acceptBudget({ id }: any) {
-    if(!id) {
-      throw new Error("Erro ao aceitar o orçamento")
+    if (!id) {
+      throw new Error("Erro ao aceitar o orçamento");
     }
 
     const budget = await prismaClient.budget.findFirst({
       where: {
-        id
+        id,
       },
       select: {
-        description: true
-      }
-    })
+        description: true,
+      },
+    });
 
     if (!budget) {
-      throw new Error("Erro ao aceitar o orçamento")
+      throw new Error("Erro ao aceitar o orçamento");
     }
 
     if (budget) {
       await prismaClient.budget.update({
         where: {
-          id
+          id,
         },
         data: {
-          status: "ACEITO"
-        }
-      })
+          status: "ACEITO",
+        },
+      });
     }
 
-    return budget
+    return budget;
   }
 
   async rejectBudget({ id }: any) {
-    if(!id) {
-      throw new Error("Erro ao rejeitar o orçamento")
+    if (!id) {
+      throw new Error("Erro ao rejeitar o orçamento");
     }
 
     const budget = await prismaClient.budget.findFirst({
       where: {
-        id
+        id,
       },
       select: {
-        description: true
-      }
-    })
+        description: true,
+      },
+    });
 
     if (!budget) {
-      throw new Error("Erro ao rejeitar o orçamento")
+      throw new Error("Erro ao rejeitar o orçamento");
     }
 
     if (budget) {
       await prismaClient.budget.update({
         where: {
-          id
+          id,
         },
         data: {
-          status: "REJEITADO"
-        }
-      })
+          status: "REJEITADO",
+        },
+      });
     }
 
-    return budget
+    return budget;
+  }
+
+  async findBudgetsByVehicle({ id }: IFindBudgetsByVehicle) {
+    const budgets = await prismaClient.budget.findMany({
+      where: {
+        vehicle_id: id,
+      },
+      select: {
+        id: true,
+        description: true,
+      },
+    });
+
+    const data = budgets.map((budget) => {
+      return {
+        label: budget.description,
+        value: budget.id,
+      };
+    });
+    return data;
   }
 }
 

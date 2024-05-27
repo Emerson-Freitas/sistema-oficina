@@ -1,0 +1,6 @@
+.label {
+    width: 100%;
+    font-weight: bolder;
+    display: inline-block;
+    padding: 0 5px 10px 5px;
+}

@@ -5,9 +5,10 @@ import { toast } from "react-toastify";
 import axios, { AxiosResponse } from "axios";
 import IUpdateBudget from "../../../interfaces/IUpdateBudget";
 import { useAuth } from "../../hooks/useAuth";
+import { IVehicleUpdate } from "../../card/vehicles/CardVehicle";
 
 interface Props {
-  data: IUser | IUpdateBudget;
+  data: IUser | IUpdateBudget | IVehicleUpdate;
   table: string;
   open: boolean;
   handleClose: () => void;

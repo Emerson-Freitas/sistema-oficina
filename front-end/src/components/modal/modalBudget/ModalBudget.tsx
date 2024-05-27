@@ -60,7 +60,7 @@ const ModalBudget = ({
         await axios
           .post(
             `${import.meta.env.VITE_BASE_URL}/budgets`,
-            { value, description, selectedClient },
+            { value, description, selectedClient, selectedVehicle },
             { headers: { Authorization: token } }
           )
           .then((res: AxiosResponse) => {
@@ -111,7 +111,7 @@ const ModalBudget = ({
 
   const findVehiclesClient = async () => {
     await axios
-      .post(`${import.meta.env.VITE_BASE_URL}/client/vehicles`, { user_id: user?.id }, {
+      .get(`${import.meta.env.VITE_BASE_URL}/client/vehicles`, {
         headers: { Authorization: token },
       })
       .then((res: AxiosResponse) => {

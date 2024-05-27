@@ -28,7 +28,7 @@ class VehicleController {
 
     static async findVehiclesClient(req: Request, res: Response) {
         try {
-            const { user_id } = req.body
+            const user_id = req.user.id!!
             const vehicleService = new VehicleService();
             const data = await vehicleService.findVehiclesClient({ user_id });
             return res.status(200).json(data)
@@ -48,6 +48,16 @@ class VehicleController {
             return res.status(200).json(data)
         } catch (error) {
             return res.status(400).json({ message: `Erro ao consultar os veículos criados` })
+        }
+    }
+
+    static async findTypes(req: Request, res: Response) {
+        try {
+            const vehicleService = new VehicleService()
+            const data = await vehicleService.findTypes()
+            return res.status(200).json(data)
+        } catch (error) {
+            return res.status(400).json({ message: `${error}` })
         }
     }
 }

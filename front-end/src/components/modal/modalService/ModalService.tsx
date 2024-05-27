@@ -23,7 +23,6 @@ const vehicleTypes = ['Carro', 'Moto', 'Caminhão'].map(
 );
 
 const ModalService = ({ handleOpen, handleClose, open }: Props) => {
-
   const [loading, setLoading] = useState<boolean>(false)
   const [clients, setClients] = useState<RSuiteComponent[]>([])
   const [name, setName] = useState<string>("")

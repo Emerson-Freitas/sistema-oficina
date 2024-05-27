@@ -6,10 +6,9 @@ import { BudgetSocket } from "../services/BudgetService";
 class BudgetController {
     static async createBudget(req: Request, res: Response) {
         try {
-            const { value, description, selectedClient} = req.body
+            const { value, description, selectedClient, selectedVehicle } = req.body
             const budgetService = new BudgetService();
-            await budgetService.createBudget({ value, description, selectedClient })
-
+            await budgetService.createBudget({ value, description, selectedClient, selectedVehicle })
             return res.status(200).json({ message: `Orçamento cadastrado com sucesso!`})
         } catch (error: any) {
             return res.status(400).json({ message: `Erro ao cadastrar o orçamento` })
@@ -72,6 +71,17 @@ class BudgetController {
             return res.status(200).json({ message: `Orçamento: ${data.description} foi rejeitado com sucesso!`} )
         } catch (error) {
             return res.status(400).json({ message: "Erro ao rejeitar o orçamento" })
+        }
+    }
+
+    static async findBudgetsByVehicle(req: Request, res: Response) {
+        try {
+            const { id } = req.params as any
+            const budgetService = new BudgetService()
+            const data = await budgetService.findBudgetsByVehicle({ id })
+            return res.status(200).json(data)
+        } catch (error) {
+            return res.status(400).json({ message: "Erro ao consultar os orçamentos deste veículo" })
         }
     }
 }

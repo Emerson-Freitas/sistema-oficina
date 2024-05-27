@@ -42,6 +42,7 @@ const SectionVehicle = ({ data, find, countLimit, total }: Props) => {
                     <Col lg={8} md={12} sm={24} xs={24} key={vehicle.id}>
                     <CardVehicle
                         key={vehicle.id}
+                        id={vehicle.id}
                         name={vehicle.name}
                         color={vehicle.color}
                         plate={vehicle.plate}

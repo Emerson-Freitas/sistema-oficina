@@ -26,6 +26,7 @@ const Service = () => {
   const [limit, setLimit] = useState<number>(0);
   const page: number = 1;
   const initialTake: number = 6
+  const [types, setTypes] = useState<any>([])
 
   const findVehicles = async (page: number, take: number = 6) => {
     const id = user?.id
@@ -46,8 +47,23 @@ const Service = () => {
     }
   };
 
+  // const findSelectTypesVehicles = async () => {
+  //   await axios
+  //     .get(`${import.meta.env.VITE_BASE_URL}/types`, {
+  //       headers: { Authorization: token },
+  //     })
+  //     .then((res: AxiosResponse) => {
+  //       setTypes(res.data);
+  //     })
+  //     .catch((error: Error) => {
+  //       setTypes([]);
+  //       toast.error(`${error?.response?.data?.message}`);
+  //     });
+  // }
+
   useEffect(() => {
     if (user) {
+      // findSelectTypesVehicles()
       findVehicles(page, initialTake)
     }
   }, [user])

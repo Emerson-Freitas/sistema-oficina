@@ -23,3 +23,14 @@
     padding: 5% 2%;
     width: 100%;
 }
+
+.containerIcons {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px;
+}
+
+.actions {
+    color: "whitesmoke";
+    cursor: pointer;
+}

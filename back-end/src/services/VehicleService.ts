@@ -79,6 +79,10 @@ class VehicleService {
     }
 
     async findVehiclesClient({ user_id }: FindVehiclesByUser) {
+        if (!user_id) {
+            throw new Error("Erro ao consultar os veículos")
+        }
+
         const vehicles = await prismaClient.vehicle.findMany({
             where: {
                 user_id: user_id
@@ -181,6 +185,17 @@ class VehicleService {
                 totalPages
             }
         }
+    }
+
+    async findTypes() {
+        const data = await prismaClient.vehicle.findMany({
+            select: {
+                id: true,
+                type: true
+            }
+        })
+
+        return data
     }
 }
 
