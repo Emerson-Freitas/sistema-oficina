@@ -14,6 +14,24 @@ class GenericService {
                 throw new Error("Erro ao excluir o registro")
             }
 
+            if (table === "vehicles") {
+                const budgets = await prismaClient.budget.findMany({
+                    where: {
+                        vehicle_id: id
+                    }
+                })
+
+                if (budgets) {
+                    await prismaClient.budget.deleteMany({
+                        where: {
+                            vehicle_id: id
+                        }
+                    })
+                    await prismaClient.$queryRawUnsafe(`DELETE FROM ${table} WHERE id = '${id}'`)
+                }
+
+            }
+            
             await prismaClient.$queryRawUnsafe(`DELETE FROM ${table} WHERE id = '${id}'`)
 
             return {
