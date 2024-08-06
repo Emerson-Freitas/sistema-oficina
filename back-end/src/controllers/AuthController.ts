@@ -4,6 +4,7 @@ import AuthService from "../services/AuthService"
 class AuthController {
     static async login(req: Request, res: Response) {
         try {
+            console.log("chamou a funcao login")
             const { email, password } = req.body
             const authService = new AuthService();
             const user = await authService.login({ email, password })

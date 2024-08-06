@@ -40,12 +40,9 @@ router.put("/reject/:id", canAuthorizeBudgetMiddleware, BudgetController.rejectB
 router.get("/admin/vehicles/:id", isAdminMiddleware, VehicleController.findVehicles)
 router.get("/client/vehicles", authMiddleware, VehicleController.findVehiclesClient)
 router.get('/vehicles/:id', authMiddleware, VehicleController.vehiclesByUser)
-
-
 router.get("/types", authMiddleware, VehicleController.findTypes)
-
-
 router.get("/budgets/vehicle/:id", authMiddleware, BudgetController.findBudgetsByVehicle)
+
 //notifications
 router.get("/notifications/:id", authMiddleware, NotificationController.notificationsByUserClient)
 router.get("/notifications", isAdminMiddleware, NotificationController.notificationsAdminAndEmployee)
